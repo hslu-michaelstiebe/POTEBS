@@ -1,8 +1,11 @@
 # POTEBS - Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types 🚲
 
 Swiss Federal Office of Energy (SFOE) - Funded Research Project 
+
 SFOE Grant No.: SI/502720-01
+
 Duration: Dec 2023 to Jan 2028
+
 Partners: University of Basel, Pick-e-Bike AG, PubliBike AG
 
 Short Description: 
