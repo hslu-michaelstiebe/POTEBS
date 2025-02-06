@@ -1,1 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POTEBS Project</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        .container { max-width: 800px; margin: auto; }
+        .chart-container { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>POTEBS Project</h1>
+        <p>Investigating the Potential of E-Bike Sharing Systems for Sustainable Mobility.</p>
+        
+        <h2>Interim Results</h2>
+        <div id="chart" class="chart-container"></div>
+        
+        <script>
+            var data = [{
+                x: ['Category A', 'Category B', 'Category C'],
+                y: [10, 15, 7],
+                type: 'bar'
+            }];
+            
+            Plotly.newPlot('chart', data);
+        </script>
+    </div>
+</body>
+</html>
 
