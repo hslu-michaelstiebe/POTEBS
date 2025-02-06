@@ -12,8 +12,9 @@
         nav a { margin-right: 15px; text-decoration: none; color: #007BFF; }
         nav a:hover { text-decoration: underline; }
         .container { max-width: 800px; margin: auto; }
-        .banner { display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
-        .banner img { max-height: 100px; margin: 0 10px; }
+        .banner { text-align: center; margin-bottom: 20px; }
+        .university-logos, .partner-logos { display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
+        .university-logos img, .partner-logos img { max-height: 70px; margin: 0 10px; }
         .chart-container { margin-top: 20px; }
         footer { margin-top: 40px; text-align: center; color: #555; }
     </style>
@@ -23,10 +24,14 @@
         <h1>POTEBS Project</h1>
 
         <div class="banner">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/HSLU_2022_logo.svg/2560px-HSLU_2022_logo.svg.png" alt="HSLU Logo">
-            <img src="https://wwz.unibas.ch/fileadmin/_processed_/a/a/csm_doppellogo_unibas_wwz_cb80543cfe.jpg?1636986064" alt="UniBas Logo">
-            <img src="https://www.blt.ch/fileadmin/user_upload/blt/Logos_nicht_BLT/Pick-e-Bike_Logo_ohne_Claim_Positiv_RGB.svg" alt="Pick-e-Bike Logo">
-            <img src="https://www.velospot.info/customer/public/images/logo_v.png" alt="Velospot Logo">
+            <div class="university-logos">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/HSLU_2022_logo.svg/2560px-HSLU_2022_logo.svg.png" alt="HSLU Logo">
+                <img src="https://wwz.unibas.ch/fileadmin/_processed_/a/a/csm_doppellogo_unibas_wwz_cb80543cfe.jpg?1636986064" alt="UniBas Logo">
+            </div>
+            <div class="partner-logos">
+                <img src="https://www.blt.ch/fileadmin/user_upload/blt/Logos_nicht_BLT/Pick-e-Bike_Logo_ohne_Claim_Positiv_RGB.svg" alt="Pick-e-Bike Logo">
+                <img src="https://www.velospot.info/customer/public/images/logo_v.png" alt="Velospot Logo">
+            </div>
         </div>
 
         <nav>
@@ -76,5 +81,3 @@
     </div>
 </body>
 </html>
-
-
