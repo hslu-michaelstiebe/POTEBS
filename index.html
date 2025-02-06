@@ -133,7 +133,12 @@
                 };
 
                 function showSeason(season) {
-                    Plotly.newPlot('usage-peaks-chart', dataBySeason[season]);
+                    const layout = {
+                        title: 'Usage Peaks',
+                        xaxis: { title: 'Hour of the Day' },
+                        yaxis: { title: 'Fraction of Rentals' }
+                    };
+                    Plotly.newPlot('usage-peaks-chart', dataBySeason[season], layout);
                 }
 
                 // Show all seasons by default
