@@ -6,23 +6,65 @@
   <title>POTEBS Project</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1, h2 { color: #333; }
-    nav { margin-bottom: 20px; }
-    nav a { margin-right: 15px; text-decoration: none; color: #007BFF; }
-    nav a:hover { text-decoration: underline; }
-    .container { max-width: 800px; margin: auto; }
-    .banner { text-align: center; margin-bottom: 40px; }
-    .hslu-logo { max-height: 40px; margin: 0 10px; vertical-align: middle; }
-    .unibas-logo { max-height: 70px; margin: 0 10px; vertical-align: middle; transform: translateY(15%); }
-    .partner-logos { display: flex; justify-content: center; align-items: center; margin-top: 20px; }
-    .partner-logos img { max-height: 80px; margin: 0 10px; }
-    .chart-container { margin-top: 20px; }
-    footer { margin-top: 40px; text-align: center; color: #555; }
-    .image-container { text-align: center; margin-top: 20px; }
-    .image-container img { max-width: 90%; max-height: 400px; }
-    
-    /* Table styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    /* Header: Logos and Project Title */
+    .header {
+      text-align: center;
+    }
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 10px;
+    }
+    .logo-container img {
+      max-height: 70px;
+    }
+    .project-title {
+      margin: 10px 0;
+      font-size: 1.8em;
+      color: #333;
+    }
+    /* Navigation Bar as a dark gray horizontal bar with rectangular buttons */
+    nav {
+      background-color: #444;
+      padding: 10px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    nav a {
+      display: inline-block;
+      background-color: #666;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 4px;
+    }
+    nav a:hover {
+      background-color: #888;
+    }
+    /* General Section Headings and Images */
+    h1, h2 {
+      color: #333;
+    }
+    .image-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .image-container img {
+      max-width: 90%;
+      max-height: 400px;
+    }
+    /* Table styling with a reduced font size */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -45,7 +87,6 @@
       color: #555;
       margin-top: 5px;
     }
-    
     /* Hide the EBSS User Samples Summary section by default */
     #user-samples-summary {
       display: none;
@@ -54,17 +95,28 @@
 </head>
 <body>
   <div class="container">
-    <h1>POTEBS - <br>Investigating the <u>Pot</u>ential of <u>E</u>-<u>B</u>ike-<u>S</u>haring Systems for Sustainable Mobility in Different Spatial Types</h1>
-
-    <div class="banner">
-      <img class="hslu-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/HSLU_2022_logo.svg/2560px-HSLU_2022_logo.svg.png" alt="HSLU Logo">
-      <img class="unibas-logo" src="https://wwz.unibas.ch/fileadmin/_processed_/a/a/csm_doppellogo_unibas_wwz_cb80543cfe.jpg?1636986064" alt="UniBas Logo">
+    <!-- Header with Logos and Project Title -->
+    <div class="header">
+      <div class="logo-container">
+        <a href="https://www.hslu.ch/de-ch/hochschule-luzern/forschung/projekte/detail/?pid=6524" target="_blank" rel="noopener noreferrer">
+          <img class="hslu-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/HSLU_2022_logo.svg/2560px-HSLU_2022_logo.svg.png" alt="HSLU Logo">
+        </a>
+        <a href="https://wwz.unibas.ch/en/" target="_blank" rel="noopener noreferrer">
+          <img class="unibas-logo" src="https://wwz.unibas.ch/fileadmin/_processed_/a/a/csm_doppellogo_unibas_wwz_cb80543cfe.jpg?1636986064" alt="UniBas Logo">
+        </a>
+        <a href="https://basel.pickebike.ch/en/" target="_blank" rel="noopener noreferrer">
+          <img src="https://www.blt.ch/fileadmin/user_upload/blt/Logos_nicht_BLT/Pick-e-Bike_Logo_ohne_Claim_Positiv_RGB.svg" alt="Pick-e-Bike Logo">
+        </a>
+        <a href="https://www.velospot.info/customer/public/" target="_blank" rel="noopener noreferrer">
+          <img src="https://www.velospot.info/customer/public/images/logo_v.png" alt="Velospot Logo">
+        </a>
+      </div>
+      <h1 class="project-title">
+        POTEBS - Investigating the <u>Pot</u>ential of <u>E</u>-<u>B</u>ike-<u>S</u>haring Systems for Sustainable Mobility in Different Spatial Types
+      </h1>
     </div>
-    <div class="partner-logos">
-      <img src="https://www.blt.ch/fileadmin/user_upload/blt/Logos_nicht_BLT/Pick-e-Bike_Logo_ohne_Claim_Positiv_RGB.svg" alt="Pick-e-Bike Logo">
-      <img src="https://www.velospot.info/customer/public/images/logo_v.png" alt="Velospot Logo">
-    </div>
 
+    <!-- Navigation Bar -->
     <nav>
       <a href="#about">About</a>
       <a href="#operational-areas">Operational Areas</a>
@@ -72,6 +124,7 @@
       <a href="#contact">Contact</a>
     </nav>
 
+    <!-- About Section -->
     <section id="about">
       <h2>About the Project</h2>
       <p>The POTEBS project investigates the potential of E-Bike Sharing Systems (EBSS) in different spatial types — urban, peri-urban, and rural — within the Basel metropolitan area. By analyzing user characteristics and behavior patterns of both free-floating and station-based e-bike systems, the project aims to provide critical insights into how these systems can be better integrated into multimodal transport networks.</p>
@@ -81,6 +134,7 @@
       <p>For more details about the project, please see the <a href="https://www.hslu.ch/de-ch/hochschule-luzern/forschung/projekte/detail/?pid=6524" target="_blank" rel="noopener noreferrer">HSLU Project Description</a>.</p>
     </section>
 
+    <!-- Operational Areas Section -->
     <section id="operational-areas">
       <h2>Operational Areas</h2>
       <div class="image-container">
@@ -89,7 +143,7 @@
       <p>The map above highlights the operational areas of the E-Bike Sharing Systems (EBSS) within the Basel metropolitan region. The areas include service zones for dock-based and free-floating systems, as well as overlapping regions. Blue markers represent dock-based EBSS stations.</p>
     </section>
 
-    <!-- New Chapter Explaining How to Access the User Samples -->
+    <!-- Explanation for accessing the User Samples -->
     <section id="user-sample-info">
       <h2>Access EBSS User Samples</h2>
       <p>You can access the EBSS User Samples Summary by clicking the toggle button below. This will display detailed sample data including gender, age, and user status information.</p>
@@ -230,6 +284,7 @@
       </p>
     </section>
 
+    <!-- Usage Peaks Section -->
     <section id="usage-peaks">
       <h2>Usage Peaks</h2>
       <div id="usage-peaks-chart" class="chart-container"></div>
@@ -328,6 +383,7 @@
       </script>
     </section>
 
+    <!-- Contact Section -->
     <section id="contact">
       <h2>Contact</h2>
       <p><strong>Project Manager:</strong> Michael Stiebe</p>
