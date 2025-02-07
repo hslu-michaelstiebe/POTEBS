@@ -45,6 +45,11 @@
       color: #555;
       margin-top: 5px;
     }
+    
+    /* Hide the EBSS User Samples Summary section by default */
+    #user-samples-summary {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -73,9 +78,7 @@
       <p>Partners: University of Basel, Pick-e-Bike AG, PubliBike AG</p>
       <p>Grant: Swiss Federal Office of Energy (SFOE), Grant No: S/502720-01</p>
       <p>Duration: Dec 2023 to Jan 2027</p>
-
       <p>For more details about the project, please see the <a href="https://www.hslu.ch/de-ch/hochschule-luzern/forschung/projekte/detail/?pid=6524" target="_blank" rel="noopener noreferrer">HSLU Project Description</a>.</p>
-
     </section>
 
     <section id="operational-areas">
@@ -86,7 +89,10 @@
       <p>The map above highlights the operational areas of the E-Bike Sharing Systems (EBSS) within the Basel metropolitan region. The areas include service zones for dock-based and free-floating systems, as well as overlapping regions. Blue markers represent dock-based EBSS stations.</p>
     </section>
 
-    <!-- New Table Section -->
+    <!-- Toggle Button for EBSS User Samples Summary -->
+    <button onclick="toggleUserSamples()">Show/Hide EBSS User Samples Summary</button>
+
+    <!-- EBSS User Samples Summary Section -->
     <section id="user-samples-summary">
       <h2>EBSS User Samples Summary</h2>
       <table>
@@ -326,5 +332,17 @@
       <p>&copy; 2025 POTEBS Project. All rights reserved.</p>
     </footer>
   </div>
+
+  <!-- JavaScript: Toggle function for the EBSS User Samples Summary section -->
+  <script>
+    function toggleUserSamples() {
+      var section = document.getElementById("user-samples-summary");
+      if (section.style.display === "none" || section.style.display === "") {
+        section.style.display = "block";
+      } else {
+        section.style.display = "none";
+      }
+    }
+  </script>
 </body>
 </html>
