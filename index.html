@@ -23,19 +23,25 @@
       max-width: 800px;
       margin: auto;
     }
-    /* Header: Logos and Project Title */
+    /* Header: University and Partner Logos, and Project Title */
     .header {
       text-align: center;
       margin-bottom: 30px;
     }
-    .logo-container {
+    .uni-logo-container {
       display: flex;
       justify-content: center;
-      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .partner-logo-container {
+      display: flex;
+      justify-content: center;
       gap: 20px;
       margin-bottom: 30px;
     }
-    .logo-container img {
+    .uni-logo-container img,
+    .partner-logo-container img {
       max-height: 70px;
     }
     .project-title {
@@ -102,15 +108,17 @@
 </head>
 <body>
   <div class="container">
-    <!-- Header with Logos and Project Title -->
+    <!-- Header with University Logos, Partner Logos, and Project Title -->
     <div class="header">
-      <div class="logo-container">
+      <div class="uni-logo-container">
         <a href="https://www.hslu.ch/de-ch/hochschule-luzern/forschung/projekte/detail/?pid=6524" target="_blank" rel="noopener noreferrer">
-          <img class="hslu-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/HSLU_2022_logo.svg/2560px-HSLU_2022_logo.svg.png" alt="HSLU Logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/HSLU_2022_logo.svg/2560px-HSLU_2022_logo.svg.png" alt="HSLU Logo">
         </a>
         <a href="https://wwz.unibas.ch/en/" target="_blank" rel="noopener noreferrer">
-          <img class="unibas-logo" src="https://wwz.unibas.ch/fileadmin/_processed_/a/a/csm_doppellogo_unibas_wwz_cb80543cfe.jpg?1636986064" alt="UniBas Logo">
+          <img src="https://wwz.unibas.ch/fileadmin/_processed_/a/a/csm_doppellogo_unibas_wwz_cb80543cfe.jpg?1636986064" alt="UniBas Logo">
         </a>
+      </div>
+      <div class="partner-logo-container">
         <a href="https://www.velospot.info/customer/public/" target="_blank" rel="noopener noreferrer">
           <img src="https://www.velospot.info/customer/public/images/logo_v.png" alt="Velospot Logo">
         </a>
