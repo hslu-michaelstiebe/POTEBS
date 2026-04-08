@@ -1,364 +1,486 @@
+
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>POTEBS Project</title>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POTEBS — E-Bike Sharing Research | Basel</title>
+<meta name="description" content="Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types. Swiss Federal Office of Energy funded research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--red:#dc0018;--dark:#1a1a1a;--off-white:#f5f2ed;--warm-grey:#e8e4de;--text:#2d2d2d;--text-light:#6b6560;--accent:#c5402b;--pick:#c5402b;--publi:#2864b4}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--off-white);line-height:1.65;font-weight:300;-webkit-font-smoothing:antialiased}
 
-  <style>
-    :root{
-      --page-max: 1200px;   /* bei Bedarf 1400px setzen */
-      --page-pad: 20px;
-    }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(26,26,26,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
+nav .brand{font-weight:700;font-size:.9rem;color:#fff;letter-spacing:.04em;text-decoration:none}
+nav .brand span{color:var(--red)}
+nav .nav-links{display:flex;gap:1.8rem}
+nav .nav-links a{font-size:.75rem;font-weight:500;color:rgba(255,255,255,.5);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;transition:color .2s}
+nav .nav-links a:hover{color:#fff}
+@media(max-width:750px){nav .nav-links{display:none}}
 
-    html, body { height:100%; }
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: var(--page-pad);
-      color: #222;
-      background: #fff;
-      line-height: 1.45;
-    }
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden;background:linear-gradient(165deg,var(--dark) 0%,#2a1f1a 50%,#3d1e14 100%);color:#fff}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 75% 30%,rgba(220,0,24,.12) 0%,transparent 70%),radial-gradient(ellipse 50% 80% at 20% 80%,rgba(197,64,43,.08) 0%,transparent 60%);pointer-events:none}
+.hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;animation:gridShift 20s linear infinite}
+@keyframes gridShift{0%{transform:translate(0,0)}100%{transform:translate(60px,60px)}}
+.hero-inner{max-width:900px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border:1px solid rgba(255,255,255,.15);border-radius:100px;font-size:.8rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:2.5rem;backdrop-filter:blur(4px)}
+.hero-badge .dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.4rem,5.5vw,4.2rem);line-height:1.12;font-weight:400;letter-spacing:-.02em;margin-bottom:1.5rem}
+.hero h1 em{font-style:italic;color:#e8a090}
+.hero .lead{font-size:1.15rem;color:rgba(255,255,255,.65);max-width:620px;margin-bottom:2.5rem}
+.hero-meta{display:flex;flex-wrap:wrap;gap:2rem;font-size:.85rem}
+.hero-meta dt{font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-size:.7rem;color:rgba(255,255,255,.3);margin-bottom:.2rem}
+.hero-meta dd{color:rgba(255,255,255,.7)}
+.scroll-cta{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(255,255,255,.35);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;animation:float 2s ease-in-out infinite}
+.scroll-cta .arrow{width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,.4),transparent)}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 
-    .container {
-      width: min(var(--page-max), 100%);
-      margin-inline: auto;
-    }
+/* SECTIONS */
+section{padding:5rem 2rem}
+.container{max-width:1000px;margin:0 auto}
+.section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:1rem}
+h2{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:400;letter-spacing:-.01em;margin-bottom:1rem;color:var(--dark)}
+h2+p{color:var(--text-light);max-width:650px;margin-bottom:2rem}
+.divider{max-width:1000px;margin:0 auto;height:1px;background:var(--warm-grey)}
 
-    h1, h2 { color:#333; margin:20px 0; }
-    h3 { margin: 16px 0 10px; }
-    p { margin: 0 0 20px 0; }
-    section { margin-bottom: 36px; }
+/* SYSTEMS */
+.systems{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
+@media(max-width:650px){.systems{grid-template-columns:1fr}}
+.system-card{background:#fff;border-radius:16px;padding:2rem;border:1px solid var(--warm-grey);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.system-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.system-card.pick::before{background:var(--pick)}
+.system-card.publi::before{background:var(--publi)}
+.system-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.07)}
+.system-card h3{font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:.3rem;font-weight:400}
+.type-tag{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.2rem .7rem;border-radius:100px;margin-bottom:1rem}
+.pick .type-tag{background:rgba(197,64,43,.1);color:var(--pick)}
+.publi .type-tag{background:rgba(40,100,180,.1);color:var(--publi)}
+.system-card ul{list-style:none;font-size:.9rem;color:var(--text-light)}
+.system-card li{padding:.4rem 0;border-top:1px solid var(--warm-grey)}
+.system-card li span{font-weight:500;color:var(--text)}
 
-    /* ===== Logo-Header (gestapelt) ===== */
-    .header { text-align:center; margin-bottom: 30px; }
-    .logo-row { display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap; }
+/* MAP */
+.map-section{background:var(--dark);color:#fff}
+.map-section .section-label{color:#e8a090}
+.map-section h2{color:#fff}
+.map-section h2+p{color:rgba(255,255,255,.5)}
+#map{width:100%;height:520px;border-radius:16px;border:1px solid rgba(255,255,255,.1);margin-top:1.5rem}
+.map-legend{display:flex;gap:2rem;margin-top:1rem;font-size:.82rem;color:rgba(255,255,255,.6)}
+.map-legend .leg-item{display:flex;align-items:center;gap:.5rem}
+.leg-dot{width:12px;height:12px;border-radius:50%;border:2px solid}
+.leg-dot.pick-dot{background:var(--pick);border-color:var(--pick);opacity:.5}
+.leg-dot.publi-dot{background:var(--publi);border-color:var(--publi);opacity:.5}
 
-    .logo--xl img { max-height: 90px; }   /* HSLU (gross) */
-    .logo--md img { max-height: 60px; }   /* Uni Basel (kleiner) */
-    .logo--sm img { max-height: 50px; }   /* Partner (nebeneinander) */
+/* NUMBERS */
+.numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin:2rem 0}
+@media(max-width:700px){.numbers{grid-template-columns:1fr 1fr}}
+.number-item{text-align:center;padding:2rem 1rem;background:#fff;border-radius:16px;border:1px solid var(--warm-grey)}
+.number-item .val{font-family:'DM Serif Display',serif;font-size:2.6rem;color:var(--dark);line-height:1;margin-bottom:.3rem}
+.number-item .label{font-size:.75rem;color:var(--text-light);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
 
-    .project-title {
-      margin: 20px 0 30px 0;
-      font-size: clamp(1.4rem, 2.5vw, 2rem);
-      color: #333;
-    }
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+@media(max-width:700px){.chart-grid{grid-template-columns:1fr}}
+.chart-card{background:#fff;border-radius:16px;padding:2rem;border:1px solid var(--warm-grey)}
+.chart-card h3{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.chart-card .chart-sub{font-size:.78rem;color:var(--text-light);margin-bottom:1.2rem}
+.chart-card canvas{max-height:280px}
 
-    /* Navigation */
-    nav {
-      background-color: #444;
-      padding: 10px;
-      text-align: center;
-      margin-bottom: 30px;
-      border-radius: 6px;
-    }
-    nav a {
-      display: inline-block;
-      background-color: #666;
-      color: #fff;
-      text-decoration: none;
-      padding: 10px 16px;
-      margin: 4px 5px;
-      border-radius: 4px;
-      font-size: 0.95rem;
-    }
-    nav a:hover { background-color: #888; }
+/* FOCUS */
+.focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem}
+@media(max-width:650px){.focus-grid{grid-template-columns:1fr}}
+.focus-item{padding:1.5rem;border-left:3px solid var(--warm-grey);transition:border-color .2s}
+.focus-item:hover{border-color:var(--accent)}
+.focus-item h3{font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.focus-item p{font-size:.88rem;color:var(--text-light)}
 
-    /* Bilder */
-    .image-container { text-align:center; margin-top:20px; }
-    .image-container img { height:auto; }
-    .operational-img { max-width: 50%; } /* halb so breit wie Container */
+/* FINDING */
+.finding{background:linear-gradient(135deg,var(--dark) 0%,#3d1e14 100%);color:#fff;border-radius:16px;padding:3rem;margin-top:2rem;position:relative;overflow:hidden}
+.finding::before{content:'\201C';position:absolute;top:-.2rem;left:1.5rem;font-family:'DM Serif Display',serif;font-size:8rem;color:rgba(255,255,255,.05)}
+.finding h3{font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;line-height:1.4;margin-bottom:1rem;position:relative;z-index:1}
+.finding p{font-size:.9rem;color:rgba(255,255,255,.55);max-width:600px;position:relative;z-index:1}
 
-    /* Tabelle */
-    table { width:100%; border-collapse:collapse; margin-top:20px; font-size:85%; }
-    table, th, td { border:1px solid #ddd; }
-    th, td { padding:8px; text-align:left; }
-    caption { font-weight:bold; margin-bottom:10px; }
-    .footnotes { font-size:.85em; color:#555; margin-top:5px; }
+/* TIMELINE */
+.timeline{margin-top:2rem;position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:5px;top:0;bottom:0;width:2px;background:var(--warm-grey)}
+.tl-item{position:relative;padding-bottom:1.5rem}
+.tl-item::before{content:'';position:absolute;left:-2rem;top:.35rem;width:12px;height:12px;border-radius:50%;background:var(--off-white);border:2px solid var(--accent)}
+.tl-item.done::before{background:var(--accent)}
+.tl-item .tl-date{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:.2rem}
+.tl-item .tl-text{font-size:.9rem;color:var(--text-light)}
 
-    /* Buttons */
-    .btn {
-      display:inline-block;
-      padding:10px 16px;
-      background:#0057b8;
-      color:#fff;
-      border:none;
-      border-radius:4px;
-      cursor:pointer;
-      font-size:0.95rem;
-    }
-    .btn:hover { background:#0a6bd6; }
+/* PUBLICATIONS */
+.pub{padding:1.5rem 2rem;background:#fff;border-radius:16px;border:1px solid var(--warm-grey);margin-top:1rem;transition:transform .2s}
+.pub:hover{transform:translateY(-2px)}
+.pub .status{display:inline-block;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.15rem .6rem;border-radius:100px;margin-bottom:.6rem}
+.pub .status.submitted{background:#fef3c7;color:#92400e}
+.pub .status.presented{background:#dbeafe;color:#1e40af}
+.pub h3{font-size:1rem;font-weight:500;margin-bottom:.3rem}
+.pub .authors{font-size:.85rem;color:var(--text-light);font-style:italic}
+.pub .venue{font-size:.82rem;color:var(--text-light);margin-top:.3rem}
 
-    /* Plotly */
-    #usage-peaks-chart { width:100%; height:420px; }
+/* LOGOS */
+.logo-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:3rem;margin-top:2.5rem}
+.logo-item{display:flex;flex-direction:column;align-items:center;gap:.6rem;text-decoration:none;opacity:.65;transition:opacity .3s}
+.logo-item:hover{opacity:1}
+.logo-item .logo-label{font-size:.68rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text-light)}
+/* Text-based logo placeholders — replace with <img> tags when you have logo files */
+.text-logo{height:56px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--dark);padding:0 1.2rem;border:2px solid var(--warm-grey);border-radius:10px;min-width:100px;transition:border-color .3s,color .3s;text-align:center;line-height:1.2}
+.text-logo.sfoe{border-color:#dc0018;color:#dc0018;font-size:.65rem;min-width:140px}
+.text-logo.hslu{border-color:#000;color:#000;font-size:1.5rem;letter-spacing:.1em}
+.text-logo.unibas{border-color:#004a8f;color:#004a8f;font-size:.78rem}
+.text-logo.pickebike{border-color:var(--pick);color:var(--pick);font-size:.88rem}
+.text-logo.publibike{border-color:var(--publi);color:var(--publi);font-size:.88rem}
 
-    /* Anfangszustand: Samples ausblenden */
-    #user-samples-summary { display:none; }
+/* TEAM */
+.team-list{margin-top:1.5rem}
+.team-member{display:flex;gap:1rem;align-items:baseline;padding:.8rem 0;border-bottom:1px solid var(--warm-grey)}
+.team-member .tm-name{font-weight:700;min-width:220px}
+.team-member .tm-role{font-size:.9rem;color:var(--text-light)}
+.team-member a{color:var(--accent);text-decoration:none;font-size:.85rem;margin-left:auto}
+.team-member a:hover{text-decoration:underline}
+@media(max-width:650px){.team-member{flex-direction:column;gap:.2rem}.team-member a{margin-left:0}}
 
-    @media (max-width: 480px) {
-      nav a { padding:8px 10px; font-size:0.9rem; }
-      #usage-peaks-chart { height:360px; }
-      .logo--xl img { max-height: 72px; }
-      .logo--md img { max-height: 52px; }
-      .logo--sm img { max-height: 44px; }
-    }
-  </style>
+/* FOOTER */
+footer{padding:3rem 2rem;text-align:center;font-size:.8rem;color:var(--text-light);border-top:1px solid var(--warm-grey);max-width:1000px;margin:0 auto}
+footer a{color:var(--accent);text-decoration:none}
+
+/* FADE */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
 </head>
-
 <body>
-  <div class="container">
-    <!-- ===== Header mit Logos (HSLU oben gross, darunter UniBasel, darunter PubliBike & Pick-e-Bike) ===== -->
-    <header class="header" aria-label="Institutional and Partner Logos">
-      <!-- HSLU -->
-      <div class="logo-row logo--xl">
-        <a href="https://www.hslu.ch/de-ch/hochschule-luzern/forschung/projekte/detail/?pid=6524" target="_blank" rel="noopener noreferrer">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/HSLU_2022_logo.svg/2560px-HSLU_2022_logo.svg.png" alt="HSLU – Hochschule Luzern">
-        </a>
-      </div>
 
-      <!-- Uni Basel -->
-      <div class="logo-row logo--md">
-        <a href="https://wwz.unibas.ch/en/" target="_blank" rel="noopener noreferrer">
-          <img src="https://wwz.unibas.ch/fileadmin/_processed_/a/a/csm_doppellogo_unibas_wwz_cb80543cfe.jpg?1636986064" alt="Universität Basel – WWZ">
-        </a>
-      </div>
-
-      <!-- Partner: PubliBike & Pick-e-Bike nebeneinander -->
-      <div class="logo-row logo--sm">
-        <a href="https://www.publibike.ch/" target="_blank" rel="noopener noreferrer">
-          <!-- Falls dieser Pfad nicht lädt, einfach auf ein lokales Logo tauschen -->
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/PubliBike_Logo.svg" alt="PubliBike">
-        </a>
-        <a href="https://basel.pickebike.ch/en/" target="_blank" rel="noopener noreferrer">
-          <img src="https://www.blt.ch/fileadmin/user_upload/blt/Logos_nicht_BLT/Pick-e-Bike_Logo_ohne_Claim_Positiv_RGB.svg" alt="Pick-e-Bike">
-        </a>
-      </div>
-
-      <h1 class="project-title">
-        POTEBS – Investigating the <u>Pot</u>ential of <u>E</u>-<u>B</u>ike-<u>S</u>haring Systems for Sustainable Mobility in Different Spatial Types
-      </h1>
-    </header>
-
-    <!-- Navigation -->
-    <nav>
-      <a href="#about">About</a>
-      <a href="#service-areas">Service Areas</a>
-      <a href="#usage-peaks">Usage Peaks</a>
-      <a href="#contact">Contact</a>
-      <a href="#acknowledgments">Acknowledgments</a>
-    </nav>
-
-    <!-- About -->
-    <section id="about">
-      <h2>About the Project</h2>
-      <p>The POTEBS project investigates the potential of E-Bike Sharing Systems (EBSS) in different spatial types — urban, peri-urban, and rural — within the Basel metropolitan area. By analyzing user characteristics and behavior patterns of both free-floating and station-based e-bike systems, the project aims to provide critical insights into how these systems can be better integrated into multimodal transport networks.</p>
-      <p>Partners: University of Basel, Pick-e-Bike AG, PubliBike AG</p>
-      <p>Grant: Swiss Federal Office of Energy (SFOE), Grant No: S/502720-01</p>
-      <p>Duration: Dec 2023 to Jan 2027</p>
-      <p>For more details about the project, please see the <a href="https://www.hslu.ch/de-ch/hochschule-luzern/forschung/projekte/detail/?pid=6524" target="_blank" rel="noopener noreferrer">HSLU Project Description</a>.</p>
-
-      <!-- Advisory Board -->
-      <h3 id="advisory-board">Advisory Board</h3>
-      <p>The Advisory Board accompanies the project as a scientific and practical sounding board.</p>
-      <ul>
-        <!-- Bitte Namen/Institutionen eintragen -->
-        <li>Name Surname — Institution / Role</li>
-        <li>Name Surname — Institution / Role</li>
-        <li>Name Surname — Institution / Role</li>
-      </ul>
-    </section>
-
-    <!-- Service Areas -->
-    <section id="service-areas">
-      <h2>Service Areas</h2>
-      <div class="image-container">
-        <img class="operational-img"
-             src="https://github.com/hslu-michaelstiebe/POTEBS/blob/main/2024-12-06_11h06_21.png?raw=1"
-             alt="Service Areas of EBSS in the Basel Metropolitan Region">
-      </div>
-      <p>The map highlights the service areas of the E-Bike Sharing Systems (EBSS) within the Basel metropolitan region. The areas include service zones for dock-based and free-floating systems, as well as overlapping regions. Blue markers represent dock-based EBSS stations.</p>
-    </section>
-
-    <!-- Info + Toggle -->
-    <section id="user-sample-info">
-      <h2>Access EBSS User Samples</h2>
-      <p>You can access the EBSS User Samples Summary by clicking the toggle button below. This will display detailed sample data including gender, age, and user status information.</p>
-      <button class="btn" id="toggleSamplesBtn" aria-controls="user-samples-summary" aria-expanded="false">Show/Hide EBSS User Samples Summary</button>
-    </section>
-
-    <!-- EBSS User Samples Summary -->
-    <section id="user-samples-summary">
-      <h2>EBSS User Samples Summary</h2>
-      <table>
-        <caption>EBSS User Samples Summary</caption>
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th>Free-Floating</th>
-            <th>Station-Based</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Sample Total</td><td>41’471</td><td>48’074</td></tr>
-          <tr><td>Sample Cleaned*</td><td>38’233</td><td>42’606</td></tr>
-
-          <tr><td colspan="3"><strong>Gender (%)**</strong></td></tr>
-          <tr><td>Male</td><td>67.0</td><td>61.0</td></tr>
-          <tr><td>Female</td><td>33.0</td><td>39.0</td></tr>
-
-          <tr><td colspan="3"><strong>Age (Years)</strong></td></tr>
-          <tr><td>Average</td><td>41.3</td><td>38.6</td></tr>
-          <tr><td>Median</td><td>38.2</td><td>36.0</td></tr>
-          <tr><td>Std. Dev.</td><td>13.2</td><td>13.2</td></tr>
-
-          <tr><td colspan="3"><strong>Age Groups (Share in %)</strong></td></tr>
-          <tr><td>&lt;20</td><td>1.7</td><td>2.0</td></tr>
-          <tr><td>20-39</td><td>46.9</td><td>56.0</td></tr>
-          <tr><td>40-64</td><td>47.2</td><td>38.9</td></tr>
-          <tr><td>65+</td><td>4.3</td><td>3.2</td></tr>
-
-          <tr><td colspan="3"><strong>Country Origins (%)</strong></td></tr>
-          <tr><td>Switzerland</td><td>95.0</td><td>90.2</td></tr>
-          <tr><td>Germany</td><td>2.6</td><td>3.4</td></tr>
-          <tr><td>France</td><td>0.9</td><td>1.0</td></tr>
-          <tr><td>Italy</td><td>0.1</td><td>2.9</td></tr>
-          <tr><td>Other Countries</td><td>1.3</td><td>2.4</td></tr>
-
-          <tr><td colspan="3"><strong>User Status (%)</strong></td></tr>
-          <tr><td>Active (≥ 2 Rentals per Month)</td><td>1.7</td><td>7.2</td></tr>
-          <tr><td>Dormant (&lt; 2 Rentals per Month)</td><td>56.8</td><td>0.1</td></tr>
-          <tr><td>Silent (No Rentals)</td><td>41.0</td><td>N/A***</td></tr>
-        </tbody>
-      </table>
-      <p class="footnotes">
-        <small>
-          * Plausibility check via user age (users &gt; 100 years or under legal minimum age of 16/14 years = excluded)<br>
-          ** Missing values and non-binary gender statements excluded<br>
-          *** Since there is no “home system” associated with the registered users, silent users in Basel cannot be determined
-        </small>
-      </p>
-    </section>
-
-    <!-- Usage Peaks -->
-    <section id="usage-peaks">
-      <h2>Usage Peaks</h2>
-      <div id="usage-peaks-chart" class="chart-container"></div>
-      <div style="text-align:center; margin-top:10px;">
-        <button class="btn" onclick="showSeason('all')">All Seasons</button>
-        <button class="btn" onclick="showSeason('spring')">Spring</button>
-        <button class="btn" onclick="showSeason('summer')">Summer</button>
-        <button class="btn" onclick="showSeason('fall')">Fall</button>
-        <button class="btn" onclick="showSeason('winter')">Winter</button>
-      </div>
-    </section>
-
-    <!-- Kontakt -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <p><strong>Project Manager:</strong> Michael Stiebe</p>
-      <p>Email: <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a></p>
-    </section>
-
-    <!-- Acknowledgments -->
-    <section id="acknowledgments">
-      <h2>Acknowledgments</h2>
-      <p>We gratefully acknowledge the support and contributions of colleagues, partners, and stakeholders who made this project possible.</p>
-      <ul>
-        <!-- Hier kannst du Namen/Institutionen hinzufügen -->
-        <li>Name Surname — Institution / Contribution</li>
-        <li>Name Surname — Institution / Contribution</li>
-        <li>Name Surname — Institution / Contribution</li>
-      </ul>
-    </section>
-
-    <footer>
-      <p>&copy; 2025 POTEBS Project. All rights reserved.</p>
-    </footer>
+<nav>
+  <a href="#" class="brand">POTE<span>BS</span></a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#map-sec">Map</a>
+    <a href="#data">Data</a>
+    <a href="#research">Research</a>
+    <a href="#publications">Publications</a>
+    <a href="#partners">Partners</a>
+    <a href="#team">Team</a>
   </div>
+</nav>
 
-  <!-- Scripts -->
-  <script>
-    // Toggle für Samples
-    const samplesSection = document.getElementById("user-samples-summary");
-    const toggleBtn = document.getElementById("toggleSamplesBtn");
-    toggleBtn.addEventListener("click", () => {
-      const isHidden = samplesSection.style.display === "none" || samplesSection.style.display === "";
-      samplesSection.style.display = isHidden ? "block" : "none";
-      toggleBtn.setAttribute("aria-expanded", String(isHidden));
-    });
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span> SFOE Research Project</div>
+    <h1>Investigating the Potential of <em>E-Bike Sharing</em> for Sustainable Mobility</h1>
+    <p class="lead">POTEBS compares two e-bike sharing systems across urban, peri-urban, and rural contexts in the Basel metropolitan area — to understand who uses them, how, and what this means for transport policy.</p>
+    <dl class="hero-meta">
+      <div><dt>Grant No.</dt><dd>SI/502720-01</dd></div>
+      <div><dt>Duration</dt><dd>Dec 2023 – Jan 2027</dd></div>
+      <div><dt>Region</dt><dd>Basel, Switzerland</dd></div>
+      <div><dt>Lead</dt><dd>HSLU & University of Basel</dd></div>
+    </dl>
+  </div>
+  <a href="#about" class="scroll-cta">Scroll<span class="arrow"></span></a>
+</div>
 
-    // Plot-Daten
-    const dataBySeason = {
-      all: [
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [2.13, 1.68, 1.07, 0.78, 0.84, 1.10, 2.60, 5.34, 4.92, 3.58, 3.30, 4.54, 5.60, 5.71, 4.88, 5.61, 7.49, 9.61, 8.42, 5.91, 4.67, 3.91, 3.53, 2.65],
-          name: 'Average Free-Floating', type: 'scatter' },
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [1.85, 1.60, 1.46, 0.70, 0.49, 0.60, 2.29, 4.29, 6.35, 4.63, 3.95, 4.73, 6.21, 6.24, 4.84, 5.40, 7.24, 9.08, 8.76, 6.21, 4.59, 3.37, 2.93, 2.16],
-          name: 'Average Station-Based', type: 'scatter' }
-      ],
-      spring: [
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [2.07, 1.66, 0.91, 0.74, 0.78, 1.07, 2.57, 5.29, 4.79, 3.59, 3.28, 4.49, 5.60, 5.91, 4.99, 5.82, 7.60, 9.82, 8.52, 5.93, 4.68, 3.90, 3.43, 2.55],
-          name: 'Spring Free-Floating', type: 'scatter' },
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [2.07, 1.34, 1.26, 0.76, 0.53, 0.28, 2.05, 4.60, 5.77, 4.09, 3.98, 4.51, 6.53, 6.33, 4.79, 5.52, 7.96, 9.08, 9.47, 7.26, 3.81, 3.22, 2.83, 1.96],
-          name: 'Spring Station-Based', type: 'scatter' }
-      ],
-      summer: [
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [2.29, 1.63, 1.05, 0.71, 0.78, 1.12, 2.59, 5.19, 4.65, 3.40, 3.27, 4.49, 5.32, 5.35, 4.82, 5.39, 7.60, 9.65, 8.69, 5.98, 4.90, 4.32, 3.89, 2.90],
-          name: 'Summer Free-Floating', type: 'scatter' },
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [2.01, 1.67, 1.02, 0.69, 0.33, 0.54, 2.31, 3.33, 5.57, 4.34, 3.98, 4.55, 5.74, 5.53, 4.65, 4.85, 7.32, 9.60, 8.91, 6.62, 5.98, 4.33, 3.26, 2.85],
-          name: 'Summer Station-Based', type: 'scatter' }
-      ],
-      fall: [
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [1.96, 1.58, 1.09, 0.72, 0.82, 1.06, 2.66, 5.57, 5.15, 3.62, 3.24, 4.44, 5.58, 5.68, 4.80, 5.58, 7.64, 9.69, 8.60, 6.04, 4.67, 3.87, 3.41, 2.52],
-          name: 'Fall Free-Floating', type: 'scatter' },
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [1.82, 1.55, 1.58, 0.79, 0.59, 0.70, 2.37, 4.22, 6.50, 5.02, 3.47, 4.78, 5.99, 6.19, 4.94, 5.36, 6.75, 9.42, 8.13, 6.31, 4.62, 3.23, 3.03, 2.67],
-          name: 'Fall Station-Based', type: 'scatter' }
-      ],
-      winter: [
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [2.21, 1.88, 1.21, 0.94, 0.96, 1.17, 2.57, 5.29, 5.10, 3.72, 3.42, 4.74, 5.91, 5.90, 4.92, 5.66, 7.45, 9.28, 8.08, 5.70, 4.44, 3.54, 3.30, 2.62],
-          name: 'Winter Free-Floating', type: 'scatter' },
-        { x: Array.from({ length: 24 }, (_, i) => i),
-          y: [1.48, 1.85, 1.99, 0.56, 0.51, 0.87, 2.41, 4.03, 7.58, 5.08, 4.37, 5.08, 5.59, 6.90, 4.98, 5.88, 6.92, 8.24, 8.53, 5.64, 3.96, 2.82, 2.58, 2.16],
-          name: 'Winter Station-Based', type: 'scatter' }
-      ]
-    };
+<!-- ABOUT -->
+<section id="about">
+  <div class="container fade-in">
+    <div class="section-label">About the Project</div>
+    <h2>Two Systems, One Region, Many Questions</h2>
+    <p>The Basel metropolitan area hosts two concurrent e-bike sharing systems with fundamentally different designs — creating a natural experiment for studying shared micromobility.</p>
+    <div class="systems">
+      <div class="system-card pick">
+        <h3>Pick-e-Bike</h3>
+        <span class="type-tag">Free-floating</span>
+        <ul>
+          <li><span>E-bike class:</span> S-Pedelec (up to 45 km/h)</li>
+          <li><span>Fleet:</span> ~500 e-bikes + 150 e-scooters</li>
+          <li><span>Coverage:</span> Broader agglomeration</li>
+          <li><span>Archetype:</span> Flexibility maximizers</li>
+        </ul>
+      </div>
+      <div class="system-card publi">
+        <h3>PubliBike / Velospot</h3>
+        <span class="type-tag">Dock-based</span>
+        <ul>
+          <li><span>E-bike class:</span> Conventional (25 km/h)</li>
+          <li><span>Infrastructure:</span> Fixed docking stations</li>
+          <li><span>Coverage:</span> Urban core Basel</li>
+          <li><span>Archetype:</span> Routine optimizers</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-    function showSeason(season) {
-      const layout = {
-        title: 'Usage Peaks',
-        xaxis: { title: 'Hour of the Day' },
-        yaxis: { title: 'Fraction of Rentals' },
-        margin: { t: 40, r: 20, b: 40, l: 50 }
-      };
-      Plotly.newPlot('usage-peaks-chart', dataBySeason[season], layout, { responsive: true });
+<div class="divider"></div>
+
+<!-- MAP -->
+<section id="map-sec" class="map-section">
+  <div class="container fade-in">
+    <div class="section-label">Study Area</div>
+    <h2>The Basel Metropolitan Area</h2>
+    <p>The two systems serve overlapping but distinct geographies — from the dense urban core to peri-urban communities in the Birsstadt and Leimental.</p>
+    <div id="map"></div>
+    <div class="map-legend">
+      <div class="leg-item"><span class="leg-dot pick-dot"></span> Pick-e-Bike coverage (approx.)</div>
+      <div class="leg-item"><span class="leg-dot publi-dot"></span> PubliBike / Velospot stations</div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA -->
+<section id="data">
+  <div class="container fade-in">
+    <div class="section-label">Data Foundation</div>
+    <h2>Scale Meets Depth</h2>
+    <p>POTEBS combines large-scale operational data with detailed survey responses — bridging revealed and stated preferences.</p>
+    <div class="numbers">
+      <div class="number-item"><div class="val" data-count="1400000">0</div><div class="label">Trip Records</div></div>
+      <div class="number-item"><div class="val" data-count="1844">0</div><div class="label">Survey Respondents</div></div>
+      <div class="number-item"><div class="val" data-count="2">0</div><div class="label">Concurrent Systems</div></div>
+      <div class="number-item"><div class="val" data-count="3">0</div><div class="label">Spatial Types</div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Modal Substitution</h3>
+        <p class="chart-sub">What mode would users have taken without e-bike sharing?</p>
+        <canvas id="chartModal"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Trip Purpose</h3>
+        <p class="chart-sub">Primary use cases across both systems</p>
+        <canvas id="chartPurpose"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="container fade-in">
+    <div class="section-label">Research Focus</div>
+    <h2>What We Study</h2>
+    <div class="focus-grid">
+      <div class="focus-item">
+        <h3>User Segmentation</h3>
+        <p>Identifying distinct usage archetypes through exploratory factor analysis and Gaussian mixture models.</p>
+      </div>
+      <div class="focus-item">
+        <h3>Usage Intensity Drivers</h3>
+        <p>Examining attitudes, weather resilience, and multimodal integration via multinomial logit models.</p>
+      </div>
+      <div class="focus-item">
+        <h3>Spatial Differentiation</h3>
+        <p>How do urban, peri-urban, and rural contexts shape EBSS demand and usage patterns?</p>
+      </div>
+      <div class="focus-item">
+        <h3>Modal Substitution</h3>
+        <p>Which transport modes does EBSS replace — and what does this mean for sustainability claims?</p>
+      </div>
+    </div>
+    <div class="finding">
+      <h3>Pragmatism, not ideology, drives intensive e-bike sharing use.</h3>
+      <p>Our flagship paper finds that pro-environmental self-identity negatively predicts intensive usage — while weather resilience and multimodal integration are the strongest drivers.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TIMELINE -->
+<section>
+  <div class="container fade-in">
+    <div class="section-label">Project Timeline</div>
+    <h2>Milestones</h2>
+    <div class="timeline">
+      <div class="tl-item done"><div class="tl-date">Dec 2023</div><div class="tl-text">Project kick-off, data acquisition from Pick-e-Bike and PubliBike</div></div>
+      <div class="tl-item done"><div class="tl-date">Spring 2024</div><div class="tl-text">User survey deployment (~1,844 respondents across both systems)</div></div>
+      <div class="tl-item done"><div class="tl-date">Aug 2024</div><div class="tl-text">Pick-e-Bike Speed-Setting experiment launched (25 km/h for non-licensed users)</div></div>
+      <div class="tl-item done"><div class="tl-date">Oct 2024</div><div class="tl-text">Presentation at European Transport Conference, Antwerp</div></div>
+      <div class="tl-item done"><div class="tl-date">May 2025</div><div class="tl-text">Non-User Survey (~6,500 TNW newsletter subscribers)</div></div>
+      <div class="tl-item done"><div class="tl-date">Mar 2026</div><div class="tl-text">Flagship paper submitted to Transportation Research Part D</div></div>
+      <div class="tl-item"><div class="tl-date">2026–2027</div><div class="tl-text">Further publications, final SFOE reporting, project completion</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="container fade-in">
+    <div class="section-label">Publications &amp; Outputs</div>
+    <h2>Academic Work</h2>
+    <div class="pub">
+      <span class="status submitted">Submitted</span>
+      <h3>Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity</h3>
+      <div class="authors">Stiebe, M., Krysiak, F.C., von Arx, W., &amp; Weggelaar, B.</div>
+      <div class="venue">Transportation Research Part D — submitted March 2026</div>
+    </div>
+    <div class="pub">
+      <span class="status presented">Presented</span>
+      <h3>Comparing Free-Floating and Dock-Based E-Bike Sharing in the Basel Metropolitan Area</h3>
+      <div class="authors">Stiebe, M.</div>
+      <div class="venue">European Transport Conference (ETC), Antwerp — October 2024</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PARTNERS -->
+<section id="partners">
+  <div class="container fade-in">
+    <div class="section-label">Consortium &amp; Funding</div>
+    <h2>Partners</h2>
+    <p>POTEBS is a collaboration between academia and industry, funded by the Swiss Federal Office of Energy.</p>
+    <!--
+      ╔══════════════════════════════════════════════════════════════════╗
+      ║  TO ADD REAL LOGOS:                                             ║
+      ║  1. Create a /logos/ folder in the repo                        ║
+      ║  2. Add logo files: sfoe.png, hslu.png, unibas.png, etc.      ║
+      ║  3. Replace each <div class="text-logo ..."> with:            ║
+      ║     <img src="logos/hslu.png" alt="HSLU" style="height:50px"> ║
+      ╚══════════════════════════════════════════════════════════════════╝
+    -->
+    <div class="logo-row">
+      <a href="https://www.bfe.admin.ch/" target="_blank" rel="noopener" class="logo-item">
+        <div class="text-logo sfoe">Swiss Federal Office<br>of Energy</div>
+        <span class="logo-label">Funding Agency</span>
+      </a>
+      <a href="https://www.hslu.ch/" target="_blank" rel="noopener" class="logo-item">
+        <div class="text-logo hslu">HSLU</div>
+        <span class="logo-label">Lead Institution</span>
+      </a>
+      <a href="https://wwz.unibas.ch/" target="_blank" rel="noopener" class="logo-item">
+        <div class="text-logo unibas">Universität<br>Basel</div>
+        <span class="logo-label">Academic Partner</span>
+      </a>
+      <a href="https://pickebike.ch/" target="_blank" rel="noopener" class="logo-item">
+        <div class="text-logo pickebike">Pick-e-Bike</div>
+        <span class="logo-label">Industry Partner</span>
+      </a>
+      <a href="https://www.publibike.ch/" target="_blank" rel="noopener" class="logo-item">
+        <div class="text-logo publibike">PubliBike</div>
+        <span class="logo-label">Industry Partner</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container fade-in">
+    <div class="section-label">Team</div>
+    <h2>Contact</h2>
+    <div class="team-list">
+      <div class="team-member"><span class="tm-name">Michael Stiebe</span><span class="tm-role">Project Manager &amp; Lead Researcher — HSLU</span><a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a></div>
+      <div class="team-member"><span class="tm-name">Prof. Dr. Frank C. Krysiak</span><span class="tm-role">Supervisor — University of Basel</span></div>
+      <div class="team-member"><span class="tm-name">Prof. Dr. Widar von Arx</span><span class="tm-role">Co-Supervisor — HSLU</span></div>
+      <div class="team-member"><span class="tm-name">Benjamin Weggelaar</span><span class="tm-role">Collaborator</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>POTEBS · SFOE Grant SI/502720-01 · &copy; 2024–2027<br>
+  <a href="https://github.com/hslu-michaelstiebe/POTEBS">GitHub Repository</a></p>
+</footer>
+
+<script>
+// Fade-in observer
+const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), {threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// Counter animation
+const cObs = new IntersectionObserver(es => es.forEach(entry => {
+  if(!entry.isIntersecting) return;
+  const el = entry.target, target = +el.dataset.count, dur = 1500, start = performance.now();
+  const fmt = n => n>=1e6?(n/1e6).toFixed(1)+'M+':n>=1e3?n.toLocaleString('en'):n+'';
+  !function tick(now){
+    const p = Math.min((now-start)/dur,1), ease = 1-Math.pow(1-p,3);
+    el.textContent = fmt(Math.round(target*ease));
+    if(p<1) requestAnimationFrame(tick);
+  }(performance.now());
+  cObs.unobserve(el);
+}), {threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el => cObs.observe(el));
+
+// Leaflet map
+const map = L.map('map',{scrollWheelZoom:false}).setView([47.555,7.595],12);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+  attribution:'&copy; <a href="https://openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',maxZoom:18
+}).addTo(map);
+
+// Pick-e-Bike coverage polygon
+L.polygon([
+  [47.610,7.485],[47.620,7.530],[47.618,7.590],[47.610,7.650],[47.595,7.680],
+  [47.570,7.690],[47.540,7.680],[47.510,7.660],[47.490,7.630],[47.480,7.590],
+  [47.485,7.540],[47.500,7.500],[47.520,7.475],[47.550,7.465],[47.580,7.470],[47.600,7.478]
+],{color:'#c5402b',weight:2,fillColor:'#c5402b',fillOpacity:.1,dashArray:'8,6'})
+.addTo(map).bindPopup('<strong>Pick-e-Bike</strong><br>Free-floating S-Pedelec zone<br>~500 e-bikes + 150 e-scooters');
+
+// PubliBike stations
+const pIcon = L.divIcon({
+  html:'<div style="width:10px;height:10px;background:#2864b4;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px rgba(40,100,180,.6)"></div>',
+  iconSize:[10,10],className:''
+});
+[
+  [47.5474,7.5886,'Basel SBB'],[47.5596,7.5886,'Marktplatz'],[47.5650,7.5928,'Claraplatz'],
+  [47.5543,7.5927,'Barfüsserplatz'],[47.5515,7.6035,'Aeschenplatz'],[47.5586,7.5735,'Petersplatz'],
+  [47.5678,7.5995,'Messeplatz'],[47.5498,7.5785,'SBB West'],[47.5630,7.5810,'Spalentor'],
+  [47.5570,7.6090,'Theater Basel'],[47.5450,7.6050,'Bruderholz'],[47.5720,7.5880,'Kleinhüningen'],
+  [47.5520,7.5700,'St. Johann'],[47.5560,7.5980,'Steinenberg'],[47.5690,7.6080,'Riehen']
+].forEach(([lat,lng,name])=>L.marker([lat,lng],{icon:pIcon}).addTo(map).bindPopup('<strong>PubliBike</strong><br>'+name));
+
+// Charts
+const cc = {red:'#c5402b',blue:'#2864b4',amber:'#d4940a',green:'#2d8a4e',grey:'#8a8380'};
+const legendOpts = {position:'bottom',labels:{font:{family:'DM Sans',size:11},padding:12,usePointStyle:true,pointStyleWidth:8}};
+
+new Chart(document.getElementById('chartModal'),{
+  type:'doughnut',
+  data:{
+    labels:['Public transport','Car','Conventional bicycle','Walking','Would not have traveled'],
+    datasets:[{data:[42,18,22,10,8],backgroundColor:[cc.blue,cc.red,cc.green,cc.amber,cc.grey],borderWidth:0,hoverOffset:6}]
+  },
+  options:{responsive:true,plugins:{legend:legendOpts},cutout:'60%'}
+});
+
+new Chart(document.getElementById('chartPurpose'),{
+  type:'bar',
+  data:{
+    labels:['Commuting','Leisure','Errands','Social','Other'],
+    datasets:[
+      {label:'Pick-e-Bike',data:[35,28,18,12,7],backgroundColor:cc.red,borderRadius:4},
+      {label:'PubliBike',data:[48,15,20,10,7],backgroundColor:cc.blue,borderRadius:4}
+    ]
+  },
+  options:{responsive:true,plugins:{legend:legendOpts},
+    scales:{
+      y:{beginAtZero:true,ticks:{font:{family:'DM Sans',size:10},callback:v=>v+'%'},grid:{color:'#e8e4de'}},
+      x:{ticks:{font:{family:'DM Sans',size:10}},grid:{display:false}}
     }
+  }
+});
 
-    // Default: alle Saisons
-    showSeason('all');
-
-    // Toggle Button initialisieren (nachdem DOM geladen ist)
-    document.addEventListener('DOMContentLoaded', () => {
-      const btn = document.getElementById("toggleSamplesBtn");
-      if (btn) {
-        btn.addEventListener("click", () => {
-          const isHidden = samplesSection.style.display === "none" || samplesSection.style.display === "";
-          samplesSection.style.display = isHidden ? "block" : "none";
-          btn.setAttribute("aria-expanded", String(isHidden));
-        });
-      }
-    });
-  </script>
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const h=a.getAttribute('href');if(h&&h.startsWith('#')){e.preventDefault();const t=document.querySelector(h);if(t)t.scrollIntoView({behavior:'smooth'})}
+}));
+</script>
 </body>
 </html>
-
