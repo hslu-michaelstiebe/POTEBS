@@ -4,7 +4,7 @@ Swiss Federal Office of Energy (SFOE) - Funded Research Project
 
 SFOE Grant No.: SI/502720-01
 
-Duration: Dec 2023 to Jan 2028
+Duration: Dec 2023 to Jan 2027
 
 Partners: University of Basel, Pick-e-Bike AG, PubliBike AG
 
