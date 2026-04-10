@@ -63,8 +63,19 @@
     .leaflet-control.legend { background:#fff; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.12); box-shadow:0 8px 24px rgba(0,0,0,.08); line-height:1.35; }
     .legend-row { display:flex; align-items:center; gap:8px; margin:5px 0; font-size:13px; color:#2b2b2b; }
     .legend-swatch { width:14px; height:14px; border-radius:3px; border:1px solid rgba(0,0,0,.18); flex:0 0 14px; }
-    @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } }
-    @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } }
+    .partner-groups { display:grid; grid-template-columns:1fr 2fr 2fr; gap:28px; align-items:start; }
+    .partner-group-label { font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--muted); margin-bottom:10px; }
+    .partner-logos { display:flex; flex-wrap:wrap; gap:12px; }
+    .partner-logos .card { flex:1 1 120px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:96px; gap:8px; }
+    .partner-logos .card img { max-width:100%; max-height:52px; object-fit:contain; }
+    .partner-role { font-size:10px; color:var(--muted); text-align:center; }
+    .advisory-table { width:100%; border-collapse:collapse; font-size:13.5px; }
+    .advisory-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; padding:0 12px 8px 0; border-bottom:1px solid var(--line); }
+    .advisory-table td { padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text); }
+    .advisory-table tr:last-child td { border-bottom:none; }
+    .advisory-table .td-name { font-weight:600; white-space:nowrap; }
+    @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } .partner-groups { grid-template-columns:1fr 1fr; } }
+    @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } .partner-groups { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -168,14 +179,102 @@
     <div class="container">
       <div class="eyebrow">Consortium and funding</div>
       <h2>Partners</h2>
-      <p class="muted" style="margin-bottom:1rem;">This version uses local logo assets from the repository.</p>
-      <div class="grid logos">
-        <div class="card"><img alt="Swiss Federal Office of Energy" src="ASSETS/BFE.png" /></div>
-        <div class="card"><img alt="HSLU" src="ASSETS/HSLU.png" /></div>
-        <div class="card"><img alt="University of Basel" src="ASSETS/unibasel.png" /></div>
-        <div class="card"><img alt="Pick-e-Bike" src="ASSETS/pickebike.svg" /></div>
-        <div class="card"><img alt="PubliBike Velospot" src="ASSETS/publibike.png" /></div>
+      <div class="partner-groups" style="margin-top:1.5rem;">
+        <!-- Funding -->
+        <div>
+          <div class="partner-group-label">Funding</div>
+          <div class="partner-logos">
+            <div class="card">
+              <img alt="Swiss Federal Office of Energy (SFOE)" src="ASSETS/BFE.png" />
+              <div class="partner-role">Swiss Federal Office of Energy (SFOE)</div>
+            </div>
+          </div>
+        </div>
+        <!-- Academic Partners -->
+        <div>
+          <div class="partner-group-label">Academic Partners</div>
+          <div class="partner-logos">
+            <div class="card">
+              <img alt="HSLU — Lucerne University of Applied Sciences and Arts" src="ASSETS/HSLU.png" />
+              <div class="partner-role">Lead institution</div>
+            </div>
+            <div class="card">
+              <img alt="University of Basel" src="ASSETS/unibasel.png" />
+              <div class="partner-role">Research partner</div>
+            </div>
+          </div>
+        </div>
+        <!-- Implementation Partners -->
+        <div>
+          <div class="partner-group-label">Implementation Partners</div>
+          <div class="partner-logos">
+            <div class="card">
+              <img alt="Pick-e-Bike" src="ASSETS/pickebike.svg" />
+              <div class="partner-role">Pick-e-Bike</div>
+            </div>
+            <div class="card">
+              <img alt="PubliBike Velospot" src="ASSETS/publibike.png" />
+              <div class="partner-role">PubliBike Velospot</div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="advisory" class="section">
+    <div class="container">
+      <div class="eyebrow">Governance</div>
+      <h2>Advisory Board</h2>
+      <p class="muted" style="margin-bottom:1.5rem;">The project is guided by an advisory board of practitioners and researchers from transport, mobility policy, and public finance.</p>
+      <table class="advisory-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Institution</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-name">Beat Hintermann</td>
+            <td>WWZ, University of Basel</td>
+            <td>Professor of Public Finance</td>
+          </tr>
+          <tr>
+            <td class="td-name">Arne Schöllhorn</td>
+            <td>Office of Mobility, Canton of Basel-Stadt</td>
+            <td>Head of Mobility Strategy</td>
+          </tr>
+          <tr>
+            <td class="td-name">Milan Sedlacek</td>
+            <td>Basler Verkehrs-Betriebe (BVB)</td>
+            <td>Head of Transport Operations</td>
+          </tr>
+          <tr>
+            <td class="td-name">Thomas Stadelmann</td>
+            <td>TNW Tarifverbund Nordwestschweiz</td>
+            <td>Deputy Managing Director</td>
+          </tr>
+          <tr>
+            <td class="td-name">Philippe Stadler Benz</td>
+            <td>SBB Swiss Federal Railways</td>
+            <td>Senior Project Manager, First &amp; Last Mile</td>
+          </tr>
+          <tr>
+            <td class="td-name">Martin Urwyler</td>
+            <td>Federal Roads Office (ASTRA)</td>
+            <td>Head of Slow Traffic &amp; Historic Routes</td>
+          </tr>
+          <tr>
+            <td class="td-name">Roland Chrétien</td>
+            <td>Pro Velo beider Basel</td>
+            <td>Executive Director</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -380,7 +479,7 @@
       return `
         <strong>${p.GDENAME || 'Municipality'}</strong><br>
         ${systems.join(' &amp; ')}<br>
-        PLZ: ${p.PLZ_Liste || 'n.a.'}
+        ZIP: ${p.PLZ_Liste || 'n/a'}
       `;
     }
 
@@ -434,10 +533,10 @@
       }
 
       const overlays = {
-        'Pick-e-Bike Bediengebiet': pebLayer,
-        'PubliBike Velospot Bediengebiet': pbLayer
+        'Pick-e-Bike Service Area': pebLayer,
+        'PubliBike Velospot Service Area': pbLayer
       };
-      if (pbStationLayer) overlays['PubliBike Velospot Stationen'] = pbStationLayer;
+      if (pbStationLayer) overlays['PubliBike Velospot Stations'] = pbStationLayer;
       L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
       const legend = L.control({ position: 'bottomright' });
