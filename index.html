@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-    :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; --rest:#d9d4cd; }
+    :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; }
     * { box-sizing:border-box; margin:0; padding:0; }
     html { scroll-behavior:smooth; }
     body { font-family:"DM Sans", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
@@ -115,7 +115,7 @@
     <div class="container">
       <div class="eyebrow">Interactive study area</div>
       <h2>Service areas and station structure</h2>
-      <p class="muted" style="margin-bottom: 1rem;">The map shows a commune-based representation of the two systems. Municipalities are classified into PubliBike only, Pick-e-Bike only, overlap, and the remaining TNW area. PubliBike stations can be toggled on as an additional point layer.</p>
+      <p class="muted" style="margin-bottom: 1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional point layer.</p>
       <div id="map"></div>
     </div>
   </section>
@@ -175,46 +175,80 @@
       maxZoom: 20
     }).addTo(map);
 
-    map.createPane('communesPane');
+    map.createPane('pbOnlyPane');
+    map.createPane('pebOnlyPane');
+    map.createPane('overlapPane');
     map.createPane('stationsPane');
-    map.getPane('communesPane').style.zIndex = 410;
-    map.getPane('stationsPane').style.zIndex = 420;
+    map.getPane('pbOnlyPane').style.zIndex = 410;
+    map.getPane('pebOnlyPane').style.zIndex = 420;
+    map.getPane('overlapPane').style.zIndex = 430;
+    map.getPane('stationsPane').style.zIndex = 440;
 
-    function communeStyle(feature) {
-      const p = feature.properties || {};
-      const cat = p.Category || 'TNW rest';
-      const color = p.Category_Color || '#d9d4cd';
-      if (cat === 'TNW rest') {
-        return { pane: 'communesPane', color: '#cfc7be', weight: 0.8, opacity: 0.65, fillColor: color, fillOpacity: 0.14 };
-      }
-      if (cat === 'Overlap') {
-        return { pane: 'communesPane', color: '#5b2d8b', weight: 1.8, opacity: 1, fillColor: '#6a3d9a', fillOpacity: 0.42 };
-      }
-      if (cat === 'PubliBike only') {
-        return { pane: 'communesPane', color: '#22579d', weight: 1.3, opacity: 0.95, fillColor: '#2864b4', fillOpacity: 0.32 };
-      }
-      return { pane: 'communesPane', color: '#b23a26', weight: 1.3, opacity: 0.95, fillColor: '#c5402b', fillOpacity: 0.28 };
+    const publiBikeVelospotOnlyStyle = {
+      pane: 'pbOnlyPane',
+      color: '#22579d',
+      weight: 1.5,
+      opacity: 0.98,
+      fillColor: '#2864b4',
+      fillOpacity: 0.34
+    };
+
+    const pickEBikeOnlyStyle = {
+      pane: 'pebOnlyPane',
+      color: '#b23a26',
+      weight: 1.5,
+      opacity: 0.98,
+      fillColor: '#c5402b',
+      fillOpacity: 0.30
+    };
+
+    const overlapStyle = {
+      pane: 'overlapPane',
+      color: '#5b2d8b',
+      weight: 1.9,
+      opacity: 1,
+      fillColor: '#6a3d9a',
+      fillOpacity: 0.44
+    };
+
+    function popupHtml(p) {
+      return `
+        <strong>${p.GDENAME || 'Municipality'}</strong><br>
+        Category: ${p.Category || ''}<br>
+        PLZ: ${p.PLZ_Liste || 'n.a.'}<br>
+        PubliBike Velospot: ${p.PubliBike ?? ''}<br>
+        Pick-e-Bike: ${p.PickeBike ?? ''}<br>
+        Pick-e-Bike point count: ${p.PeB_Point_Count ?? ''}
+      `;
+    }
+
+    function makeLayer(features, style, paneName) {
+      return L.geoJSON({ type: 'FeatureCollection', features }, {
+        pane: paneName,
+        style: style,
+        onEachFeature: (feature, layer) => {
+          const p = feature.properties || {};
+          layer.bindPopup(popupHtml(p));
+        }
+      });
     }
 
     Promise.all([
       fetch('data/ebss_communes.geojson').then(r => r.json()),
       fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
     ]).then(([communes, pbStations]) => {
-      const communeLayer = L.geoJSON(communes, {
-        pane: 'communesPane',
-        style: communeStyle,
-        onEachFeature: (feature, layer) => {
-          const p = feature.properties || {};
-          layer.bindPopup(`
-            <strong>${p.GDENAME || 'Municipality'}</strong><br>
-            Category: ${p.Category || ''}<br>
-            PLZ: ${p.PLZ_Liste || 'n.a.'}<br>
-            PubliBike: ${p.PubliBike ?? ''}<br>
-            Pick-e-Bike: ${p.PickeBike ?? ''}<br>
-            Pick-e-Bike point count: ${p.PeB_Point_Count ?? ''}
-          `);
-        }
-      }).addTo(map);
+      const features = communes.features || [];
+      const pbOnlyFeatures = features.filter(f => (f.properties || {}).Category === 'PubliBike only');
+      const pebOnlyFeatures = features.filter(f => (f.properties || {}).Category === 'Pick-e-Bike only');
+      const overlapFeatures = features.filter(f => (f.properties || {}).Category === 'Overlap');
+
+      const pbOnlyLayer = makeLayer(pbOnlyFeatures, publiBikeVelospotOnlyStyle, 'pbOnlyPane');
+      const pebOnlyLayer = makeLayer(pebOnlyFeatures, pickEBikeOnlyStyle, 'pebOnlyPane');
+      const overlapLayer = makeLayer(overlapFeatures, overlapStyle, 'overlapPane');
+
+      pbOnlyLayer.addTo(map);
+      pebOnlyLayer.addTo(map);
+      overlapLayer.addTo(map);
 
       let pbStationLayer = null;
       if (pbStations) {
@@ -238,31 +272,31 @@
         });
       }
 
-      const overlays = { 'EBSS communes': communeLayer };
-      if (pbStationLayer) overlays['PubliBike stations'] = pbStationLayer;
+      const overlays = {
+        'Pick-e-Bike only': pebOnlyLayer,
+        'PubliBike Velospot only': pbOnlyLayer,
+        'Pick-e-Bike & PubliBike Velospot': overlapLayer
+      };
+      if (pbStationLayer) overlays['PubliBike Velospot stations'] = pbStationLayer;
       L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
       const legend = L.control({ position: 'bottomright' });
       legend.onAdd = function() {
         const div = L.DomUtil.create('div', 'legend leaflet-control');
         div.innerHTML = `
-          <div style="font-weight:700; margin-bottom:6px;">Commune category</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike only</div>
+          <div style="font-weight:700; margin-bottom:6px;">Active commune category</div>
           <div class="legend-row"><span class="legend-swatch" style="background:#c5402b"></span>Pick-e-Bike only</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#6a3d9a"></span>Overlap</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#d9d4cd"></span>TNW rest</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike Velospot only</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#6a3d9a"></span>Pick-e-Bike & PubliBike Velospot</div>
         `;
         return div;
       };
       legend.addTo(map);
 
-      const activeFeatures = communes.features.filter(f => {
-        const cat = (f.properties || {}).Category;
-        return cat && cat !== 'TNW rest';
-      });
+      const activeFeatures = [...pbOnlyFeatures, ...pebOnlyFeatures, ...overlapFeatures];
       const activeLayer = L.geoJSON({ type: 'FeatureCollection', features: activeFeatures });
       if (activeLayer.getBounds && activeLayer.getBounds().isValid()) {
-        map.fitBounds(activeLayer.getBounds().pad(0.12), { padding: [24, 24] });
+        map.fitBounds(activeLayer.getBounds().pad(0.10), { padding: [24, 24] });
       }
     }).catch(err => {
       console.error(err);
