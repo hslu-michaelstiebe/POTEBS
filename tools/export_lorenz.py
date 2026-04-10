@@ -2,32 +2,26 @@
 POTEBS — Lorenz Curve Data Exporter
 ------------------------------------
 Reads raw trip and survey data locally, computes Lorenz curves for 4 panels,
-and writes a small aggregated JSON file suitable for public upload to GitHub.
+and writes a small aggregated JSON file safe to upload to GitHub.
 
-Output: ../data/lorenz.json   (~5–10 KB, no individual-level data)
-
-Panels:
-  all_trips        — Trip count,    all users
-  all_duration     — Duration (min), all users
-  survey_trips     — Trip count,    survey respondents only
-  survey_duration  — Duration (min), survey respondents only
-
-Each panel contains curves for: combined, peb (Pick-e-Bike), pb (PubliBike Velospot)
-Each curve: { curve: [[pop_pct, cum_pct], ...], gini: float, n_users: int, total: float }
+Output: lorenz.json in the current working directory (~5–10 KB, no individual data)
 
 Usage:
-  cd tools/
-  python export_lorenz.py
+  python export_lorenz.py                    # saves lorenz.json here
+  python export_lorenz.py C:\\path\\to\\out  # saves to a specific directory
+
+Then copy lorenz.json into the repo's data/ folder and push.
 """
 
 import pandas as pd
 import numpy as np
 import json
 import os
+import sys
 from datetime import datetime
 
 # =============================================================================
-# CONFIGURATION — adjust paths if needed
+# CONFIGURATION — adjust the three input paths to your local files
 # =============================================================================
 
 FFEBSS_PATH = r"C:\Users\Micha\OneDrive - Hochschule Luzern\Forschungsprojekte\POTEBS BFE\HSLU x UniBas\AP2_Data_Analysis\Daten_Pick_e_Bike_PubliBike\Daten Pick-e-Bike\Lieferung Daten Pick-e-Bike Mai 2025\Merged_Rentals_PeB_05_2018_05_2025.csv"
@@ -36,9 +30,11 @@ DBEBSS_PATH = r"C:\Users\Micha\OneDrive - Hochschule Luzern\Forschungsprojekte\P
 
 SURVEY_PATH = r"C:\Users\Micha\OneDrive - Hochschule Luzern\Forschungsprojekte\POTEBS BFE\HSLU x UniBas\AP3_Survey\Survey Evaluation\Merged Datasets\merged_survey_data_PeB_VS_weather_enhanced.csv"
 
-OUTPUT_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'lorenz.json')
+# Output directory: use first CLI argument if given, otherwise current directory
+_out_dir   = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
+OUTPUT_PATH = os.path.join(_out_dir, 'lorenz.json')
 
-# Number of sampled points per curve (higher = smoother, but larger file)
+# Number of sampled points per curve (higher = smoother, slightly larger file)
 N_POINTS = 201
 
 # =============================================================================
@@ -241,4 +237,8 @@ for panel_key, panel_label in [
           f"| PeB: {p['peb']['gini']:.3f} "
           f"| PB: {p['pb']['gini']:.3f}")
 
-print("\nDone. Upload data/lorenz.json to GitHub.")
+abs_out = os.path.abspath(OUTPUT_PATH)
+print(f"\n  Next step:")
+print(f"    Copy  {abs_out}")
+print(f"    →  into the repo's  data\\lorenz.json")
+print(f"    then commit & push.")
