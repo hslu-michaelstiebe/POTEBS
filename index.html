@@ -4,327 +4,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>POTEBS Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</title>
-  <meta
-    name="description"
-    content="POTEBS investigates the potential of e-bike-sharing systems for sustainable mobility in different spatial types using linked operational and survey data from the Basel metropolitan area."
-  />
-
+  <meta name="description" content="POTEBS investigates the potential of e-bike-sharing systems for sustainable mobility in different spatial types using linked operational and survey data from the Basel metropolitan area." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap"
-    rel="stylesheet"
-  />
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
   <style>
-    :root {
-      --red: #dc0018;
-      --dark: #171717;
-      --bg: #f6f3ef;
-      --card: #ffffff;
-      --line: #e7e1d9;
-      --text: #2b2b2b;
-      --muted: #6f685f;
-      --pick: #c5402b;
-      --publi: #2864b4;
-      --gold: #d19a18;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "DM Sans", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      background: rgba(20, 20, 20, 0.92);
-      backdrop-filter: blur(12px);
-      color: #fff;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    nav .brand {
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
-    nav .brand span {
-      color: var(--red);
-    }
-
-    nav .links {
-      display: flex;
-      gap: 18px;
-    }
-
-    nav .links a {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.75);
-    }
-
-    nav .links a:hover {
-      color: #fff;
-    }
-
-    .hero {
-      min-height: 100vh;
-      padding: 110px 24px 48px;
-      background:
-        radial-gradient(circle at 75% 25%, rgba(197, 64, 43, 0.22), transparent 28%),
-        linear-gradient(160deg, #111 0%, #241913 60%, #3a1e18 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        90deg,
-        rgba(0, 0, 0, 0.58) 12%,
-        rgba(0, 0, 0, 0.40) 48%,
-        rgba(0, 0, 0, 0.18) 100%
-      );
-      pointer-events: none;
-    }
-
-    .wrap {
-      max-width: 1120px;
-      margin: 0 auto;
-      width: 100%;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 28px;
-      align-items: end;
-    }
-
-    .badge {
-      display: inline-block;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      background: rgba(0, 0, 0, 0.18);
-    }
-
-    .hero h1 {
-      font-family: "DM Serif Display", serif;
-      font-size: 64px;
-      line-height: 1;
-      margin: 0;
-      color: #fff;
-    }
-
-    .subtitle {
-      font-size: 22px;
-      max-width: 800px;
-      margin: 10px 0 18px;
-      color: rgba(255, 255, 255, 0.88);
-    }
-
-    .lead {
-      font-size: 18px;
-      max-width: 820px;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .quote {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 20px;
-      padding: 24px;
-    }
-
-    .quote h3 {
-      font-family: "DM Serif Display", serif;
-      font-size: 34px;
-      line-height: 1.2;
-      color: #fff;
-      margin: 0 0 10px;
-    }
-
-    .quote p {
-      color: rgba(255, 255, 255, 0.82);
-      margin: 0;
-    }
-
-    .section {
-      padding: 68px 24px;
-    }
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-
-    .eyebrow {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--pick);
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    h2 {
-      font-family: "DM Serif Display", serif;
-      font-size: 42px;
-      line-height: 1.1;
-      margin: 0 0 12px;
-    }
-
-    .grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .stats {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .findings {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .logos {
-      grid-template-columns: repeat(5, 1fr);
-      align-items: center;
-    }
-
-    .logos .card {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 110px;
-    }
-
-    .logos img {
-      max-width: 100%;
-      max-height: 64px;
-      object-fit: contain;
-    }
-
-    .charts {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-    }
-
-    .stat {
-      font-family: "DM Serif Display", serif;
-      font-size: 42px;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    .divider {
-      height: 1px;
-      background: var(--line);
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-
-    .chart-wrap {
-      height: 300px;
-    }
-
-    #map {
-      height: 500px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      overflow: hidden;
-    }
-
-    @media (max-width: 900px) {
-      .hero-grid,
-      .stats,
-      .findings,
-      .logos,
-      .charts {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .hero h1 {
-        font-size: 48px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      nav .links {
-        display: none;
-      }
-
-      .hero-grid,
-      .stats,
-      .findings,
-      .logos,
-      .charts {
-        grid-template-columns: 1fr;
-      }
-
-      .hero h1 {
-        font-size: 40px;
-      }
-
-      .subtitle {
-        font-size: 18px;
-      }
-    }
+    :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { font-family:"DM Sans", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+    a { color:inherit; text-decoration:none; }
+    nav { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:14px 20px; background:rgba(20,20,20,.92); backdrop-filter:blur(12px); color:#fff; border-bottom:1px solid rgba(255,255,255,.08); }
+    nav .brand { font-weight:700; letter-spacing:.06em; }
+    nav .brand span { color:var(--red); }
+    nav .links { display:flex; gap:18px; }
+    nav .links a { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.75); }
+    nav .links a:hover { color:#fff; }
+    .hero { min-height:100vh; padding:110px 24px 48px; background:radial-gradient(circle at 75% 25%, rgba(197,64,43,.22), transparent 28%), linear-gradient(160deg, #111 0%, #241913 60%, #3a1e18 100%); color:#fff; display:flex; align-items:center; position:relative; overflow:hidden; }
+    .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,.58) 12%, rgba(0,0,0,.40) 48%, rgba(0,0,0,.18) 100%); pointer-events:none; }
+    .wrap { max-width:1120px; margin:0 auto; width:100%; position:relative; z-index:1; }
+    .hero-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:28px; align-items:end; }
+    .badge { display:inline-block; border:1px solid rgba(255,255,255,.2); border-radius:999px; padding:8px 14px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:16px; background:rgba(0,0,0,.18); }
+    .hero h1 { font-family:"DM Serif Display", serif; font-size:64px; line-height:1; margin:0; color:#fff; }
+    .subtitle { font-size:22px; max-width:800px; margin:10px 0 18px; color:rgba(255,255,255,.88); }
+    .lead { font-size:18px; max-width:820px; color:rgba(255,255,255,.9); }
+    .quote { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); border-radius:20px; padding:24px; }
+    .quote h3 { font-family:"DM Serif Display", serif; font-size:34px; line-height:1.2; color:#fff; margin:0 0 10px; }
+    .quote p { color:rgba(255,255,255,.82); margin:0; }
+    .section { padding:68px 24px; }
+    .container { max-width:1120px; margin:0 auto; }
+    .eyebrow { font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--pick); font-weight:700; margin-bottom:10px; }
+    h2 { font-family:"DM Serif Display", serif; font-size:42px; line-height:1.1; margin:0 0 12px; }
+    .grid { display:grid; gap:18px; }
+    .stats { grid-template-columns:repeat(4,1fr); }
+    .findings { grid-template-columns:repeat(3,1fr); }
+    .logos { grid-template-columns:repeat(5,1fr); align-items:center; }
+    .logos .card { display:flex; align-items:center; justify-content:center; min-height:110px; }
+    .logos img { max-width:100%; max-height:64px; object-fit:contain; }
+    .charts { grid-template-columns:1fr 1fr; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.03); }
+    .stat { font-family:"DM Serif Display", serif; font-size:42px; line-height:1; margin-bottom:6px; }
+    .muted { color:var(--muted); }
+    .divider { height:1px; background:var(--line); max-width:1120px; margin:0 auto; }
+    .chart-wrap { height:300px; }
+    #map { height:520px; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+    @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } }
+    @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } }
   </style>
 </head>
 <body>
@@ -342,19 +69,12 @@
       <div>
         <div class="badge">SFOE Research Project</div>
         <h1>POTEBS</h1>
-        <div class="subtitle">
-          Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types
-        </div>
-        <div class="lead">
-          POTEBS investigates e-bike sharing in the Basel metropolitan area by combining large-scale operational records with linked survey data. The current results suggest that intensive use is primarily driven by demonstrated weather resilience, multimodal integration, and perceived functional utility.
-        </div>
+        <div class="subtitle">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</div>
+        <div class="lead">POTEBS investigates e-bike sharing in the Basel metropolitan area by combining large-scale operational records with linked survey data. The current results suggest that intensive use is primarily driven by demonstrated weather resilience, multimodal integration, and perceived functional utility.</div>
       </div>
-
       <div class="quote">
         <h3>Electric bike sharing appears useful in a real but bounded way.</h3>
-        <p>
-          Rather than being mainly an expression of environmental ideology, intensive EBSS use seems to emerge where shared e-bikes solve concrete mobility problems better than available alternatives.
-        </p>
+        <p>Rather than being mainly an expression of environmental ideology, intensive EBSS use seems to emerge where shared e-bikes solve concrete mobility problems better than available alternatives.</p>
       </div>
     </div>
   </section>
@@ -364,22 +84,10 @@
       <div class="eyebrow">At a glance</div>
       <h2>Scale meets depth</h2>
       <div class="grid stats">
-        <div class="card">
-          <div class="stat">1.4M</div>
-          <div class="muted">operational trip records</div>
-        </div>
-        <div class="card">
-          <div class="stat">1,844</div>
-          <div class="muted">survey respondents retained</div>
-        </div>
-        <div class="card">
-          <div class="stat">1,743</div>
-          <div class="muted">linked user cases</div>
-        </div>
-        <div class="card">
-          <div class="stat">0.77</div>
-          <div class="muted">Gini coefficient of usage concentration</div>
-        </div>
+        <div class="card"><div class="stat">1.4M</div><div class="muted">operational trip records</div></div>
+        <div class="card"><div class="stat">1,844</div><div class="muted">survey respondents retained</div></div>
+        <div class="card"><div class="stat">1,743</div><div class="muted">linked user cases</div></div>
+        <div class="card"><div class="stat">0.77</div><div class="muted">Gini coefficient of usage concentration</div></div>
       </div>
     </div>
   </section>
@@ -391,22 +99,9 @@
       <div class="eyebrow">Key findings</div>
       <h2>What the current results suggest</h2>
       <div class="grid findings">
-        <div class="card">
-          <h3>Usage is highly concentrated</h3>
-          <p class="muted">The top 20% of users generate 80.3% of all trips.</p>
-        </div>
-        <div class="card">
-          <h3>Power users are pragmatists</h3>
-          <p class="muted">
-            High-intensity use is associated with weather resilience, multimodal complementarity, and perceived functional superiority over public transport.
-          </p>
-        </div>
-        <div class="card">
-          <h3>System design matters</h3>
-          <p class="muted">
-            Dock-based and free-floating services attract different pragmatic usage profiles while operating in the same broader region.
-          </p>
-        </div>
+        <div class="card"><h3>Usage is highly concentrated</h3><p class="muted">The top 20% of users generate 80.3% of all trips.</p></div>
+        <div class="card"><h3>Power users are pragmatists</h3><p class="muted">High-intensity use is associated with weather resilience, multimodal complementarity, and perceived functional superiority over public transport.</p></div>
+        <div class="card"><h3>System design matters</h3><p class="muted">Dock-based and free-floating services attract different pragmatic usage profiles while operating in the same broader region.</p></div>
       </div>
     </div>
   </section>
@@ -417,9 +112,7 @@
     <div class="container">
       <div class="eyebrow">Interactive study area</div>
       <h2>Service areas and station structure</h2>
-      <p class="muted" style="margin-bottom: 1rem;">
-        This map is embedded directly in the page so it renders reliably. It currently shows a subset of the extracted Pick-e-Bike municipalities and a subset of dock-based stations.
-      </p>
+      <p class="muted" style="margin-bottom: 1rem;">The map shows data-based concave hulls for PubliBike / Velospot and Pick-e-Bike. The highlighted overlap marks the spatial intersection of both empirically derived areas. PubliBike stations can be toggled on as an additional point layer.</p>
       <div id="map"></div>
     </div>
   </section>
@@ -431,14 +124,8 @@
       <div class="eyebrow">Result snapshots</div>
       <h2>Selected quantitative patterns</h2>
       <div class="grid charts">
-        <div class="card">
-          <h3>Usage concentration</h3>
-          <div class="chart-wrap"><canvas id="c1"></canvas></div>
-        </div>
-        <div class="card">
-          <h3>Usage intensity segments</h3>
-          <div class="chart-wrap"><canvas id="c2"></canvas></div>
-        </div>
+        <div class="card"><h3>Usage concentration</h3><div class="chart-wrap"><canvas id="c1"></canvas></div></div>
+        <div class="card"><h3>Usage intensity segments</h3><div class="chart-wrap"><canvas id="c2"></canvas></div></div>
       </div>
     </div>
   </section>
@@ -449,266 +136,116 @@
     <div class="container">
       <div class="eyebrow">Consortium and funding</div>
       <h2>Partners</h2>
-      <p class="muted" style="margin-bottom: 1rem;">
-        This version uses working external image sources so the logos display immediately.
-      </p>
+      <p class="muted" style="margin-bottom:1rem;">This version uses local logo assets from the repository.</p>
       <div class="grid logos">
-        <div class="card">
-          <img alt="Swiss Federal Office of Energy" src="ASSETS/BFE.png" />
-        </div>
-        <div class="card">
-          <img alt="HSLU" src="ASSETS/HSLU.png">
-        </div>
-        <div class="card">
-          <img alt="University of Basel" src="ASSETS/unibasel.png">
-        </div>
-        <div class="card">
-          <img alt="Pick-e-Bike" src="ASSETS/pickebike.svg">
-        </div>
-        <div class="card">
-          <img alt="PubliBike Velospot" src="ASSETS/publibike.png">
-        </div>
+        <div class="card"><img alt="Swiss Federal Office of Energy" src="ASSETS/BFE.png" /></div>
+        <div class="card"><img alt="HSLU" src="ASSETS/HSLU.png" /></div>
+        <div class="card"><img alt="University of Basel" src="ASSETS/unibasel.png" /></div>
+        <div class="card"><img alt="Pick-e-Bike" src="ASSETS/pickebike.svg" /></div>
+        <div class="card"><img alt="PubliBike Velospot" src="ASSETS/publibike.png" /></div>
       </div>
     </div>
   </section>
 
   <script>
-    new Chart(document.getElementById("c1"), {
-      type: "bar",
+    new Chart(document.getElementById('c1'), {
+      type: 'bar',
       data: {
-        labels: ["Top 20% of users", "Remaining 80% of users"],
-        datasets: [{
-          data: [80.3, 19.7],
-          backgroundColor: ["#c5402b", "#d8d0c7"],
-          borderRadius: 8
-        }]
+        labels: ['Top 20% of users', 'Remaining 80% of users'],
+        datasets: [{ data: [80.3, 19.7], backgroundColor: ['#c5402b', '#d8d0c7'], borderRadius: 8 }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100,
-            ticks: { callback: v => v + "%" }
-          },
-          x: { grid: { display: false } }
-        }
-      }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
     });
 
-    new Chart(document.getElementById("c2"), {
-      type: "bar",
+    new Chart(document.getElementById('c2'), {
+      type: 'bar',
       data: {
-        labels: ["Low", "Medium", "High"],
-        datasets: [{
-          data: [47.7, 39.2, 13.1],
-          backgroundColor: ["#7a756f", "#d19a18", "#c5402b"],
-          borderRadius: 8
-        }]
+        labels: ['Low', 'Medium', 'High'],
+        datasets: [{ data: [47.7, 39.2, 13.1], backgroundColor: ['#7a756f', '#d19a18', '#c5402b'], borderRadius: 8 }]
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 60,
-            ticks: { callback: v => v + "%" }
-          },
-          x: { grid: { display: false } }
-        }
-      }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 60, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
     });
 
-    const map = L.map("map", { scrollWheelZoom: false }).setView([47.555, 7.62], 11);
-
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      attribution: "&copy; OpenStreetMap contributors &copy; CARTO"
+    const map = L.map('map', { scrollWheelZoom: false }).setView([47.555, 7.62], 11);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      maxZoom: 20
     }).addTo(map);
 
-    const pickArea = {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "properties": { "GDENAME": "Bättwil" },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[
-              [7.519276212006353,47.496897789611445],
-              [7.514479681553389,47.48339194144239],
-              [7.505079009616106,47.4865699692965],
-              [7.497901151563726,47.48899577065518],
-              [7.497506015717992,47.489254014977504],
-              [7.498488003818012,47.48951351119291],
-              [7.499863853014332,47.489876683376],
-              [7.501011291723496,47.49017954754948],
-              [7.50200001022952,47.49044050600176],
-              [7.50198974147782,47.49083076796001],
-              [7.501962652670515,47.491860362200995],
-              [7.501956572932177,47.492091422975456],
-              [7.5019190111270815,47.493519012345494],
-              [7.51097201302814,47.496826014204906],
-              [7.5108506936589885,47.497102449346976],
-              [7.508725003823943,47.50194550518758],
-              [7.50950989331536,47.50217480770598],
-              [7.510523553518432,47.50247093337766],
-              [7.512225453316311,47.49884717486332],
-              [7.519276212006353,47.496897789611445]
-            ]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": { "GDENAME": "Dornach" },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[
-              [7.640985608564566,47.482655916677814],
-              [7.64689251109002,47.47076242812029],
-              [7.64316530441314,47.46982652876263],
-              [7.631597013998226,47.46693051992965],
-              [7.626122706356407,47.462875904220965],
-              [7.619310755942588,47.46737128008436],
-              [7.604700301163567,47.470382646247025],
-              [7.607884778690666,47.47490225738976],
-              [7.605659172913732,47.47941809057351],
-              [7.608911565452945,47.48351794871146],
-              [7.607475863821796,47.48818690143858],
-              [7.607347182671539,47.489455247826484],
-              [7.615487571619281,47.489084827039036],
-              [7.627430915182064,47.484851730974086],
-              [7.640985608564566,47.482655916677814]
-            ]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": { "GDENAME": "Bettingen" },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[
-              [7.652753786887107,47.56167038862694],
-              [7.652661153808793,47.561782072383096],
-              [7.653288809581466,47.56261149003191],
-              [7.653555884960511,47.56296440835578],
-              [7.662642900313531,47.574968973951066],
-              [7.670401746252158,47.57366883577597],
-              [7.677534978569445,47.574294528005915],
-              [7.678692620953539,47.580046356900915],
-              [7.681116483775263,47.58090926594032],
-              [7.681854000867756,47.577551009736936],
-              [7.6827514149775595,47.577128984],
-              [7.683738001637686,47.57666500920756],
-              [7.683742640291127,47.57440925359695],
-              [7.6837435130655,47.573985504388425],
-              [7.68585850183532,47.57300600930035],
-              [7.686500908204137,47.57287868774128],
-              [7.688868012359248,47.572409506245855],
-              [7.689380673131239,47.571706098227274],
-              [7.689524257330274,47.5715090861096],
-              [7.689530506993679,47.57150051240817],
-              [7.689372015151017,47.57123701190608],
-              [7.688899507493967,47.57045050658393],
-              [7.688779156674181,47.570291843820364],
-              [7.688009012729321,47.569276513175716],
-              [7.687386009836988,47.568550007987625],
-              [7.687201506479,47.56829350756601],
-              [7.687043004365889,47.56803751429815],
-              [7.68636900997151,47.56656301302075],
-              [7.686086140404227,47.56589185463544],
-              [7.685970514772969,47.56561750758014],
-              [7.6850305055964085,47.56663851536508],
-              [7.683366010516574,47.56844550875671],
-              [7.6834249031361725,47.57069895812948],
-              [7.68343750311738,47.571181010909726],
-              [7.681346512849599,47.570560004642594],
-              [7.6782975036292695,47.569033505785306],
-              [7.677693502257354,47.567732007419494],
-              [7.675219506576736,47.56544700538676],
-              [7.676082882531932,47.56526769977527],
-              [7.677222509154769,47.56503101240322],
-              [7.677369007862904,47.56384801328589],
-              [7.676709655863638,47.56370513778268],
-              [7.676399941503483,47.56363802427374],
-              [7.6762545081251305,47.56360650886914],
-              [7.675715501829366,47.56349000501305],
-              [7.6732535898820835,47.563694877019806],
-              [7.672879670675093,47.56372598816644],
-              [7.672338503665304,47.56377101392817],
-              [7.672333145895641,47.56424056503684],
-              [7.672318502818556,47.56552401061783],
-              [7.670682640126154,47.56579450916458],
-              [7.6706585657021575,47.56579849014745],
-              [7.670159513869282,47.565881006415026],
-              [7.669227009974068,47.56570265418901],
-              [7.6654805105176855,47.56498600689854],
-              [7.664739999022434,47.565210010095136],
-              [7.664385508831537,47.56531701522501],
-              [7.662767613103847,47.5650318354075],
-              [7.658874507883204,47.564345509117814],
-              [7.657755105849459,47.563613280406834],
-              [7.657174594559493,47.56323354180814],
-              [7.656813006299026,47.56299700631786],
-              [7.656402507196177,47.56226650670523],
-              [7.6547060092242285,47.562429004637686],
-              [7.652753786887107,47.56167038862694]
-            ]]
-          }
+    Promise.all([
+      fetch('data/publibike_hull.geojson').then(r => r.json()),
+      fetch('data/pickebike_hull.geojson').then(r => r.json()),
+      fetch('data/ebss_overlap.geojson').then(r => r.json()),
+      fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
+    ]).then(([pbHull, pebHull, overlap, pbStations]) => {
+      const pbHullLayer = L.geoJSON(pbHull, {
+        style: { color: '#2864b4', weight: 2, fillColor: '#2864b4', fillOpacity: 0.10 },
+        onEachFeature: (feature, layer) => {
+          const p = feature.properties || {};
+          layer.bindPopup(`<strong>PubliBike hull</strong><br>${p.method || ''}`);
         }
-      ]
-    };
+      });
 
-    const pickLayer = L.geoJSON(pickArea, {
-      style: () => ({
-        color: "#c5402b",
-        weight: 1.5,
-        fillColor: "#c5402b",
-        fillOpacity: 0.12
-      }),
-      onEachFeature: (feature, layer) => {
-        layer.bindPopup("<strong>Pick-e-Bike municipality</strong><br>" + feature.properties.GDENAME);
+      const pebHullLayer = L.geoJSON(pebHull, {
+        style: { color: '#c5402b', weight: 2, fillColor: '#c5402b', fillOpacity: 0.10 },
+        onEachFeature: (feature, layer) => {
+          const p = feature.properties || {};
+          layer.bindPopup(`<strong>Pick-e-Bike hull</strong><br>${p.method || ''}`);
+        }
+      });
+
+      const overlapLayer = L.geoJSON(overlap, {
+        style: { color: '#6a3d9a', weight: 2.5, fillColor: '#6a3d9a', fillOpacity: 0.22 },
+        onEachFeature: (feature, layer) => {
+          const p = feature.properties || {};
+          layer.bindPopup(`<strong>Overlap area</strong><br>${p.method || ''}`);
+        }
+      });
+
+      pbHullLayer.addTo(map);
+      pebHullLayer.addTo(map);
+      overlapLayer.addTo(map);
+
+      let pbStationLayer = null;
+      if (pbStations) {
+        pbStationLayer = L.geoJSON(pbStations, {
+          pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+            radius: 3,
+            color: '#2864b4',
+            weight: 1,
+            fillColor: '#2864b4',
+            fillOpacity: 0.85
+          }),
+          onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+            layer.bindPopup(`
+              <strong>${p['Station: Name'] || p.name || 'Station'}</strong><br>
+              ${p['Adresse'] || p.address || ''}<br>
+              ${p['PLZ'] || p.postal_code || ''} ${p['Ort'] || p.place || ''}
+            `);
+          }
+        });
       }
-    }).addTo(map);
 
-    const stations = [
-      { name: "Beim Letziturm 7 - Basel", lat: 47.5545073, lon: 7.60532 },
-      { name: "Aeschengraben 12 - Basel", lat: 47.5508803, lon: 7.5937478 },
-      { name: "Strassburgerallee 98 - Basel", lat: 47.5616935, lon: 7.5690503 },
-      { name: "Obere Vogesenstrasse 88 - Basel", lat: 47.569824, lon: 7.5626168 },
-      { name: "Missionsstrasse 49 - Basel", lat: 47.5592159, lon: 7.5766121 },
-      { name: "Spalentorweg 8 - Basel", lat: 47.5592664, lon: 7.5841182 },
-      { name: "St Alban-Anlage 40 - Basel", lat: 47.5493543, lon: 7.6036724 }
-    ];
+      const overlays = {
+        'PubliBike hull': pbHullLayer,
+        'Pick-e-Bike hull': pebHullLayer,
+        'Overlap': overlapLayer
+      };
 
-    const stationLayer = L.layerGroup();
-    stations.forEach((s) => {
-      L.circleMarker([s.lat, s.lon], {
-        radius: 4,
-        color: "#2864b4",
-        weight: 1,
-        fillColor: "#2864b4",
-        fillOpacity: 0.8
-      })
-        .bindPopup("<strong>" + s.name + "</strong>")
-        .addTo(stationLayer);
-    });
-    stationLayer.addTo(map);
+      if (pbStationLayer) {
+        overlays['PubliBike stations'] = pbStationLayer;
+      }
 
-    L.control.layers(
-      null,
-      {
-        "Pick-e-Bike municipalities": pickLayer,
-        "PubliBike / Velospot stations": stationLayer
-      },
-      { collapsed: false }
-    ).addTo(map);
+      L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
-    map.fitBounds(L.featureGroup([pickLayer, stationLayer]).getBounds(), {
-      padding: [20, 20]
+      const fitLayers = [pbHullLayer, pebHullLayer, overlapLayer];
+      if (pbStationLayer) fitLayers.push(pbStationLayer);
+      const boundsGroup = L.featureGroup(fitLayers);
+      map.fitBounds(boundsGroup.getBounds(), { padding: [20, 20] });
+    }).catch(err => {
+      console.error(err);
+      document.getElementById('map').innerHTML = '<div style="padding:1rem;color:#6f685f">Map data could not be loaded.</div>';
     });
   </script>
 </body>
