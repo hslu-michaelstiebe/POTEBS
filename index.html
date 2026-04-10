@@ -182,76 +182,78 @@
   <script>
     // -------------------------------------------------------------------------
     // Lorenz Charts (ECharts) — loaded from data/lorenz.json
+    // JSON format produced by the local export script:
+    //   panels.<key>.providers.<Combined|FFEBSS|DBEBSS>.{ x[], y[], gini, label, color }
     // -------------------------------------------------------------------------
-    const LORENZ_COLORS = {
-      combined: { line: '#264653', label: 'Combined' },
-      peb:      { line: '#c5402b', label: 'Pick-e-Bike' },
-      pb:       { line: '#2864b4', label: 'PubliBike Velospot' },
-      equality: { line: '#aaa',    label: 'Perfect equality' }
-    };
 
+    // Map panel DOM ids → JSON keys
     const PANEL_MAP = [
-      { id: 'lc-all-trips',       key: 'all_trips',       yLabel: 'Cumulative % of trips' },
-      { id: 'lc-all-duration',    key: 'all_duration',    yLabel: 'Cumulative % of minutes' },
-      { id: 'lc-survey-trips',    key: 'survey_trips',    yLabel: 'Cumulative % of trips' },
-      { id: 'lc-survey-duration', key: 'survey_duration', yLabel: 'Cumulative % of minutes' }
+      { id: 'lc-all-trips',       key: 'all_users_rentals',    yLabel: 'Cumulative % of rentals' },
+      { id: 'lc-all-duration',    key: 'all_users_minutes',    yLabel: 'Cumulative % of minutes' },
+      { id: 'lc-survey-trips',    key: 'survey_users_rentals', yLabel: 'Cumulative % of rentals' },
+      { id: 'lc-survey-duration', key: 'survey_users_minutes', yLabel: 'Cumulative % of minutes' }
     ];
 
-    function makeLorenzOption(panel, yLabel) {
-      const equality = [[0, 0], [100, 100]];
+    // Display names and brand colours (override the JSON colours for consistency)
+    const PROVIDER_CFG = {
+      Combined: { label: 'Combined',            color: '#264653', width: 2.5 },
+      FFEBSS:   { label: 'Pick-e-Bike',         color: '#c5402b', width: 2   },
+      DBEBSS:   { label: 'PubliBike Velospot',  color: '#2864b4', width: 2   }
+    };
 
-      function makeSeries(key, data) {
-        const c = LORENZ_COLORS[key];
-        return {
-          name: c.label,
-          type: 'line',
-          data: data,
-          smooth: false,
-          symbol: 'none',
-          lineStyle: {
-            color: c.line,
-            width: key === 'equality' ? 1.5 : 2,
-            type:  key === 'equality' ? 'dashed' : 'solid',
-            opacity: key === 'equality' ? 0.5 : 1
-          },
-          emphasis: { disabled: true }
-        };
-      }
+    // Convert separate x/y arrays → [[x,y], ...] pairs for ECharts
+    function zip(xs, ys) {
+      return xs.map((x, i) => [x, ys[i]]);
+    }
+
+    function makeLorenzOption(panel, yLabel) {
+      const providers = panel.providers;
+
+      // Gini footer text for tooltip
+      const giniText = Object.entries(PROVIDER_CFG)
+        .map(([k, cfg]) => `${cfg.label}: ${(providers[k]?.gini ?? 0).toFixed(3)}`)
+        .join('   ');
 
       const series = [
-        makeSeries('equality', equality),
-        makeSeries('combined', panel.combined.curve),
-        makeSeries('peb',      panel.peb.curve),
-        makeSeries('pb',       panel.pb.curve)
+        // Equality diagonal
+        {
+          name: 'Perfect equality',
+          type: 'line',
+          data: [[0, 0], [100, 100]],
+          symbol: 'none',
+          lineStyle: { color: '#bbb', width: 1.5, type: 'dashed' },
+          emphasis: { disabled: true }
+        },
+        // One series per provider
+        ...Object.entries(PROVIDER_CFG).map(([providerKey, cfg]) => {
+          const d = providers[providerKey];
+          return {
+            name: cfg.label,
+            type: 'line',
+            data: d ? zip(d.x, d.y) : [],
+            symbol: 'none',
+            lineStyle: { color: cfg.color, width: cfg.width },
+            emphasis: { disabled: true }
+          };
+        })
       ];
-
-      // Gini values shown in tooltip subtitle
-      const giniText = [
-        `Combined Gini: ${panel.combined.gini.toFixed(3)}`,
-        `Pick-e-Bike Gini: ${panel.peb.gini.toFixed(3)}`,
-        `PubliBike Gini: ${panel.pb.gini.toFixed(3)}`
-      ].join('   ');
 
       return {
         backgroundColor: 'transparent',
-        grid: { top: 32, right: 16, bottom: 40, left: 52, containLabel: false },
+        grid: { top: 32, right: 16, bottom: 44, left: 52, containLabel: false },
         xAxis: {
-          type: 'value',
-          min: 0, max: 100,
+          type: 'value', min: 0, max: 100,
           name: 'Cumulative % of users',
-          nameLocation: 'middle',
-          nameGap: 26,
+          nameLocation: 'middle', nameGap: 28,
           nameTextStyle: { color: '#6f685f', fontSize: 11 },
           axisLabel: { color: '#6f685f', fontSize: 10, formatter: v => v + '%' },
           axisLine: { lineStyle: { color: '#e7e1d9' } },
           splitLine: { lineStyle: { color: '#f0ece6' } }
         },
         yAxis: {
-          type: 'value',
-          min: 0, max: 100,
+          type: 'value', min: 0, max: 100,
           name: yLabel,
-          nameLocation: 'middle',
-          nameGap: 38,
+          nameLocation: 'middle', nameGap: 40,
           nameTextStyle: { color: '#6f685f', fontSize: 11 },
           axisLabel: { color: '#6f685f', fontSize: 10, formatter: v => v + '%' },
           axisLine: { lineStyle: { color: '#e7e1d9' } },
@@ -260,31 +262,28 @@
         tooltip: {
           trigger: 'axis',
           axisPointer: { type: 'cross', label: { show: false } },
-          backgroundColor: 'rgba(255,255,255,0.96)',
-          borderColor: '#e7e1d9',
-          borderWidth: 1,
+          backgroundColor: 'rgba(255,255,255,0.97)',
+          borderColor: '#e7e1d9', borderWidth: 1,
           textStyle: { color: '#2b2b2b', fontSize: 12 },
           formatter(params) {
-            const pop = params[0].data[0];
-            let html = `<div style="font-weight:700;margin-bottom:4px">Users: bottom ${pop.toFixed(1)}%</div>`;
+            const pop = params[0]?.data[0];
+            let html = `<div style="font-weight:700;margin-bottom:4px">Bottom ${pop?.toFixed(1)}% of users</div>`;
             params.forEach(p => {
               if (p.seriesName === 'Perfect equality') return;
-              const col = Object.values(LORENZ_COLORS).find(c => c.label === p.seriesName);
+              const cfg = Object.values(PROVIDER_CFG).find(c => c.label === p.seriesName);
               html += `<div style="display:flex;align-items:center;gap:6px;margin:2px 0">
-                <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${col?.line}"></span>
-                <span>${p.seriesName}: <b>${p.data[1].toFixed(1)}%</b> of total</span>
+                <span style="display:inline-block;width:10px;height:3px;border-radius:2px;background:${cfg?.color}"></span>
+                <span>${p.seriesName}: <b>${p.data[1]?.toFixed(1)}%</b></span>
               </div>`;
             });
-            html += `<div style="margin-top:6px;padding-top:6px;border-top:1px solid #e7e1d9;font-size:11px;color:#6f685f">${giniText}</div>`;
+            html += `<div style="margin-top:6px;padding-top:5px;border-top:1px solid #e7e1d9;font-size:10.5px;color:#6f685f">Gini — ${giniText}</div>`;
             return html;
           }
         },
         legend: {
           data: ['Combined', 'Pick-e-Bike', 'PubliBike Velospot', 'Perfect equality'],
-          top: 4,
-          right: 0,
-          itemWidth: 18,
-          itemHeight: 3,
+          top: 4, right: 0,
+          itemWidth: 18, itemHeight: 3,
           textStyle: { color: '#6f685f', fontSize: 10 }
         },
         series
@@ -310,7 +309,7 @@
           if (el) el.innerHTML = `
             <div class="lorenz-placeholder">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-8"/></svg>
-              <span>Lorenz data not yet available.<br>Run <code>tools/export_lorenz.py</code> and upload <code>data/lorenz.json</code>.</span>
+              <span>Lorenz data not yet available.<br>Upload <code>data/lorenz.json</code> to the repository.</span>
             </div>`;
         });
       });
