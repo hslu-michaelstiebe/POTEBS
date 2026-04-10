@@ -97,10 +97,10 @@
       <div class="eyebrow">At a glance</div>
       <h2>Scale meets depth</h2>
       <div class="grid stats">
-        <div class="card"><div class="stat">1.4M</div><div class="muted">operational trip records</div></div>
+        <div class="card"><div class="stat" id="stat-trips">1.5M</div><div class="muted">operational trip records</div></div>
         <div class="card"><div class="stat">1,844</div><div class="muted">survey respondents retained</div></div>
-        <div class="card"><div class="stat">1,743</div><div class="muted">linked user cases</div></div>
-        <div class="card"><div class="stat">0.77</div><div class="muted">Gini coefficient of usage concentration</div></div>
+        <div class="card"><div class="stat" id="stat-linked">1,756</div><div class="muted">linked user cases</div></div>
+        <div class="card"><div class="stat" id="stat-gini">0.77</div><div class="muted">Gini coefficient of usage concentration</div></div>
       </div>
     </div>
   </section>
@@ -140,22 +140,22 @@
       <div class="lorenz-grid" id="lorenzGrid">
         <div class="lorenz-panel">
           <h3>Trip Count — All Users</h3>
-          <div class="panel-sub">Gini coefficients shown in tooltip</div>
+          <div class="panel-sub" id="lc-sub-all-trips">Loading…</div>
           <div class="lorenz-chart" id="lc-all-trips"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Duration (min) — All Users</h3>
-          <div class="panel-sub">Cumulative cycling minutes per user</div>
+          <div class="panel-sub" id="lc-sub-all-duration">Loading…</div>
           <div class="lorenz-chart" id="lc-all-duration"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Trip Count — Survey Respondents</h3>
-          <div class="panel-sub">Linked operational records only</div>
+          <div class="panel-sub" id="lc-sub-survey-trips">Loading…</div>
           <div class="lorenz-chart" id="lc-survey-trips"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Duration (min) — Survey Respondents</h3>
-          <div class="panel-sub">Linked operational records only</div>
+          <div class="panel-sub" id="lc-sub-survey-duration">Loading…</div>
           <div class="lorenz-chart" id="lc-survey-duration"></div>
         </div>
       </div>
@@ -188,10 +188,10 @@
 
     // Map panel DOM ids → JSON keys
     const PANEL_MAP = [
-      { id: 'lc-all-trips',       key: 'all_users_rentals',    yLabel: 'Cumulative % of rentals' },
-      { id: 'lc-all-duration',    key: 'all_users_minutes',    yLabel: 'Cumulative % of minutes' },
-      { id: 'lc-survey-trips',    key: 'survey_users_rentals', yLabel: 'Cumulative % of rentals' },
-      { id: 'lc-survey-duration', key: 'survey_users_minutes', yLabel: 'Cumulative % of minutes' }
+      { id: 'lc-all-trips',       key: 'all_users_rentals',    sub: 'lc-sub-all-trips'       },
+      { id: 'lc-all-duration',    key: 'all_users_minutes',    sub: 'lc-sub-all-duration'    },
+      { id: 'lc-survey-trips',    key: 'survey_users_rentals', sub: 'lc-sub-survey-trips'    },
+      { id: 'lc-survey-duration', key: 'survey_users_minutes', sub: 'lc-sub-survey-duration' }
     ];
 
     // Display names and brand colours (override the JSON colours for consistency)
@@ -206,8 +206,9 @@
       return xs.map((x, i) => [x, ys[i]]);
     }
 
-    function makeLorenzOption(panel, yLabel) {
+    function makeLorenzOption(panel) {
       const providers = panel.providers;
+      const yLabel = panel.y_axis_label || 'Cumulative %';
 
       // Gini footer text for tooltip
       const giniText = Object.entries(PROVIDER_CFG)
@@ -293,18 +294,45 @@
     fetch('data/lorenz.json')
       .then(r => r.json())
       .then(lorenz => {
-        PANEL_MAP.forEach(({ id, key, yLabel }) => {
-          const el = document.getElementById(id);
+        // Update top-level stats from JSON data
+        const allPanel    = lorenz.panels['all_users_rentals'];
+        const surveyPanel = lorenz.panels['survey_users_rentals'];
+        if (allPanel?.providers?.Combined) {
+          const c = allPanel.providers.Combined;
+          const t = c.n_trips;
+          const el = document.getElementById('stat-trips');
+          if (el) el.textContent = t >= 1e6 ? (t / 1e6).toFixed(1) + 'M' : t.toLocaleString();
+          const gEl = document.getElementById('stat-gini');
+          if (gEl) gEl.textContent = c.gini.toFixed(2);
+        }
+        if (surveyPanel?.providers?.Combined) {
+          const el = document.getElementById('stat-linked');
+          if (el) el.textContent = surveyPanel.providers.Combined.n_users.toLocaleString();
+        }
+
+        // Render each chart and populate subtitle
+        PANEL_MAP.forEach(({ id, key, sub }) => {
+          const el    = document.getElementById(id);
+          const subEl = document.getElementById(sub);
           if (!el) return;
           const panel = lorenz.panels[key];
           if (!panel) return;
+
+          // Subtitle: user + trip counts from Combined provider
+          if (subEl && panel.providers?.Combined) {
+            const c = panel.providers.Combined;
+            subEl.textContent = `${c.n_users.toLocaleString()} users · ${c.n_trips.toLocaleString()} trips`;
+          }
+
           const chart = echarts.init(el, null, { renderer: 'svg' });
-          chart.setOption(makeLorenzOption(panel, yLabel));
+          chart.setOption(makeLorenzOption(panel));
           window.addEventListener('resize', () => chart.resize());
         });
       })
       .catch(() => {
-        PANEL_MAP.forEach(({ id }) => {
+        PANEL_MAP.forEach(({ id, sub }) => {
+          const subEl = document.getElementById(sub);
+          if (subEl) subEl.textContent = '';
           const el = document.getElementById(id);
           if (el) el.innerHTML = `
             <div class="lorenz-placeholder">
