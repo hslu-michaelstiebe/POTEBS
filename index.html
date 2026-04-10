@@ -76,6 +76,21 @@
     .team-card .team-inst { font-size:12px; color:var(--pick); font-weight:600; }
     @media (max-width:900px) { .team-grid { grid-template-columns:repeat(2,1fr); } }
     @media (max-width:640px) { .team-grid { grid-template-columns:1fr; } }
+    .team-card .team-contact { margin-top:12px; padding-top:12px; border-top:1px solid var(--line); font-size:12px; line-height:1.7; color:var(--muted); }
+    .team-card .team-contact a { color:var(--pick); text-decoration:none; }
+    .team-card .team-contact a:hover { text-decoration:underline; }
+    .advisory-list { display:flex; flex-wrap:wrap; gap:10px; }
+    .advisory-tag { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 14px; font-size:13px; color:var(--text); }
+    .pub-list { list-style:none; padding:0; }
+    .pub-list li { padding:14px 0; border-bottom:1px solid var(--line); display:flex; gap:14px; align-items:flex-start; }
+    .pub-list li:last-child { border-bottom:none; }
+    .pub-badge { flex-shrink:0; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:3px 8px; border-radius:4px; margin-top:3px; }
+    .pub-badge.journal   { background:#fef3e2; color:#b45309; }
+    .pub-badge.conf      { background:#eff6ff; color:#1d4ed8; }
+    .pub-badge.talk      { background:#f0fdf4; color:#166534; }
+    .pub-badge.press     { background:#faf5ff; color:#7e22ce; }
+    .pub-cite { font-size:13.5px; line-height:1.6; }
+    .pub-cite a { color:var(--pick); word-break:break-all; }
     .advisory-table { width:100%; border-collapse:collapse; font-size:13.5px; }
     .advisory-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; padding:0 12px 8px 0; border-bottom:1px solid var(--line); }
     .advisory-table td { padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text); }
@@ -93,6 +108,7 @@
       <a href="#mapsec">Map</a>
       <a href="#partners">Partners</a>
       <a href="#team">Team</a>
+      <a href="#publications">Publications</a>
     </div>
   </nav>
 
@@ -240,16 +256,23 @@
         <div class="team-card">
           <div class="team-name">Michael Stiebe</div>
           <div class="team-title">Project Manager</div>
-          <div class="team-inst">HSLU</div>
+          <div class="team-inst">HSLU — Institut für Tourismus und Mobilität (ITM)</div>
+          <div class="team-contact">
+            CC Mobilität (ITM Mob)<br>
+            Zentralstrasse 9, Room 2nd floor<br>
+            6003 Luzern<br>
+            <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a><br>
+            <a href="YOUR_HSLU_PROFILE_URL" target="_blank" rel="noopener">HSLU Profile ↗</a>
+          </div>
         </div>
         <div class="team-card">
           <div class="team-name">Prof. Dr. Widar von Arx</div>
-          <div class="team-title">Principal Investigator</div>
+          <div class="team-title">Co-Project Manager</div>
           <div class="team-inst">HSLU</div>
         </div>
         <div class="team-card">
           <div class="team-name">Prof. Dr. Frank Christian Krysiak</div>
-          <div class="team-title">Principal Investigator</div>
+          <div class="team-title">Co-Project Manager</div>
           <div class="team-inst">University of Basel</div>
         </div>
         <div class="team-card">
@@ -268,52 +291,67 @@
       <div class="eyebrow">Governance</div>
       <h2>Advisory Board</h2>
       <p class="muted" style="margin-bottom:1.5rem;">The project is guided by an advisory board of practitioners and researchers from transport, mobility policy, and public finance.</p>
-      <table class="advisory-table">
-        <thead>
-          <tr>
-            <th>Institution</th>
-            <th>Representative</th>
-            <th>Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="td-name">WWZ, University of Basel</td>
-            <td>Beat Hintermann</td>
-            <td>Professor of Public Finance</td>
-          </tr>
-          <tr>
-            <td class="td-name">Office of Mobility, Canton of Basel-Stadt</td>
-            <td>Arne Schöllhorn</td>
-            <td>Head of Mobility Strategy</td>
-          </tr>
-          <tr>
-            <td class="td-name">Basler Verkehrs-Betriebe (BVB)</td>
-            <td>Milan Sedlacek</td>
-            <td>Head of Transport Operations</td>
-          </tr>
-          <tr>
-            <td class="td-name">TNW Tarifverbund Nordwestschweiz</td>
-            <td>Thomas Stadelmann</td>
-            <td>Deputy Managing Director</td>
-          </tr>
-          <tr>
-            <td class="td-name">SBB Swiss Federal Railways</td>
-            <td>Philippe Stadler Benz</td>
-            <td>Senior Project Manager, First &amp; Last Mile</td>
-          </tr>
-          <tr>
-            <td class="td-name">Federal Roads Office (ASTRA)</td>
-            <td>Martin Urwyler</td>
-            <td>Head of Slow Traffic &amp; Historic Routes</td>
-          </tr>
-          <tr>
-            <td class="td-name">Pro Velo beider Basel</td>
-            <td>Roland Chrétien</td>
-            <td>Executive Director</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="advisory-list">
+        <span class="advisory-tag">WWZ, University of Basel</span>
+        <span class="advisory-tag">Office of Mobility, Canton of Basel-Stadt</span>
+        <span class="advisory-tag">Basler Verkehrs-Betriebe (BVB)</span>
+        <span class="advisory-tag">TNW Tarifverbund Nordwestschweiz</span>
+        <span class="advisory-tag">SBB Swiss Federal Railways</span>
+        <span class="advisory-tag">Federal Roads Office (ASTRA)</span>
+        <span class="advisory-tag">Pro Velo beider Basel</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="publications" class="section">
+    <div class="container">
+      <div class="eyebrow">Outputs</div>
+      <h2>Publications &amp; Presentations</h2>
+      <ul class="pub-list" style="margin-top:1.25rem;">
+
+        <li>
+          <span class="pub-badge journal">Journal</span>
+          <span class="pub-cite">Stiebe, M., Krysiak, F. C., von Arx, W., &amp; Weggelaar, B. (2026). Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity. <em>Transportation Research Part D: Transport and Environment</em> (Elsevier). Submitted March 2026, under review.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge talk">Talk</span>
+          <span class="pub-cite">Stiebe, M., &amp; Weggelaar, B. (2026). Drivers of E-Bike Sharing Usage Intensity: Evidence from Free-Floating and Dock-Based Systems in Basel. Presentation at <em>Sustainable Future Research Lunch</em>, University of Basel, March 20, 2026.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge talk">Talk</span>
+          <span class="pub-cite">Stiebe, M. (2025). Pragmatists, Not Idealists: What Drives E-Bike Sharing Usage Intensity and Why Car Substitution Remains Elusive. Presentation at the <em>Economics Lunch Seminar</em>, Faculty of Business and Economics (WWZ), University of Basel, December 17, 2025.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2025). Understanding User Behavior in Dock-based and Free-floating E-bike Sharing Systems: A Multi-method Study From the Basel Metropolitan Area. <em>mobil.TUM 2025 – 14th International Scientific Conference on Mobility and Transport</em>, Nanyang Technological University, Singapore, November 24–26, 2025.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems – Empirical Insights from the Basel Metropolitan Area. <em>European Transport Conference ETC 2024</em>, Antwerp, September 17–20, 2024. <a href="https://aetransport.org/past-etc-papers/conference-papers-2024?abstractId=8446&state=b" target="_blank" rel="noopener">aetransport.org ↗</a></span>
+        </li>
+
+        <li>
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems – Insights from the Basel Metropolitan Area. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15–17, 2024. <a href="https://www.strc.ch/2024/Stiebe_vonArx.pdf" target="_blank" rel="noopener">PDF ↗</a></span>
+        </li>
+
+        <li>
+          <span class="pub-badge talk">Talk</span>
+          <span class="pub-cite">von Arx, W., &amp; Stiebe, M. (2024). Obstacles to Economic Sustainability of Free-Floating E-Bike Sharing Systems: A Basel-Based Case Study. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15, 2024.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge press">Press</span>
+          <span class="pub-cite">"E-Bike-Sharing boomt in der Schweiz!" Newsletter article, Lucerne University of Applied Sciences and Arts, November 13, 2024. <a href="https://www.hslu.ch/de-ch/wirtschaft/ueber-uns/news/2024/11/13/ebike-sharing/" target="_blank" rel="noopener">hslu.ch ↗</a></span>
+        </li>
+
+      </ul>
     </div>
   </section>
 
