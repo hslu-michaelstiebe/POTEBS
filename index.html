@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <style>
     :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; }
     * { box-sizing:border-box; margin:0; padding:0; }
@@ -49,6 +49,16 @@
     .muted { color:var(--muted); }
     .divider { height:1px; background:var(--line); max-width:1120px; margin:0 auto; }
     .chart-wrap { height:300px; }
+    .lorenz-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .lorenz-panel { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 18px 12px; box-shadow:0 10px 30px rgba(0,0,0,.03); }
+    .lorenz-panel h3 { font-size:14px; font-weight:700; margin-bottom:4px; }
+    .lorenz-panel .panel-sub { font-size:12px; color:var(--muted); margin-bottom:10px; }
+    .lorenz-chart { height:280px; }
+    .lorenz-legend { display:flex; gap:14px; margin-top:8px; flex-wrap:wrap; }
+    .lorenz-legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); }
+    .lorenz-legend-dot { width:20px; height:3px; border-radius:2px; flex-shrink:0; }
+    .lorenz-placeholder { display:flex; align-items:center; justify-content:center; height:280px; color:var(--muted); font-size:13px; text-align:center; gap:8px; flex-direction:column; }
+    @media (max-width:640px) { .lorenz-grid { grid-template-columns:1fr; } }
     #map { height:560px; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
     .leaflet-control.legend { background:#fff; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.12); box-shadow:0 8px 24px rgba(0,0,0,.08); line-height:1.35; }
     .legend-row { display:flex; align-items:center; gap:8px; margin:5px 0; font-size:13px; color:#2b2b2b; }
@@ -125,10 +135,29 @@
   <section class="section">
     <div class="container">
       <div class="eyebrow">Result snapshots</div>
-      <h2>Selected quantitative patterns</h2>
-      <div class="grid charts">
-        <div class="card"><h3>Usage concentration</h3><div class="chart-wrap"><canvas id="c1"></canvas></div></div>
-        <div class="card"><h3>Usage intensity segments</h3><div class="chart-wrap"><canvas id="c2"></canvas></div></div>
+      <h2>Usage concentration — Lorenz curves</h2>
+      <p class="muted" style="margin-bottom:1.25rem;">Each panel shows the cumulative share of trips (or cycling minutes) as a function of the cumulative share of users, separately for Pick-e-Bike, PubliBike Velospot, and the combined sample. The diagonal represents perfect equality. Hover over the curves for exact values.</p>
+      <div class="lorenz-grid" id="lorenzGrid">
+        <div class="lorenz-panel">
+          <h3>Trip Count — All Users</h3>
+          <div class="panel-sub">Gini coefficients shown in tooltip</div>
+          <div class="lorenz-chart" id="lc-all-trips"></div>
+        </div>
+        <div class="lorenz-panel">
+          <h3>Duration (min) — All Users</h3>
+          <div class="panel-sub">Cumulative cycling minutes per user</div>
+          <div class="lorenz-chart" id="lc-all-duration"></div>
+        </div>
+        <div class="lorenz-panel">
+          <h3>Trip Count — Survey Respondents</h3>
+          <div class="panel-sub">Linked operational records only</div>
+          <div class="lorenz-chart" id="lc-survey-trips"></div>
+        </div>
+        <div class="lorenz-panel">
+          <h3>Duration (min) — Survey Respondents</h3>
+          <div class="panel-sub">Linked operational records only</div>
+          <div class="lorenz-chart" id="lc-survey-duration"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -151,23 +180,139 @@
   </section>
 
   <script>
-    new Chart(document.getElementById('c1'), {
-      type: 'bar',
-      data: {
-        labels: ['Top 20% of users', 'Remaining 80% of users'],
-        datasets: [{ data: [80.3, 19.7], backgroundColor: ['#c5402b', '#d8d0c7'], borderRadius: 8 }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
-    });
+    // -------------------------------------------------------------------------
+    // Lorenz Charts (ECharts) — loaded from data/lorenz.json
+    // JSON format produced by the local export script:
+    //   panels.<key>.providers.<Combined|FFEBSS|DBEBSS>.{ x[], y[], gini, label, color }
+    // -------------------------------------------------------------------------
 
-    new Chart(document.getElementById('c2'), {
-      type: 'bar',
-      data: {
-        labels: ['Low', 'Medium', 'High'],
-        datasets: [{ data: [47.7, 39.2, 13.1], backgroundColor: ['#7a756f', '#d19a18', '#c5402b'], borderRadius: 8 }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 60, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
-    });
+    // Map panel DOM ids → JSON keys
+    const PANEL_MAP = [
+      { id: 'lc-all-trips',       key: 'all_users_rentals',    yLabel: 'Cumulative % of rentals' },
+      { id: 'lc-all-duration',    key: 'all_users_minutes',    yLabel: 'Cumulative % of minutes' },
+      { id: 'lc-survey-trips',    key: 'survey_users_rentals', yLabel: 'Cumulative % of rentals' },
+      { id: 'lc-survey-duration', key: 'survey_users_minutes', yLabel: 'Cumulative % of minutes' }
+    ];
+
+    // Display names and brand colours (override the JSON colours for consistency)
+    const PROVIDER_CFG = {
+      Combined: { label: 'Combined',            color: '#264653', width: 2.5 },
+      FFEBSS:   { label: 'Pick-e-Bike',         color: '#c5402b', width: 2   },
+      DBEBSS:   { label: 'PubliBike Velospot',  color: '#2864b4', width: 2   }
+    };
+
+    // Convert separate x/y arrays → [[x,y], ...] pairs for ECharts
+    function zip(xs, ys) {
+      return xs.map((x, i) => [x, ys[i]]);
+    }
+
+    function makeLorenzOption(panel, yLabel) {
+      const providers = panel.providers;
+
+      // Gini footer text for tooltip
+      const giniText = Object.entries(PROVIDER_CFG)
+        .map(([k, cfg]) => `${cfg.label}: ${(providers[k]?.gini ?? 0).toFixed(3)}`)
+        .join('   ');
+
+      const series = [
+        // Equality diagonal
+        {
+          name: 'Perfect equality',
+          type: 'line',
+          data: [[0, 0], [100, 100]],
+          symbol: 'none',
+          lineStyle: { color: '#bbb', width: 1.5, type: 'dashed' },
+          emphasis: { disabled: true }
+        },
+        // One series per provider
+        ...Object.entries(PROVIDER_CFG).map(([providerKey, cfg]) => {
+          const d = providers[providerKey];
+          return {
+            name: cfg.label,
+            type: 'line',
+            data: d ? zip(d.x, d.y) : [],
+            symbol: 'none',
+            lineStyle: { color: cfg.color, width: cfg.width },
+            emphasis: { disabled: true }
+          };
+        })
+      ];
+
+      return {
+        backgroundColor: 'transparent',
+        grid: { top: 32, right: 16, bottom: 44, left: 52, containLabel: false },
+        xAxis: {
+          type: 'value', min: 0, max: 100,
+          name: 'Cumulative % of users',
+          nameLocation: 'middle', nameGap: 28,
+          nameTextStyle: { color: '#6f685f', fontSize: 11 },
+          axisLabel: { color: '#6f685f', fontSize: 10, formatter: v => v + '%' },
+          axisLine: { lineStyle: { color: '#e7e1d9' } },
+          splitLine: { lineStyle: { color: '#f0ece6' } }
+        },
+        yAxis: {
+          type: 'value', min: 0, max: 100,
+          name: yLabel,
+          nameLocation: 'middle', nameGap: 40,
+          nameTextStyle: { color: '#6f685f', fontSize: 11 },
+          axisLabel: { color: '#6f685f', fontSize: 10, formatter: v => v + '%' },
+          axisLine: { lineStyle: { color: '#e7e1d9' } },
+          splitLine: { lineStyle: { color: '#f0ece6' } }
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { type: 'cross', label: { show: false } },
+          backgroundColor: 'rgba(255,255,255,0.97)',
+          borderColor: '#e7e1d9', borderWidth: 1,
+          textStyle: { color: '#2b2b2b', fontSize: 12 },
+          formatter(params) {
+            const pop = params[0]?.data[0];
+            let html = `<div style="font-weight:700;margin-bottom:4px">Bottom ${pop?.toFixed(1)}% of users</div>`;
+            params.forEach(p => {
+              if (p.seriesName === 'Perfect equality') return;
+              const cfg = Object.values(PROVIDER_CFG).find(c => c.label === p.seriesName);
+              html += `<div style="display:flex;align-items:center;gap:6px;margin:2px 0">
+                <span style="display:inline-block;width:10px;height:3px;border-radius:2px;background:${cfg?.color}"></span>
+                <span>${p.seriesName}: <b>${p.data[1]?.toFixed(1)}%</b></span>
+              </div>`;
+            });
+            html += `<div style="margin-top:6px;padding-top:5px;border-top:1px solid #e7e1d9;font-size:10.5px;color:#6f685f">Gini — ${giniText}</div>`;
+            return html;
+          }
+        },
+        legend: {
+          data: ['Combined', 'Pick-e-Bike', 'PubliBike Velospot', 'Perfect equality'],
+          top: 4, right: 0,
+          itemWidth: 18, itemHeight: 3,
+          textStyle: { color: '#6f685f', fontSize: 10 }
+        },
+        series
+      };
+    }
+
+    fetch('data/lorenz.json')
+      .then(r => r.json())
+      .then(lorenz => {
+        PANEL_MAP.forEach(({ id, key, yLabel }) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const panel = lorenz.panels[key];
+          if (!panel) return;
+          const chart = echarts.init(el, null, { renderer: 'svg' });
+          chart.setOption(makeLorenzOption(panel, yLabel));
+          window.addEventListener('resize', () => chart.resize());
+        });
+      })
+      .catch(() => {
+        PANEL_MAP.forEach(({ id }) => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = `
+            <div class="lorenz-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-8"/></svg>
+              <span>Lorenz data not yet available.<br>Upload <code>data/lorenz.json</code> to the repository.</span>
+            </div>`;
+        });
+      });
 
     const map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([47.555, 7.61], 10.9);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
