@@ -49,7 +49,7 @@
     .muted { color:var(--muted); }
     .divider { height:1px; background:var(--line); max-width:1120px; margin:0 auto; }
     .chart-wrap { height:300px; }
-    #map { height:520px; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+    #map { height:560px; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
     @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } }
     @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } }
   </style>
@@ -112,7 +112,7 @@
     <div class="container">
       <div class="eyebrow">Interactive study area</div>
       <h2>Service areas and station structure</h2>
-      <p class="muted" style="margin-bottom: 1rem;">The map shows data-based concave hulls for PubliBike / Velospot and Pick-e-Bike. The highlighted overlap marks the spatial intersection of both empirically derived areas. PubliBike stations can be toggled on as an additional point layer.</p>
+      <p class="muted" style="margin-bottom: 1rem;">The map compares data-based concave hulls for PubliBike / Velospot and Pick-e-Bike. The overlap layer highlights their shared spatial footprint. The default view is centered on the Basel core area for readability; station points can be toggled on when needed.</p>
       <div id="map"></div>
     </div>
   </section>
@@ -166,11 +166,20 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 60, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } } }
     });
 
-    const map = L.map('map', { scrollWheelZoom: false }).setView([47.555, 7.62], 11);
+    const map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([47.555, 7.61], 10.9);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
       maxZoom: 20
     }).addTo(map);
+
+    map.createPane('pbHullPane');
+    map.createPane('pebHullPane');
+    map.createPane('overlapPane');
+    map.createPane('stationPane');
+    map.getPane('pbHullPane').style.zIndex = 410;
+    map.getPane('pebHullPane').style.zIndex = 420;
+    map.getPane('overlapPane').style.zIndex = 430;
+    map.getPane('stationPane').style.zIndex = 440;
 
     Promise.all([
       fetch('data/publibike_hull.geojson').then(r => r.json()),
@@ -179,7 +188,14 @@
       fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
     ]).then(([pbHull, pebHull, overlap, pbStations]) => {
       const pbHullLayer = L.geoJSON(pbHull, {
-        style: { color: '#2864b4', weight: 2, fillColor: '#2864b4', fillOpacity: 0.10 },
+        pane: 'pbHullPane',
+        style: {
+          color: '#2864b4',
+          weight: 2.2,
+          opacity: 0.95,
+          fillColor: '#2864b4',
+          fillOpacity: 0.05
+        },
         onEachFeature: (feature, layer) => {
           const p = feature.properties || {};
           layer.bindPopup(`<strong>PubliBike hull</strong><br>${p.method || ''}`);
@@ -187,7 +203,15 @@
       });
 
       const pebHullLayer = L.geoJSON(pebHull, {
-        style: { color: '#c5402b', weight: 2, fillColor: '#c5402b', fillOpacity: 0.10 },
+        pane: 'pebHullPane',
+        style: {
+          color: '#c5402b',
+          weight: 2.2,
+          opacity: 0.9,
+          dashArray: '10 6',
+          fillColor: '#c5402b',
+          fillOpacity: 0.035
+        },
         onEachFeature: (feature, layer) => {
           const p = feature.properties || {};
           layer.bindPopup(`<strong>Pick-e-Bike hull</strong><br>${p.method || ''}`);
@@ -195,7 +219,14 @@
       });
 
       const overlapLayer = L.geoJSON(overlap, {
-        style: { color: '#6a3d9a', weight: 2.5, fillColor: '#6a3d9a', fillOpacity: 0.22 },
+        pane: 'overlapPane',
+        style: {
+          color: '#6a3d9a',
+          weight: 2.4,
+          opacity: 1,
+          fillColor: '#6a3d9a',
+          fillOpacity: 0.18
+        },
         onEachFeature: (feature, layer) => {
           const p = feature.properties || {};
           layer.bindPopup(`<strong>Overlap area</strong><br>${p.method || ''}`);
@@ -209,12 +240,13 @@
       let pbStationLayer = null;
       if (pbStations) {
         pbStationLayer = L.geoJSON(pbStations, {
+          pane: 'stationPane',
           pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
-            radius: 3,
+            radius: 2.5,
             color: '#2864b4',
-            weight: 1,
+            weight: 0.8,
             fillColor: '#2864b4',
-            fillOpacity: 0.85
+            fillOpacity: 0.7
           }),
           onEachFeature: (feature, layer) => {
             const p = feature.properties || {};
@@ -232,17 +264,13 @@
         'Pick-e-Bike hull': pebHullLayer,
         'Overlap': overlapLayer
       };
-
-      if (pbStationLayer) {
-        overlays['PubliBike stations'] = pbStationLayer;
-      }
+      if (pbStationLayer) overlays['PubliBike stations'] = pbStationLayer;
 
       L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
-      const fitLayers = [pbHullLayer, pebHullLayer, overlapLayer];
-      if (pbStationLayer) fitLayers.push(pbStationLayer);
-      const boundsGroup = L.featureGroup(fitLayers);
-      map.fitBounds(boundsGroup.getBounds(), { padding: [20, 20] });
+      if (pbHullLayer.getBounds && pbHullLayer.getBounds().isValid()) {
+        map.fitBounds(pbHullLayer.getBounds().pad(0.55), { padding: [30, 30] });
+      }
     }).catch(err => {
       console.error(err);
       document.getElementById('map').innerHTML = '<div style="padding:1rem;color:#6f685f">Map data could not be loaded.</div>';
