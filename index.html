@@ -212,13 +212,16 @@
     };
 
     function popupHtml(p) {
+      let cat = '';
+      if (p.Overlap) cat = 'Pick-e-Bike & PubliBike Velospot';
+      else if (p.PubliBike) cat = 'PubliBike Velospot only';
+      else if (p.PickeBike) cat = 'Pick-e-Bike only';
       return `
         <strong>${p.GDENAME || 'Municipality'}</strong><br>
-        Category: ${p.Category || ''}<br>
+        Category: ${cat}<br>
         PLZ: ${p.PLZ_Liste || 'n.a.'}<br>
-        PubliBike Velospot: ${p.PubliBike ?? ''}<br>
-        Pick-e-Bike: ${p.PickeBike ?? ''}<br>
-        Pick-e-Bike point count: ${p.PeB_Point_Count ?? ''}
+        PubliBike Velospot: ${p.PubliBike ? 'Yes' : 'No'}<br>
+        Pick-e-Bike: ${p.PickeBike ? 'Yes' : 'No'}
       `;
     }
 
@@ -238,9 +241,18 @@
       fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
     ]).then(([communes, pbStations]) => {
       const features = communes.features || [];
-      const pbOnlyFeatures = features.filter(f => (f.properties || {}).Category === 'PubliBike only');
-      const pebOnlyFeatures = features.filter(f => (f.properties || {}).Category === 'Pick-e-Bike only');
-      const overlapFeatures = features.filter(f => (f.properties || {}).Category === 'Overlap');
+      const pbOnlyFeatures = features.filter(f => {
+        const p = f.properties || {};
+        return p.PubliBike === 1 && p.PickeBike !== 1;
+      });
+      const pebOnlyFeatures = features.filter(f => {
+        const p = f.properties || {};
+        return p.PickeBike === 1 && p.PubliBike !== 1;
+      });
+      const overlapFeatures = features.filter(f => {
+        const p = f.properties || {};
+        return p.Overlap === 1;
+      });
 
       const pbOnlyLayer = makeLayer(pbOnlyFeatures, publiBikeVelospotOnlyStyle, 'pbOnlyPane');
       const pebOnlyLayer = makeLayer(pebOnlyFeatures, pickEBikeOnlyStyle, 'pebOnlyPane');
