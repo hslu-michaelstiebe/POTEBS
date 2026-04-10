@@ -115,7 +115,7 @@
     <div class="container">
       <div class="eyebrow">Interactive study area</div>
       <h2>Service areas and station structure</h2>
-      <p class="muted" style="margin-bottom: 1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional point layer.</p>
+      <p class="muted" style="margin-bottom: 1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike, PubliBike Velospot, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional point layer.</p>
       <div id="map"></div>
     </div>
   </section>
@@ -175,49 +175,32 @@
       maxZoom: 20
     }).addTo(map);
 
-    map.createPane('pbOnlyPane');
-    map.createPane('pebOnlyPane');
+    map.createPane('pbPane');
+    map.createPane('pebPane');
     map.createPane('overlapPane');
     map.createPane('stationsPane');
-    map.getPane('pbOnlyPane').style.zIndex = 410;
-    map.getPane('pebOnlyPane').style.zIndex = 420;
+    map.getPane('pbPane').style.zIndex = 410;
+    map.getPane('pebPane').style.zIndex = 420;
     map.getPane('overlapPane').style.zIndex = 430;
     map.getPane('stationsPane').style.zIndex = 440;
 
-    const publiBikeVelospotOnlyStyle = {
-      pane: 'pbOnlyPane',
-      color: '#22579d',
-      weight: 1.5,
-      opacity: 0.98,
-      fillColor: '#2864b4',
-      fillOpacity: 0.34
+    const publiBikeVelospotStyle = {
+      pane: 'pbPane', color: '#22579d', weight: 1.5, opacity: 0.98, fillColor: '#2864b4', fillOpacity: 0.22
     };
-
-    const pickEBikeOnlyStyle = {
-      pane: 'pebOnlyPane',
-      color: '#b23a26',
-      weight: 1.5,
-      opacity: 0.98,
-      fillColor: '#c5402b',
-      fillOpacity: 0.30
+    const pickEBikeStyle = {
+      pane: 'pebPane', color: '#b23a26', weight: 1.5, opacity: 0.98, fillColor: '#c5402b', fillOpacity: 0.18
     };
-
     const overlapStyle = {
-      pane: 'overlapPane',
-      color: '#5b2d8b',
-      weight: 1.9,
-      opacity: 1,
-      fillColor: '#6a3d9a',
-      fillOpacity: 0.44
+      pane: 'overlapPane', color: '#5b2d8b', weight: 1.9, opacity: 1, fillColor: '#6a3d9a', fillOpacity: 0.46
     };
 
     function popupHtml(p) {
       return `
         <strong>${p.GDENAME || 'Municipality'}</strong><br>
-        Category: ${p.Category || ''}<br>
         PLZ: ${p.PLZ_Liste || 'n.a.'}<br>
         PubliBike Velospot: ${p.PubliBike ?? ''}<br>
         Pick-e-Bike: ${p.PickeBike ?? ''}<br>
+        Overlap: ${p.Overlap ?? ''}<br>
         Pick-e-Bike point count: ${p.PeB_Point_Count ?? ''}
       `;
     }
@@ -238,16 +221,16 @@
       fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
     ]).then(([communes, pbStations]) => {
       const features = communes.features || [];
-      const pbOnlyFeatures = features.filter(f => (f.properties || {}).Category === 'PubliBike only');
-      const pebOnlyFeatures = features.filter(f => (f.properties || {}).Category === 'Pick-e-Bike only');
-      const overlapFeatures = features.filter(f => (f.properties || {}).Category === 'Overlap');
+      const pbFeatures = features.filter(f => Number((f.properties || {}).PubliBike) === 1);
+      const pebFeatures = features.filter(f => Number((f.properties || {}).PickeBike) === 1);
+      const overlapFeatures = features.filter(f => Number((f.properties || {}).Overlap) === 1);
 
-      const pbOnlyLayer = makeLayer(pbOnlyFeatures, publiBikeVelospotOnlyStyle, 'pbOnlyPane');
-      const pebOnlyLayer = makeLayer(pebOnlyFeatures, pickEBikeOnlyStyle, 'pebOnlyPane');
+      const pbLayer = makeLayer(pbFeatures, publiBikeVelospotStyle, 'pbPane');
+      const pebLayer = makeLayer(pebFeatures, pickEBikeStyle, 'pebPane');
       const overlapLayer = makeLayer(overlapFeatures, overlapStyle, 'overlapPane');
 
-      pbOnlyLayer.addTo(map);
-      pebOnlyLayer.addTo(map);
+      pbLayer.addTo(map);
+      pebLayer.addTo(map);
       overlapLayer.addTo(map);
 
       let pbStationLayer = null;
@@ -273,9 +256,9 @@
       }
 
       const overlays = {
-        'Pick-e-Bike only': pebOnlyLayer,
-        'PubliBike Velospot only': pbOnlyLayer,
-        'Pick-e-Bike & PubliBike Velospot': overlapLayer
+        'Pick-e-Bike': pebLayer,
+        'PubliBike Velospot': pbLayer,
+        'Overlap': overlapLayer
       };
       if (pbStationLayer) overlays['PubliBike Velospot stations'] = pbStationLayer;
       L.control.layers(null, overlays, { collapsed: false }).addTo(map);
@@ -284,16 +267,16 @@
       legend.onAdd = function() {
         const div = L.DomUtil.create('div', 'legend leaflet-control');
         div.innerHTML = `
-          <div style="font-weight:700; margin-bottom:6px;">Active commune category</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#c5402b"></span>Pick-e-Bike only</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike Velospot only</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#6a3d9a"></span>Pick-e-Bike & PubliBike Velospot</div>
+          <div style="font-weight:700; margin-bottom:6px;">Active commune layer</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#c5402b"></span>Pick-e-Bike</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike Velospot</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#6a3d9a"></span>Overlap</div>
         `;
         return div;
       };
       legend.addTo(map);
 
-      const activeFeatures = [...pbOnlyFeatures, ...pebOnlyFeatures, ...overlapFeatures];
+      const activeFeatures = [...pbFeatures, ...pebFeatures];
       const activeLayer = L.geoJSON({ type: 'FeatureCollection', features: activeFeatures });
       if (activeLayer.getBounds && activeLayer.getBounds().isValid()) {
         map.fitBounds(activeLayer.getBounds().pad(0.10), { padding: [24, 24] });
