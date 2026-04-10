@@ -115,7 +115,7 @@
     <div class="container">
       <div class="eyebrow">Interactive study area</div>
       <h2>Service areas and station structure</h2>
-      <p class="muted" style="margin-bottom: 1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike, PubliBike Velospot, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional point layer.</p>
+      <p class="muted" style="margin-bottom: 1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional point layer.</p>
       <div id="map"></div>
     </div>
   </section>
@@ -175,43 +175,48 @@
       maxZoom: 20
     }).addTo(map);
 
-    map.createPane('pbPane');
     map.createPane('pebPane');
-    map.createPane('overlapPane');
+    map.createPane('pbPane');
     map.createPane('stationsPane');
-    map.getPane('pbPane').style.zIndex = 410;
-    map.getPane('pebPane').style.zIndex = 420;
-    map.getPane('overlapPane').style.zIndex = 430;
-    map.getPane('stationsPane').style.zIndex = 440;
+    map.getPane('pebPane').style.zIndex = 410;
+    map.getPane('pbPane').style.zIndex = 420;
+    map.getPane('stationsPane').style.zIndex = 430;
 
-    const publiBikeVelospotStyle = {
-      pane: 'pbPane', color: '#22579d', weight: 1.5, opacity: 0.98, fillColor: '#2864b4', fillOpacity: 0.22
+    const pebStyle = {
+      pane: 'pebPane',
+      color: '#b23a26',
+      weight: 1.5,
+      opacity: 0.98,
+      fillColor: '#c5402b',
+      fillOpacity: 0.32
     };
-    const pickEBikeStyle = {
-      pane: 'pebPane', color: '#b23a26', weight: 1.5, opacity: 0.98, fillColor: '#c5402b', fillOpacity: 0.18
-    };
-    const overlapStyle = {
-      pane: 'overlapPane', color: '#5b2d8b', weight: 1.9, opacity: 1, fillColor: '#6a3d9a', fillOpacity: 0.46
+
+    const pbStyle = {
+      pane: 'pbPane',
+      color: '#22579d',
+      weight: 1.8,
+      opacity: 1,
+      fillColor: '#2864b4',
+      fillOpacity: 0.42
     };
 
     function popupHtml(p) {
+      let systems = [];
+      if (p.PickeBike) systems.push('Pick-e-Bike');
+      if (p.PubliBike) systems.push('PubliBike Velospot');
       return `
         <strong>${p.GDENAME || 'Municipality'}</strong><br>
-        PLZ: ${p.PLZ_Liste || 'n.a.'}<br>
-        PubliBike Velospot: ${p.PubliBike ?? ''}<br>
-        Pick-e-Bike: ${p.PickeBike ?? ''}<br>
-        Overlap: ${p.Overlap ?? ''}<br>
-        Pick-e-Bike point count: ${p.PeB_Point_Count ?? ''}
+        ${systems.join(' &amp; ')}<br>
+        PLZ: ${p.PLZ_Liste || 'n.a.'}
       `;
     }
 
-    function makeLayer(features, style, paneName) {
+    function makeLayer(features, style) {
       return L.geoJSON({ type: 'FeatureCollection', features }, {
-        pane: paneName,
+        pane: style.pane,
         style: style,
         onEachFeature: (feature, layer) => {
-          const p = feature.properties || {};
-          layer.bindPopup(popupHtml(p));
+          layer.bindPopup(popupHtml(feature.properties || {}));
         }
       });
     }
@@ -221,65 +226,62 @@
       fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
     ]).then(([communes, pbStations]) => {
       const features = communes.features || [];
-      const pbFeatures = features.filter(f => Number((f.properties || {}).PubliBike) === 1);
-      const pebFeatures = features.filter(f => Number((f.properties || {}).PickeBike) === 1);
-      const overlapFeatures = features.filter(f => Number((f.properties || {}).Overlap) === 1);
 
-      const pbLayer = makeLayer(pbFeatures, publiBikeVelospotStyle, 'pbPane');
-      const pebLayer = makeLayer(pebFeatures, pickEBikeStyle, 'pebPane');
-      const overlapLayer = makeLayer(overlapFeatures, overlapStyle, 'overlapPane');
+      // All communes served by Pick-e-Bike
+      const pebFeatures = features.filter(f => (f.properties || {}).PickeBike === 1);
+      // All communes served by PubliBike Velospot (Kerngemeinden)
+      const pbFeatures  = features.filter(f => (f.properties || {}).PubliBike === 1);
 
-      pbLayer.addTo(map);
+      const pebLayer = makeLayer(pebFeatures, pebStyle);
+      const pbLayer  = makeLayer(pbFeatures,  pbStyle);
+
       pebLayer.addTo(map);
-      overlapLayer.addTo(map);
+      pbLayer.addTo(map);
 
       let pbStationLayer = null;
       if (pbStations) {
         pbStationLayer = L.geoJSON(pbStations, {
           pane: 'stationsPane',
           pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
-            radius: 2.5,
-            color: '#2864b4',
+            radius: 3,
+            color: '#22579d',
             weight: 0.8,
             fillColor: '#2864b4',
-            fillOpacity: 0.75
+            fillOpacity: 0.80
           }),
           onEachFeature: (feature, layer) => {
             const p = feature.properties || {};
             layer.bindPopup(`
-              <strong>${p['Station: Name'] || p.name || 'Station'}</strong><br>
-              ${p['Adresse'] || p.address || ''}<br>
-              ${p['PLZ'] || p.postal_code || ''} ${p['Ort'] || p.place || ''}
+              <strong>${p['Station: Name'] || 'Station'}</strong><br>
+              ${p['Adresse'] || ''}<br>
+              ${p['PLZ'] || ''} ${p['Ort'] || ''}
             `);
           }
         });
       }
 
       const overlays = {
-        'Pick-e-Bike': pebLayer,
-        'PubliBike Velospot': pbLayer,
-        'Overlap': overlapLayer
+        'Pick-e-Bike Bediengebiet': pebLayer,
+        'PubliBike Velospot Bediengebiet': pbLayer
       };
-      if (pbStationLayer) overlays['PubliBike Velospot stations'] = pbStationLayer;
+      if (pbStationLayer) overlays['PubliBike Velospot Stationen'] = pbStationLayer;
       L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
       const legend = L.control({ position: 'bottomright' });
       legend.onAdd = function() {
         const div = L.DomUtil.create('div', 'legend leaflet-control');
         div.innerHTML = `
-          <div style="font-weight:700; margin-bottom:6px;">Active commune layer</div>
+          <div style="font-weight:700; margin-bottom:6px;">Bediengebiet</div>
           <div class="legend-row"><span class="legend-swatch" style="background:#c5402b"></span>Pick-e-Bike</div>
           <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike Velospot</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#6a3d9a"></span>Overlap</div>
         `;
         return div;
       };
       legend.addTo(map);
 
-      const activeFeatures = [...pbFeatures, ...pebFeatures];
-      const activeLayer = L.geoJSON({ type: 'FeatureCollection', features: activeFeatures });
-      if (activeLayer.getBounds && activeLayer.getBounds().isValid()) {
-        map.fitBounds(activeLayer.getBounds().pad(0.10), { padding: [24, 24] });
+      const boundsLayer = L.geoJSON({ type: 'FeatureCollection', features });
+      if (boundsLayer.getBounds && boundsLayer.getBounds().isValid()) {
+        map.fitBounds(boundsLayer.getBounds().pad(0.10), { padding: [24, 24] });
       }
     }).catch(err => {
       console.error(err);
