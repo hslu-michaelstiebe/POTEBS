@@ -63,8 +63,19 @@
     .leaflet-control.legend { background:#fff; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.12); box-shadow:0 8px 24px rgba(0,0,0,.08); line-height:1.35; }
     .legend-row { display:flex; align-items:center; gap:8px; margin:5px 0; font-size:13px; color:#2b2b2b; }
     .legend-swatch { width:14px; height:14px; border-radius:3px; border:1px solid rgba(0,0,0,.18); flex:0 0 14px; }
-    @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } }
-    @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } }
+    .partner-groups { display:grid; grid-template-columns:1fr 2fr 2fr; gap:28px; align-items:start; }
+    .partner-group-label { font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--muted); margin-bottom:10px; }
+    .partner-logos { display:flex; flex-wrap:wrap; gap:12px; }
+    .partner-logos .card { flex:1 1 120px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:96px; gap:8px; }
+    .partner-logos .card img { max-width:100%; max-height:52px; object-fit:contain; }
+    .partner-role { font-size:10px; color:var(--muted); text-align:center; }
+    .advisory-table { width:100%; border-collapse:collapse; font-size:13.5px; }
+    .advisory-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; padding:0 12px 8px 0; border-bottom:1px solid var(--line); }
+    .advisory-table td { padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text); }
+    .advisory-table tr:last-child td { border-bottom:none; }
+    .advisory-table .td-name { font-weight:600; white-space:nowrap; }
+    @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } .partner-groups { grid-template-columns:1fr 1fr; } }
+    @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } .partner-groups { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -97,10 +108,10 @@
       <div class="eyebrow">At a glance</div>
       <h2>Scale meets depth</h2>
       <div class="grid stats">
-        <div class="card"><div class="stat">1.4M</div><div class="muted">operational trip records</div></div>
+        <div class="card"><div class="stat" id="stat-trips">1.5M</div><div class="muted">operational trip records</div></div>
         <div class="card"><div class="stat">1,844</div><div class="muted">survey respondents retained</div></div>
-        <div class="card"><div class="stat">1,743</div><div class="muted">linked user cases</div></div>
-        <div class="card"><div class="stat">0.77</div><div class="muted">Gini coefficient of usage concentration</div></div>
+        <div class="card"><div class="stat" id="stat-linked">1,756</div><div class="muted">linked user cases</div></div>
+        <div class="card"><div class="stat" id="stat-gini">0.77</div><div class="muted">Gini coefficient of usage concentration</div></div>
       </div>
     </div>
   </section>
@@ -140,22 +151,22 @@
       <div class="lorenz-grid" id="lorenzGrid">
         <div class="lorenz-panel">
           <h3>Trip Count — All Users</h3>
-          <div class="panel-sub">Gini coefficients shown in tooltip</div>
+          <div class="panel-sub" id="lc-sub-all-trips">Loading…</div>
           <div class="lorenz-chart" id="lc-all-trips"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Duration (min) — All Users</h3>
-          <div class="panel-sub">Cumulative cycling minutes per user</div>
+          <div class="panel-sub" id="lc-sub-all-duration">Loading…</div>
           <div class="lorenz-chart" id="lc-all-duration"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Trip Count — Survey Respondents</h3>
-          <div class="panel-sub">Linked operational records only</div>
+          <div class="panel-sub" id="lc-sub-survey-trips">Loading…</div>
           <div class="lorenz-chart" id="lc-survey-trips"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Duration (min) — Survey Respondents</h3>
-          <div class="panel-sub">Linked operational records only</div>
+          <div class="panel-sub" id="lc-sub-survey-duration">Loading…</div>
           <div class="lorenz-chart" id="lc-survey-duration"></div>
         </div>
       </div>
@@ -168,14 +179,102 @@
     <div class="container">
       <div class="eyebrow">Consortium and funding</div>
       <h2>Partners</h2>
-      <p class="muted" style="margin-bottom:1rem;">This version uses local logo assets from the repository.</p>
-      <div class="grid logos">
-        <div class="card"><img alt="Swiss Federal Office of Energy" src="ASSETS/BFE.png" /></div>
-        <div class="card"><img alt="HSLU" src="ASSETS/HSLU.png" /></div>
-        <div class="card"><img alt="University of Basel" src="ASSETS/unibasel.png" /></div>
-        <div class="card"><img alt="Pick-e-Bike" src="ASSETS/pickebike.svg" /></div>
-        <div class="card"><img alt="PubliBike Velospot" src="ASSETS/publibike.png" /></div>
+      <div class="partner-groups" style="margin-top:1.5rem;">
+        <!-- Funding -->
+        <div>
+          <div class="partner-group-label">Funding</div>
+          <div class="partner-logos">
+            <div class="card">
+              <img alt="Swiss Federal Office of Energy (SFOE)" src="ASSETS/BFE.png" />
+              <div class="partner-role">Swiss Federal Office of Energy (SFOE)</div>
+            </div>
+          </div>
+        </div>
+        <!-- Academic Partners -->
+        <div>
+          <div class="partner-group-label">Academic Partners</div>
+          <div class="partner-logos">
+            <div class="card">
+              <img alt="HSLU — Lucerne University of Applied Sciences and Arts" src="ASSETS/HSLU.png" />
+              <div class="partner-role">Lead institution</div>
+            </div>
+            <div class="card">
+              <img alt="University of Basel" src="ASSETS/unibasel.png" />
+              <div class="partner-role">Research partner</div>
+            </div>
+          </div>
+        </div>
+        <!-- Implementation Partners -->
+        <div>
+          <div class="partner-group-label">Implementation Partners</div>
+          <div class="partner-logos">
+            <div class="card">
+              <img alt="Pick-e-Bike" src="ASSETS/pickebike.svg" />
+              <div class="partner-role">Pick-e-Bike</div>
+            </div>
+            <div class="card">
+              <img alt="PubliBike Velospot" src="ASSETS/publibike.png" />
+              <div class="partner-role">PubliBike Velospot</div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="advisory" class="section">
+    <div class="container">
+      <div class="eyebrow">Governance</div>
+      <h2>Advisory Board</h2>
+      <p class="muted" style="margin-bottom:1.5rem;">The project is guided by an advisory board of practitioners and researchers from transport, mobility policy, and public finance.</p>
+      <table class="advisory-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Institution</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-name">Beat Hintermann</td>
+            <td>WWZ, University of Basel</td>
+            <td>Professor of Public Finance</td>
+          </tr>
+          <tr>
+            <td class="td-name">Arne Schöllhorn</td>
+            <td>Office of Mobility, Canton of Basel-Stadt</td>
+            <td>Head of Mobility Strategy</td>
+          </tr>
+          <tr>
+            <td class="td-name">Milan Sedlacek</td>
+            <td>Basler Verkehrs-Betriebe (BVB)</td>
+            <td>Head of Transport Operations</td>
+          </tr>
+          <tr>
+            <td class="td-name">Thomas Stadelmann</td>
+            <td>TNW Tarifverbund Nordwestschweiz</td>
+            <td>Deputy Managing Director</td>
+          </tr>
+          <tr>
+            <td class="td-name">Philippe Stadler Benz</td>
+            <td>SBB Swiss Federal Railways</td>
+            <td>Senior Project Manager, First &amp; Last Mile</td>
+          </tr>
+          <tr>
+            <td class="td-name">Martin Urwyler</td>
+            <td>Federal Roads Office (ASTRA)</td>
+            <td>Head of Slow Traffic &amp; Historic Routes</td>
+          </tr>
+          <tr>
+            <td class="td-name">Roland Chrétien</td>
+            <td>Pro Velo beider Basel</td>
+            <td>Executive Director</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -188,10 +287,10 @@
 
     // Map panel DOM ids → JSON keys
     const PANEL_MAP = [
-      { id: 'lc-all-trips',       key: 'all_users_rentals',    yLabel: 'Cumulative % of rentals' },
-      { id: 'lc-all-duration',    key: 'all_users_minutes',    yLabel: 'Cumulative % of minutes' },
-      { id: 'lc-survey-trips',    key: 'survey_users_rentals', yLabel: 'Cumulative % of rentals' },
-      { id: 'lc-survey-duration', key: 'survey_users_minutes', yLabel: 'Cumulative % of minutes' }
+      { id: 'lc-all-trips',       key: 'all_users_rentals',    sub: 'lc-sub-all-trips'       },
+      { id: 'lc-all-duration',    key: 'all_users_minutes',    sub: 'lc-sub-all-duration'    },
+      { id: 'lc-survey-trips',    key: 'survey_users_rentals', sub: 'lc-sub-survey-trips'    },
+      { id: 'lc-survey-duration', key: 'survey_users_minutes', sub: 'lc-sub-survey-duration' }
     ];
 
     // Display names and brand colours (override the JSON colours for consistency)
@@ -206,8 +305,9 @@
       return xs.map((x, i) => [x, ys[i]]);
     }
 
-    function makeLorenzOption(panel, yLabel) {
+    function makeLorenzOption(panel) {
       const providers = panel.providers;
+      const yLabel = panel.y_axis_label || 'Cumulative %';
 
       // Gini footer text for tooltip
       const giniText = Object.entries(PROVIDER_CFG)
@@ -293,18 +393,45 @@
     fetch('data/lorenz.json')
       .then(r => r.json())
       .then(lorenz => {
-        PANEL_MAP.forEach(({ id, key, yLabel }) => {
-          const el = document.getElementById(id);
+        // Update top-level stats from JSON data
+        const allPanel    = lorenz.panels['all_users_rentals'];
+        const surveyPanel = lorenz.panels['survey_users_rentals'];
+        if (allPanel?.providers?.Combined) {
+          const c = allPanel.providers.Combined;
+          const t = c.n_trips;
+          const el = document.getElementById('stat-trips');
+          if (el) el.textContent = t >= 1e6 ? (t / 1e6).toFixed(1) + 'M' : t.toLocaleString();
+          const gEl = document.getElementById('stat-gini');
+          if (gEl) gEl.textContent = c.gini.toFixed(2);
+        }
+        if (surveyPanel?.providers?.Combined) {
+          const el = document.getElementById('stat-linked');
+          if (el) el.textContent = surveyPanel.providers.Combined.n_users.toLocaleString();
+        }
+
+        // Render each chart and populate subtitle
+        PANEL_MAP.forEach(({ id, key, sub }) => {
+          const el    = document.getElementById(id);
+          const subEl = document.getElementById(sub);
           if (!el) return;
           const panel = lorenz.panels[key];
           if (!panel) return;
+
+          // Subtitle: user + trip counts from Combined provider
+          if (subEl && panel.providers?.Combined) {
+            const c = panel.providers.Combined;
+            subEl.textContent = `${c.n_users.toLocaleString()} users · ${c.n_trips.toLocaleString()} trips`;
+          }
+
           const chart = echarts.init(el, null, { renderer: 'svg' });
-          chart.setOption(makeLorenzOption(panel, yLabel));
+          chart.setOption(makeLorenzOption(panel));
           window.addEventListener('resize', () => chart.resize());
         });
       })
       .catch(() => {
-        PANEL_MAP.forEach(({ id }) => {
+        PANEL_MAP.forEach(({ id, sub }) => {
+          const subEl = document.getElementById(sub);
+          if (subEl) subEl.textContent = '';
           const el = document.getElementById(id);
           if (el) el.innerHTML = `
             <div class="lorenz-placeholder">
@@ -352,7 +479,7 @@
       return `
         <strong>${p.GDENAME || 'Municipality'}</strong><br>
         ${systems.join(' &amp; ')}<br>
-        PLZ: ${p.PLZ_Liste || 'n.a.'}
+        ZIP: ${p.PLZ_Liste || 'n/a'}
       `;
     }
 
@@ -406,10 +533,10 @@
       }
 
       const overlays = {
-        'Pick-e-Bike Bediengebiet': pebLayer,
-        'PubliBike Velospot Bediengebiet': pbLayer
+        'Pick-e-Bike Service Area': pebLayer,
+        'PubliBike Velospot Service Area': pbLayer
       };
-      if (pbStationLayer) overlays['PubliBike Velospot Stationen'] = pbStationLayer;
+      if (pbStationLayer) overlays['PubliBike Velospot Stations'] = pbStationLayer;
       L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
       const legend = L.control({ position: 'bottomright' });
