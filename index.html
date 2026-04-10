@@ -69,6 +69,13 @@
     .partner-logos .card { flex:1 1 120px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:96px; gap:8px; }
     .partner-logos .card img { max-width:100%; max-height:52px; object-fit:contain; }
     .partner-role { font-size:10px; color:var(--muted); text-align:center; }
+    .team-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .team-card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; }
+    .team-card .team-name { font-weight:700; font-size:15px; margin-bottom:4px; }
+    .team-card .team-title { font-size:12px; color:var(--muted); margin-bottom:2px; }
+    .team-card .team-inst { font-size:12px; color:var(--pick); font-weight:600; }
+    @media (max-width:900px) { .team-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:640px) { .team-grid { grid-template-columns:1fr; } }
     .advisory-table { width:100%; border-collapse:collapse; font-size:13.5px; }
     .advisory-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; padding:0 12px 8px 0; border-bottom:1px solid var(--line); }
     .advisory-table td { padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text); }
@@ -85,6 +92,7 @@
       <a href="#findings">Findings</a>
       <a href="#mapsec">Map</a>
       <a href="#partners">Partners</a>
+      <a href="#team">Team</a>
     </div>
   </nav>
 
@@ -217,6 +225,37 @@
               <div class="partner-role">PubliBike Velospot</div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="team" class="section">
+    <div class="container">
+      <div class="eyebrow">Research team</div>
+      <h2>Team</h2>
+      <div class="team-grid" style="margin-top:1.5rem;">
+        <div class="team-card">
+          <div class="team-name">Michael Stiebe</div>
+          <div class="team-title">Project Manager</div>
+          <div class="team-inst">HSLU</div>
+        </div>
+        <div class="team-card">
+          <div class="team-name">Prof. Dr. Widar von Arx</div>
+          <div class="team-title">Principal Investigator</div>
+          <div class="team-inst">HSLU</div>
+        </div>
+        <div class="team-card">
+          <div class="team-name">Prof. Dr. Frank Christian Krysiak</div>
+          <div class="team-title">Principal Investigator</div>
+          <div class="team-inst">University of Basel</div>
+        </div>
+        <div class="team-card">
+          <div class="team-name">Benjamin Weggelaar</div>
+          <div class="team-title">Research Associate <span style="color:var(--muted);font-weight:400">(since 10/2024)</span></div>
+          <div class="team-inst">University of Basel</div>
         </div>
       </div>
     </div>
