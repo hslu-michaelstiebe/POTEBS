@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
-    :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; }
+    :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; --rest:#d9d4cd; }
     * { box-sizing:border-box; margin:0; padding:0; }
     html { scroll-behavior:smooth; }
     body { font-family:"DM Sans", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
@@ -50,6 +50,9 @@
     .divider { height:1px; background:var(--line); max-width:1120px; margin:0 auto; }
     .chart-wrap { height:300px; }
     #map { height:560px; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+    .leaflet-control.legend { background:#fff; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.12); box-shadow:0 8px 24px rgba(0,0,0,.08); line-height:1.35; }
+    .legend-row { display:flex; align-items:center; gap:8px; margin:5px 0; font-size:13px; color:#2b2b2b; }
+    .legend-swatch { width:14px; height:14px; border-radius:3px; border:1px solid rgba(0,0,0,.18); flex:0 0 14px; }
     @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } }
     @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } }
   </style>
@@ -112,7 +115,7 @@
     <div class="container">
       <div class="eyebrow">Interactive study area</div>
       <h2>Service areas and station structure</h2>
-      <p class="muted" style="margin-bottom: 1rem;">The map compares data-based concave hulls for PubliBike / Velospot and Pick-e-Bike. The overlap layer highlights their shared spatial footprint. The default view is centered on the Basel core area for readability; station points can be toggled on when needed.</p>
+      <p class="muted" style="margin-bottom: 1rem;">The map shows a commune-based representation of the two systems. Municipalities are classified into PubliBike only, Pick-e-Bike only, overlap, and the remaining TNW area. PubliBike stations can be toggled on as an additional point layer.</p>
       <div id="map"></div>
     </div>
   </section>
@@ -172,81 +175,57 @@
       maxZoom: 20
     }).addTo(map);
 
-    map.createPane('pbHullPane');
-    map.createPane('pebHullPane');
-    map.createPane('overlapPane');
-    map.createPane('stationPane');
-    map.getPane('pbHullPane').style.zIndex = 410;
-    map.getPane('pebHullPane').style.zIndex = 420;
-    map.getPane('overlapPane').style.zIndex = 430;
-    map.getPane('stationPane').style.zIndex = 440;
+    map.createPane('communesPane');
+    map.createPane('stationsPane');
+    map.getPane('communesPane').style.zIndex = 410;
+    map.getPane('stationsPane').style.zIndex = 420;
+
+    function communeStyle(feature) {
+      const p = feature.properties || {};
+      const cat = p.Category || 'TNW rest';
+      const color = p.Category_Color || '#d9d4cd';
+      if (cat === 'TNW rest') {
+        return { pane: 'communesPane', color: '#cfc7be', weight: 0.8, opacity: 0.65, fillColor: color, fillOpacity: 0.14 };
+      }
+      if (cat === 'Overlap') {
+        return { pane: 'communesPane', color: '#5b2d8b', weight: 1.8, opacity: 1, fillColor: '#6a3d9a', fillOpacity: 0.42 };
+      }
+      if (cat === 'PubliBike only') {
+        return { pane: 'communesPane', color: '#22579d', weight: 1.3, opacity: 0.95, fillColor: '#2864b4', fillOpacity: 0.32 };
+      }
+      return { pane: 'communesPane', color: '#b23a26', weight: 1.3, opacity: 0.95, fillColor: '#c5402b', fillOpacity: 0.28 };
+    }
 
     Promise.all([
-      fetch('data/publibike_hull.geojson').then(r => r.json()),
-      fetch('data/pickebike_hull.geojson').then(r => r.json()),
-      fetch('data/ebss_overlap.geojson').then(r => r.json()),
+      fetch('data/ebss_communes.geojson').then(r => r.json()),
       fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
-    ]).then(([pbHull, pebHull, overlap, pbStations]) => {
-      const pbHullLayer = L.geoJSON(pbHull, {
-        pane: 'pbHullPane',
-        style: {
-          color: '#2864b4',
-          weight: 2.2,
-          opacity: 0.95,
-          fillColor: '#2864b4',
-          fillOpacity: 0.05
-        },
+    ]).then(([communes, pbStations]) => {
+      const communeLayer = L.geoJSON(communes, {
+        pane: 'communesPane',
+        style: communeStyle,
         onEachFeature: (feature, layer) => {
           const p = feature.properties || {};
-          layer.bindPopup(`<strong>PubliBike hull</strong><br>${p.method || ''}`);
+          layer.bindPopup(`
+            <strong>${p.GDENAME || 'Municipality'}</strong><br>
+            Category: ${p.Category || ''}<br>
+            PLZ: ${p.PLZ_Liste || 'n.a.'}<br>
+            PubliBike: ${p.PubliBike ?? ''}<br>
+            Pick-e-Bike: ${p.PickeBike ?? ''}<br>
+            Pick-e-Bike point count: ${p.PeB_Point_Count ?? ''}
+          `);
         }
-      });
-
-      const pebHullLayer = L.geoJSON(pebHull, {
-        pane: 'pebHullPane',
-        style: {
-          color: '#c5402b',
-          weight: 2.2,
-          opacity: 0.9,
-          dashArray: '10 6',
-          fillColor: '#c5402b',
-          fillOpacity: 0.035
-        },
-        onEachFeature: (feature, layer) => {
-          const p = feature.properties || {};
-          layer.bindPopup(`<strong>Pick-e-Bike hull</strong><br>${p.method || ''}`);
-        }
-      });
-
-      const overlapLayer = L.geoJSON(overlap, {
-        pane: 'overlapPane',
-        style: {
-          color: '#6a3d9a',
-          weight: 2.4,
-          opacity: 1,
-          fillColor: '#6a3d9a',
-          fillOpacity: 0.18
-        },
-        onEachFeature: (feature, layer) => {
-          const p = feature.properties || {};
-          layer.bindPopup(`<strong>Overlap area</strong><br>${p.method || ''}`);
-        }
-      });
-
-      pbHullLayer.addTo(map);
-      pebHullLayer.addTo(map);
-      overlapLayer.addTo(map);
+      }).addTo(map);
 
       let pbStationLayer = null;
       if (pbStations) {
         pbStationLayer = L.geoJSON(pbStations, {
-          pane: 'stationPane',
+          pane: 'stationsPane',
           pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
             radius: 2.5,
             color: '#2864b4',
             weight: 0.8,
             fillColor: '#2864b4',
-            fillOpacity: 0.7
+            fillOpacity: 0.75
           }),
           onEachFeature: (feature, layer) => {
             const p = feature.properties || {};
@@ -259,17 +238,31 @@
         });
       }
 
-      const overlays = {
-        'PubliBike hull': pbHullLayer,
-        'Pick-e-Bike hull': pebHullLayer,
-        'Overlap': overlapLayer
-      };
+      const overlays = { 'EBSS communes': communeLayer };
       if (pbStationLayer) overlays['PubliBike stations'] = pbStationLayer;
-
       L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
-      if (pbHullLayer.getBounds && pbHullLayer.getBounds().isValid()) {
-        map.fitBounds(pbHullLayer.getBounds().pad(0.55), { padding: [30, 30] });
+      const legend = L.control({ position: 'bottomright' });
+      legend.onAdd = function() {
+        const div = L.DomUtil.create('div', 'legend leaflet-control');
+        div.innerHTML = `
+          <div style="font-weight:700; margin-bottom:6px;">Commune category</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike only</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#c5402b"></span>Pick-e-Bike only</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#6a3d9a"></span>Overlap</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#d9d4cd"></span>TNW rest</div>
+        `;
+        return div;
+      };
+      legend.addTo(map);
+
+      const activeFeatures = communes.features.filter(f => {
+        const cat = (f.properties || {}).Category;
+        return cat && cat !== 'TNW rest';
+      });
+      const activeLayer = L.geoJSON({ type: 'FeatureCollection', features: activeFeatures });
+      if (activeLayer.getBounds && activeLayer.getBounds().isValid()) {
+        map.fitBounds(activeLayer.getBounds().pad(0.12), { padding: [24, 24] });
       }
     }).catch(err => {
       console.error(err);
