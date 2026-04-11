@@ -79,6 +79,15 @@
     .team-card .team-contact { margin-top:12px; padding-top:12px; border-top:1px solid var(--line); font-size:12px; line-height:1.7; color:var(--muted); }
     .team-card .team-contact a { color:var(--pick); text-decoration:none; }
     .team-card .team-contact a:hover { text-decoration:underline; }
+    .timeline { position:relative; padding-left:30px; margin-top:1.5rem; }
+    .timeline::before { content:''; position:absolute; left:0; top:6px; bottom:6px; width:2px; background:var(--line); border-radius:2px; }
+    .tl-item { position:relative; margin-bottom:28px; }
+    .tl-item:last-child { margin-bottom:0; }
+    .tl-item::before { content:''; position:absolute; left:-37px; top:5px; width:10px; height:10px; border-radius:50%; background:var(--card); border:2px solid var(--pick); }
+    .tl-item.tl-phase::before { background:var(--pick); }
+    .tl-date { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; }
+    .tl-title { font-weight:600; font-size:15px; margin:2px 0 3px; }
+    .tl-desc { font-size:13px; color:var(--muted); line-height:1.5; }
     .advisory-list { display:flex; flex-wrap:wrap; gap:10px; }
     .advisory-tag { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 14px; font-size:13px; color:var(--text); }
     .pub-list { list-style:none; padding:0; }
@@ -104,6 +113,7 @@
   <nav>
     <div class="brand">POTE<span>BS</span></div>
     <div class="links">
+      <a href="#timeline">Timeline</a>
       <a href="#findings">Findings</a>
       <a href="#mapsec">Map</a>
       <a href="#partners">Partners</a>
@@ -136,6 +146,72 @@
         <div class="card"><div class="stat">1,844</div><div class="muted">survey respondents retained</div></div>
         <div class="card"><div class="stat" id="stat-linked">1,756</div><div class="muted">linked user cases</div></div>
         <div class="card"><div class="stat" id="stat-gini">0.77</div><div class="muted">Gini coefficient of usage concentration</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="timeline" class="section">
+    <div class="container">
+      <div class="eyebrow">Project progression</div>
+      <h2>Timeline</h2>
+      <div class="timeline">
+
+        <div class="tl-item tl-phase">
+          <div class="tl-date">2022</div>
+          <div class="tl-title">Project launch</div>
+          <div class="tl-desc">POTEBS funded by the Swiss Federal Office of Energy (SFOE). Operational trip data collection begins, covering the Basel metropolitan area.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">May 2024</div>
+          <div class="tl-title">First conference paper — STRC 2024</div>
+          <div class="tl-desc">Stiebe &amp; von Arx. Comparative analysis of user characteristics in free-floating and station-based e-bike sharing. Swiss Transport Research Conference, Ascona.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Sep 2024</div>
+          <div class="tl-title">European Transport Conference — ETC 2024</div>
+          <div class="tl-desc">Presentation of updated comparative findings at ETC, Antwerp.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Oct 2024</div>
+          <div class="tl-title">Team expansion</div>
+          <div class="tl-desc">Benjamin Weggelaar (University of Basel) joins the research team.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Nov 2024</div>
+          <div class="tl-title">Public outreach — HSLU Newsletter</div>
+          <div class="tl-desc">"E-Bike-Sharing boomt in der Schweiz!" published by Lucerne University of Applied Sciences and Arts.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Nov 2025</div>
+          <div class="tl-title">mobil.TUM 2025 — Singapore</div>
+          <div class="tl-desc">Stiebe &amp; von Arx. Understanding user behavior in dock-based and free-floating e-bike sharing systems. Nanyang Technological University.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Dec 2025</div>
+          <div class="tl-title">WWZ Economics Lunch Seminar</div>
+          <div class="tl-desc">Stiebe. Pragmatists, Not Idealists: What drives e-bike sharing usage intensity. Faculty of Business and Economics, University of Basel.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Mar 2026</div>
+          <div class="tl-title">Journal submission — Transportation Research Part D</div>
+          <div class="tl-desc">Stiebe, Krysiak, von Arx &amp; Weggelaar. Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity. Submitted to Elsevier TRD, currently under review.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Mar 2026</div>
+          <div class="tl-title">Sustainable Future Research Lunch — University of Basel</div>
+          <div class="tl-desc">Stiebe &amp; Weggelaar. Drivers of e-bike sharing usage intensity: evidence from free-floating and dock-based systems in Basel.</div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -175,22 +251,18 @@
       <div class="lorenz-grid" id="lorenzGrid">
         <div class="lorenz-panel">
           <h3>Trip Count — All Users</h3>
-          <div class="panel-sub" id="lc-sub-all-trips">Loading…</div>
           <div class="lorenz-chart" id="lc-all-trips"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Duration (min) — All Users</h3>
-          <div class="panel-sub" id="lc-sub-all-duration">Loading…</div>
           <div class="lorenz-chart" id="lc-all-duration"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Trip Count — Survey Respondents</h3>
-          <div class="panel-sub" id="lc-sub-survey-trips">Loading…</div>
           <div class="lorenz-chart" id="lc-survey-trips"></div>
         </div>
         <div class="lorenz-panel">
           <h3>Duration (min) — Survey Respondents</h3>
-          <div class="panel-sub" id="lc-sub-survey-duration">Loading…</div>
           <div class="lorenz-chart" id="lc-survey-duration"></div>
         </div>
       </div>
@@ -364,10 +436,10 @@
 
     // Map panel DOM ids → JSON keys
     const PANEL_MAP = [
-      { id: 'lc-all-trips',       key: 'all_users_rentals',    sub: 'lc-sub-all-trips'       },
-      { id: 'lc-all-duration',    key: 'all_users_minutes',    sub: 'lc-sub-all-duration'    },
-      { id: 'lc-survey-trips',    key: 'survey_users_rentals', sub: 'lc-sub-survey-trips'    },
-      { id: 'lc-survey-duration', key: 'survey_users_minutes', sub: 'lc-sub-survey-duration' }
+      { id: 'lc-all-trips',       key: 'all_users_rentals'    },
+      { id: 'lc-all-duration',    key: 'all_users_minutes'    },
+      { id: 'lc-survey-trips',    key: 'survey_users_rentals' },
+      { id: 'lc-survey-duration', key: 'survey_users_minutes' }
     ];
 
     // Display names and brand colours (override the JSON colours for consistency)
@@ -486,29 +558,19 @@
           if (el) el.textContent = surveyPanel.providers.Combined.n_users.toLocaleString();
         }
 
-        // Render each chart and populate subtitle
-        PANEL_MAP.forEach(({ id, key, sub }) => {
-          const el    = document.getElementById(id);
-          const subEl = document.getElementById(sub);
+        // Render each chart
+        PANEL_MAP.forEach(({ id, key }) => {
+          const el = document.getElementById(id);
           if (!el) return;
           const panel = lorenz.panels[key];
           if (!panel) return;
-
-          // Subtitle: user + trip counts from Combined provider
-          if (subEl && panel.providers?.Combined) {
-            const c = panel.providers.Combined;
-            subEl.textContent = `${c.n_users.toLocaleString()} users · ${c.n_trips.toLocaleString()} trips`;
-          }
-
           const chart = echarts.init(el, null, { renderer: 'svg' });
           chart.setOption(makeLorenzOption(panel));
           window.addEventListener('resize', () => chart.resize());
         });
       })
       .catch(() => {
-        PANEL_MAP.forEach(({ id, sub }) => {
-          const subEl = document.getElementById(sub);
-          if (subEl) subEl.textContent = '';
+        PANEL_MAP.forEach(({ id }) => {
           const el = document.getElementById(id);
           if (el) el.innerHTML = `
             <div class="lorenz-placeholder">
