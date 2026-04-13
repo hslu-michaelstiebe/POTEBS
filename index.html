@@ -115,6 +115,7 @@
     <div class="links">
       <a href="#context">Context</a>
       <a href="#timeline">Timeline</a>
+      <a href="#methods">Methods</a>
       <a href="#findings">Findings</a>
       <a href="#mapsec">Map</a>
       <a href="#partners">Partners</a>
@@ -129,7 +130,7 @@
         <div class="badge">SFOE Research Project</div>
         <h1>POTEBS</h1>
         <div class="subtitle">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</div>
-        <div class="lead">POTEBS investigates e-bike sharing in the Basel metropolitan area by combining large-scale operational records with linked survey data. The current results suggest that intensive use is primarily driven by demonstrated weather resilience, multimodal integration, and perceived functional utility.</div>
+        <div class="lead">POTEBS integrates survey data from 1,844 registered users with approximately 1.4 million operational trip records from free-floating and dock-based systems operating concurrently in Basel. Using Gaussian Mixture Model clustering and multinomial logit analysis, the study identifies what separates power users from dormant registrants — and challenges common assumptions about what drives intensive EBSS use.</div>
       </div>
       <div class="quote">
         <h3>Electric bike sharing appears useful in a real but bounded way.</h3>
@@ -347,14 +348,96 @@
 
   <div class="divider"></div>
 
+  <section id="methods" class="section">
+    <div class="container">
+      <div class="eyebrow">Analytical approach</div>
+      <h2>How the study was conducted</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
+        A three-stage workflow connects raw data to inference: attitudinal measurement via exploratory factor analysis, data-driven user segmentation via Gaussian Mixture Modeling, and predictive modeling via multinomial logit with random forest validation.
+      </p>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 1 — Data integration</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Linking survey and operational records</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Two parallel online surveys — structurally identical, differing only in operator branding — were distributed to approximately 32,000 registered users across both systems. After quality screening (speeders, straight-liners, low reCAPTCHA scores), 1,844 responses were retained. Of these, 1,743 were linked at individual level to the full operational trip history, combining stated preferences with revealed behavior.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 2 — Measurement &amp; segmentation</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">EFA factors and GMM intensity clusters</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Exploratory Factor Analysis (EFA) reduced 32 Likert-scale survey items to seven latent attitudinal constructs, including weather tolerance, environmental self-identity, perceived functional superiority over PT, and multimodal complementarity behavior. Gaussian Mixture Model (GMM) clustering on log-transformed rentals per month then identified three data-driven usage segments — low, medium, and high intensity — without imposing arbitrary thresholds.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 3 — Predictive modeling</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Multinomial logit with random forest validation</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Multinomial logit (MNL) models predicted segment membership from demographic, geographic, mobility-tool, and attitudinal predictors via backward elimination. Three models were estimated: a combined model with provider fixed effect, and separate models per system. Results were validated through 5-fold cross-validation and random forest feature importance rankings, which broadly corroborated the MNL findings.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--pick); background:rgba(197,64,43,.04);">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Key methodological advantage</div>
+        <p style="font-size:15px; line-height:1.75; max-width:920px;">
+          Linking individual survey responses to operational trip histories enables triangulation between stated and revealed preferences. The key behavioral predictor — temperature variance across each user's actual trip history — captures demonstrated weather resilience independently of survey self-reports, and shows negligible correlation with trip volume (r=0.05), confirming it as a genuine behavioral trait.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <section id="findings" class="section">
     <div class="container">
       <div class="eyebrow">Key findings</div>
-      <h2>What the current results suggest</h2>
-      <div class="grid findings">
-        <div class="card"><h3>Usage is highly concentrated</h3><p class="muted">The top 20% of users generate 80.3% of all trips.</p></div>
-        <div class="card"><h3>Power users are pragmatists</h3><p class="muted">High-intensity use is associated with weather resilience, multimodal complementarity, and perceived functional superiority over public transport.</p></div>
-        <div class="card"><h3>System design matters</h3><p class="muted">Dock-based and free-floating services attract different pragmatic usage profiles while operating in the same broader region.</p></div>
+      <h2>What the results show</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
+        The combined MNL model (McFadden's pseudo-R²=0.128, N=1,743) reveals a clear hierarchy: behavioral and utilitarian factors consistently outperform attitudinal and demographic predictors of usage intensity.
+      </p>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Usage concentration</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Extreme concentration and near-50% dormancy</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            The top 20% of users generate 80.3% of all trips (Gini=0.77). GMM clustering identified three segments: low-intensity (48%, mean 0.20 rentals/month — approx. one rental every five months), medium-intensity (39%, mean 1.60), and high-intensity power users (13%, mean 12.71 — riding every two to three days). The ~48% dormancy rate closely replicates Reck &amp; Axhausen (2021) for Swiss EBSS.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">The environmental paradox</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Pro-environmental self-identity <em>reduces</em> power-user likelihood</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Users with stronger environmental self-identity were 32% less likely to be power users (RRR=0.68, p&lt;0.001). This directly contradicts Theory of Planned Behavior predictions and challenges policy narratives positioning EBSS as a solution for environmentally motivated users. In Basel's sustainable transport context, green-minded users may already travel by foot, conventional bike, or PT.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">What actually drives intensity</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Weather resilience and multimodal integration</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Revealed temperature variance — the SD of trip-level temperatures across a user's ride history — raised power-user likelihood by 40% (RRR=1.40, p&lt;0.001). Multimodal complementarity behavior was the strongest attitudinal predictor: users integrating EBSS with PT and treating it as a fallback were 64% more likely to be power users (RRR=1.64, p&lt;0.001). Hedonic enjoyment predicted moderate use but not power-user status.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid charts" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Two archetypes</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Routine optimizers and flexibility maximizers</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            System-specific models reveal two distinct power-user types. Dock-based <strong>routine optimizers</strong> are urban commuters whose exceptional weather resilience (RRR=2.78) and perceived PT superiority reflect habitual corridor-level commitment. Free-floating <strong>flexibility maximizers</strong> are younger multimodal travelers for whom seamless PT integration dominates (RRR=2.14). Both archetypes are pragmatic — neither is distinguished by environmental ideology.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Mode substitution</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">EBSS primarily substitutes public transport, not cars</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            75.5% of users report substituting public transport at least sometimes, versus 34% substituting car trips. Three-quarters of displaced trips already come from sustainable modes, limiting direct decarbonization impact. EBSS instead positions itself as a peak-hour PT overflow valve, a first/last-mile connector, and a reliable fallback that supports car-free lifestyles.
+          </p>
+        </div>
       </div>
     </div>
   </section>
