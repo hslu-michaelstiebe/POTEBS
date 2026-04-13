@@ -107,6 +107,16 @@
     .advisory-table .td-name { font-weight:600; white-space:nowrap; }
     @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } .partner-groups { grid-template-columns:1fr 1fr; } }
     @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } .partner-groups { grid-template-columns:1fr; } }
+    footer { background:#111; color:rgba(255,255,255,.72); padding:48px 24px 32px; }
+    .footer-inner { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:32px; align-items:start; }
+    .footer-brand { font-weight:700; font-size:16px; color:#fff; letter-spacing:.06em; margin-bottom:8px; }
+    .footer-brand span { color:var(--pick); }
+    .footer-label { font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.38); font-weight:700; margin-bottom:8px; }
+    .footer-text { font-size:12.5px; line-height:1.8; }
+    .footer-text a { color:rgba(255,255,255,.55); text-decoration:none; }
+    .footer-text a:hover { color:#fff; }
+    .footer-copy { max-width:1120px; margin:32px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,.08); font-size:11px; color:rgba(255,255,255,.3); text-align:center; }
+    @media (max-width:640px) { .footer-inner { grid-template-columns:1fr; gap:24px; } }
   </style>
 </head>
 <body>
@@ -117,6 +127,7 @@
       <a href="#timeline">Timeline</a>
       <a href="#methods">Methods</a>
       <a href="#findings">Findings</a>
+      <a href="#policy">Policy</a>
       <a href="#mapsec">Map</a>
       <a href="#partners">Partners</a>
       <a href="#team">Team</a>
@@ -256,7 +267,7 @@
       <div class="card" style="border-left:3px solid var(--pick); background:rgba(197,64,43,.04);">
         <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">The research gap</div>
         <p style="font-size:15px; line-height:1.75; max-width:920px;">
-          These five strands converge on a striking absence. <strong>To the best of our knowledge, no existing study provides clear empirical insight into which personal characteristics make a person more likely to use EBSS frequently — and how this interacts with the type of system in place.</strong> POTEBS directly addresses this gap by combining 1.5&nbsp;million operational trip records with linked survey data across free-floating and dock-based systems in the Basel metropolitan area.
+          These five strands converge on a striking absence. <strong>To the best of our knowledge, no existing study provides clear empirical insight into which personal characteristics make a person more likely to use EBSS frequently — and how this interacts with the type of system in place.</strong> POTEBS directly addresses this gap by combining approximately 1.4&nbsp;million operational trip records with linked survey data across free-floating and dock-based systems in the Basel metropolitan area.
         </p>
       </div>
     </div>
@@ -444,11 +455,92 @@
 
   <div class="divider"></div>
 
+  <section id="policy" class="section">
+    <div class="container">
+      <div class="eyebrow">Implications</div>
+      <h2>What this means for policy</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
+        EBSS is a useful but bounded tool. Policy that calibrates expectations accordingly — and invests in the conditions that sustain power users — will extract more value than policy premised on broad environmental appeal or dramatic car substitution.
+      </p>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">System design</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Portfolio over exclusivity</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Dock-based and free-floating systems serve complementary functions. Dock-based anchors urban commuter demand; free-floating extends coverage to suburban areas with higher car-substitution potential. Despite the dock-based system's higher power-user share, the free-floating system achieved 2.5× more rentals per bike per day — suggesting different efficiency profiles that justify co-existence rather than competition.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Messaging</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Utility, not sustainability</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            The negative association between environmental self-identity and power-user status suggests that sustainability-focused marketing may actively misfire among the target segment. Power users value time savings, flexibility, and reliability. Communications should lead with concrete functional benefits — door-to-door speed versus PT, weather-independent commuting — rather than environmental framing.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Infrastructure</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Reduce weather barriers</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Revealed weather resilience is the strongest behavioral predictor of intensive use. Expanding this user base requires infrastructure that lowers the cost of riding in adverse conditions: consistent winter maintenance of cycling paths, covered parking at transit hubs, and real-time path condition information. Prioritizing maintenance over new construction could yield meaningful returns.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Service quality</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Reliability protects the power-user pipeline</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Service reliability concerns disproportionately suppressed potential power users — exactly the segment operators most need to retain. Appropriate fleet sizing, demand-responsive rebalancing, real-time availability information, and short-term advance booking (e.g., 15-minute reservation windows) could convert occasional riders into regulars. Service quality improvements may have multiplicative effects on system viability.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Integration</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Connect EBSS into the multimodal ecosystem</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Multimodal complementarity is the strongest attitudinal predictor of power-user status. Three integration priorities follow: <strong>fare integration</strong> enabling combined subscriptions (EBSS + PT), <strong>information integration</strong> displaying EBSS availability in journey planners (SBB App, Google Maps), and <strong>physical integration</strong> ensuring EBSS stations facilitate seamless transit transfers at key hubs.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Evaluation</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Rethink what counts as success</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Direct decarbonization is limited — three-quarters of substituted trips come from sustainable modes. But EBSS generates value as multimodal glue, a peak-hour PT overflow valve, and a confidence-builder for car-free lifestyles. If EBSS incubates private e-bike adoption among users who then reduce car use, that is a societal benefit even if shared rental counts decline. Evaluation frameworks should reflect this broader role.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <section id="mapsec" class="section">
     <div class="container">
-      <div class="eyebrow">Interactive study area</div>
-      <h2>Service areas and station structure</h2>
-      <p class="muted" style="margin-bottom: 1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional point layer.</p>
+      <div class="eyebrow">Study area</div>
+      <h2>Basel as a testbed — and a demanding one</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.2rem;">
+        Basel is an ideal but challenging setting. With Switzerland's highest PT modal share (32.5%), a strong cycling culture (11.7% modal share), and the country's lowest motorization rate among major cities (319 cars/1,000 inhabitants), sustainable travel is already the norm — making EBSS adoption harder to explain by necessity alone.
+      </p>
+      <div class="grid stats" style="margin-bottom:1.5rem;">
+        <div class="card" style="text-align:center;">
+          <div class="stat" style="font-size:32px; color:var(--pick);">32.5%</div>
+          <div class="muted" style="font-size:13px;">PT modal share — highest in Switzerland</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="stat" style="font-size:32px; color:var(--pick);">11.7%</div>
+          <div class="muted" style="font-size:13px;">Cycling modal share</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="stat" style="font-size:32px; color:var(--pick);">319</div>
+          <div class="muted" style="font-size:13px;">Cars per 1,000 inhabitants — lowest among major Swiss cities</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="stat" style="font-size:32px; color:var(--pick);">2</div>
+          <div class="muted" style="font-size:13px;">EBSS operating simultaneously since Sep 2021</div>
+        </div>
+      </div>
+      <p class="muted" style="margin-bottom:1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional layer.</p>
       <div id="map"></div>
     </div>
   </section>
@@ -457,9 +549,14 @@
 
   <section class="section">
     <div class="container">
-      <div class="eyebrow">Result snapshots</div>
-      <h2>Usage concentration — Lorenz curves</h2>
-      <p class="muted" style="margin-bottom:1.25rem;">Each panel shows the cumulative share of trips (or cycling minutes) as a function of the cumulative share of users, separately for Pick-e-Bike, PubliBike Velospot, and the combined sample. The diagonal represents perfect equality. Hover over the curves for exact values.</p>
+      <div class="eyebrow">Usage concentration</div>
+      <h2>Lorenz curves</h2>
+      <div class="card" style="border-left:3px solid var(--pick); background:rgba(197,64,43,.04); margin-bottom:1.5rem;">
+        <p style="font-size:14.5px; line-height:1.7; max-width:900px;">
+          A Gini coefficient of 0.77 describes extreme inequality — comparable in magnitude to national income distributions in some of the world's most unequal economies, here applied to trip generation. The typical registered user contributes almost nothing to system activity; a tiny minority drives almost everything.
+        </p>
+      </div>
+      <p class="muted" style="margin-bottom:1.25rem;">Each panel shows the cumulative share of trips (or cycling minutes) as a function of the cumulative share of users, for Pick-e-Bike, PubliBike Velospot, and the combined sample. The diagonal represents perfect equality. Hover over the curves for exact values.</p>
       <div class="lorenz-grid" id="lorenzGrid">
         <div class="lorenz-panel">
           <h3>Trip Count — All Users</h3>
@@ -672,6 +769,32 @@
       </ul>
     </div>
   </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">POTE<span>BS</span></div>
+        <p class="footer-text">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</p>
+      </div>
+      <div>
+        <div class="footer-label">Funding &amp; Grant</div>
+        <p class="footer-text">
+          Swiss Federal Office of Energy (SFOE)<br>
+          Grant No. SI/502720-01<br>
+          Project duration: Dec 2023 – Jan 2027
+        </p>
+      </div>
+      <div>
+        <div class="footer-label">Lead Contact</div>
+        <p class="footer-text">
+          Michael Stiebe<br>
+          HSLU — Institute of Tourism and Mobility<br>
+          <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a>
+        </p>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 POTEBS Research Project · Funded by the Swiss Federal Office of Energy (SFOE) · Grant SI/502720-01</p>
+  </footer>
 
   <script>
     // -------------------------------------------------------------------------
