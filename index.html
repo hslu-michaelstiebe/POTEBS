@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
-  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
   <style>
     :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; }
     * { box-sizing:border-box; margin:0; padding:0; }
@@ -118,15 +117,6 @@
     .footer-text a:hover { color:#fff; }
     .footer-copy { max-width:1120px; margin:32px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,.08); font-size:11px; color:rgba(255,255,255,.3); text-align:center; }
     @media (max-width:640px) { .footer-inner { grid-template-columns:1fr; gap:24px; } }
-    #heatmap-map { height:520px; border:1px solid var(--line); border-radius:18px; overflow:hidden; position:relative; }
-    .heat-controls { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1rem; align-items:center; }
-    .heat-controls-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    .heat-controls-sep { width:1px; height:24px; background:var(--line); margin:0 4px; }
-    .heat-controls-label { font-size:10px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--muted); white-space:nowrap; }
-    .heat-btn { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
-    .heat-btn.active { background:var(--pick); color:#fff; border-color:var(--pick); }
-    .heat-btn:hover:not(.active) { border-color:var(--pick); color:var(--pick); }
-    .heat-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--muted); background:rgba(246,243,239,.88); border-radius:18px; z-index:500; pointer-events:none; }
   </style>
 </head>
 <body>
@@ -551,40 +541,33 @@
         </div>
       </div>
       <p class="muted" style="margin-bottom:1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional layer.</p>
-      <div id="map"></div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <section id="heatmap" class="section">
-    <div class="container">
-      <div class="eyebrow">Spatial patterns</div>
-      <h2>Where trips begin and end</h2>
-      <p class="muted" style="max-width:860px; margin-bottom:1.2rem;">
-        Each point represents a 200&thinsp;m grid cell. Intensity reflects trip count on a log scale. Use the hour filter to reveal the morning commute peak, the dominant evening spike, and the more dispersed leisure pattern on nights and weekends.
-      </p>
-
-      <div class="heat-controls">
-        <div class="heat-controls-group">
-          <span class="heat-controls-label">Show</span>
-          <button class="heat-btn active" data-ds="start">Trip origins</button>
-          <button class="heat-btn" data-ds="end">Trip destinations</button>
+      <div class="map-container">
+        <div class="map-filters">
+          <div class="filter-group">
+            <span class="filter-label">Time of Day</span>
+            <div class="filter-ctrl">
+              <input type="range" id="hour-slider" min="0" max="23" value="12">
+              <span class="hour-display" id="hour-val">12:00</span>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Day Type</span>
+            <div class="toggle-group" id="day-toggle">
+              <button class="toggle-btn active" data-val="all">All</button>
+              <button class="toggle-btn" data-val="weekday">Weekday</button>
+              <button class="toggle-btn" data-val="weekend">Weekend</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Provider</span>
+            <div class="toggle-group" id="sys-toggle">
+              <button class="toggle-btn active" data-val="all">Both</button>
+              <button class="toggle-btn" data-val="peb">Pick-e-Bike</button>
+              <button class="toggle-btn" data-val="pb">PubliBike</button>
+            </div>
+          </div>
         </div>
-        <div class="heat-controls-sep"></div>
-        <div class="heat-controls-group">
-          <span class="heat-controls-label">Time of day</span>
-          <button class="hour-btn active" data-hours="all">All day</button>
-          <button class="hour-btn" data-hours="morning">Morning peak (07–09)</button>
-          <button class="hour-btn" data-hours="evening">Evening peak (16–19)</button>
-          <button class="hour-btn" data-hours="midday">Midday (10–15)</button>
-          <button class="hour-btn" data-hours="night">Night (20–06)</button>
-        </div>
-      </div>
-
-      <div style="position:relative;">
-        <div id="heatmap-map"></div>
-        <div class="heat-loading" id="heatmap-loading">Loading trip data&hellip;</div>
+        <div id="map"></div>
       </div>
     </div>
   </section>
@@ -1107,100 +1090,84 @@
       if (boundsLayer.getBounds && boundsLayer.getBounds().isValid()) {
         map.fitBounds(boundsLayer.getBounds().pad(0.10), { padding: [24, 24] });
       }
+
+      // --- Heatmap Logic ---
+      let heatmapData = null;
+      let heatLayer = L.heatLayer([], {
+        radius: 15,
+        blur: 18,
+        max: 50,
+        gradient: { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1: 'red' }
+      }).addTo(map);
+
+      const hourSlider = document.getElementById('hour-slider');
+      const hourVal = document.getElementById('hour-val');
+      const dayToggle = document.getElementById('day-toggle');
+      const sysToggle = document.getElementById('sys-toggle');
+
+      function updateHeatmap() {
+        if (!heatmapData) return;
+        const hour = parseInt(hourSlider.value);
+        const dayType = dayToggle.querySelector('.active').dataset.val;
+        const system = sysToggle.querySelector('.active').dataset.val;
+        
+        const points = [];
+        heatmapData.features.forEach(f => {
+          const p = f.properties;
+          const coords = f.geometry.coordinates;
+          
+          let count = 0;
+          
+          if (system === 'all') {
+            count = p.h[hour] || 0;
+            if (dayType === 'weekday') count = count * (1 - p.w / p.total);
+            if (dayType === 'weekend') count = count * (p.w / p.total);
+          } else {
+            const sData = p[system]; // 'peb' or 'pb'
+            if (sData) {
+              count = sData.h[hour] || 0;
+              if (dayType === 'weekday') count = count * (1 - sData.w / sData.t);
+              if (dayType === 'weekend') count = count * (sData.w / sData.t);
+            }
+          }
+          
+          if (count > 0.05) {
+            points.push([coords[1], coords[0], count * 3]);
+          }
+        });
+        
+        heatLayer.setLatLngs(points);
+      }
+
+      hourSlider.addEventListener('input', () => {
+        hourVal.textContent = `${hourSlider.value.padStart(2, '0')}:00`;
+        updateHeatmap();
+      });
+
+      [dayToggle, sysToggle].forEach(toggle => {
+        toggle.querySelectorAll('.toggle-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            toggle.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            updateHeatmap();
+          });
+        });
+      });
+
+      fetch('data/heatmap_start.geojson')
+        .then(r => r.json())
+        .then(data => {
+          heatmapData = data;
+          updateHeatmap();
+          overlays['Rental Heatmap (Starts)'] = heatLayer;
+          // Re-add layer control to include new overlay
+          L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+        });
+
     }).catch(err => {
       console.error(err);
       document.getElementById('map').innerHTML = '<div style="padding:1rem;color:#6f685f">Map data could not be loaded.</div>';
     });
-
-    // -------------------------------------------------------------------------
-    // Heatmap — trip origins / destinations with hour-of-day filter
-    // GeoJSON properties: total (int), h (object: hour→count), m (object: month→count)
-    // -------------------------------------------------------------------------
-    (function () {
-      const HOUR_GROUPS = {
-        all:     null,
-        morning: [7, 8, 9],
-        evening: [16, 17, 18, 19],
-        midday:  [10, 11, 12, 13, 14, 15],
-        night:   [20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6]
-      };
-
-      const heatMap = L.map('heatmap-map', { scrollWheelZoom: false, zoomControl: true })
-        .setView([47.560, 7.610], 12);
-
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-        maxZoom: 20
-      }).addTo(heatMap);
-
-      const HEAT_OPTS = {
-        radius: 22,
-        blur: 20,
-        maxZoom: 18,
-        minOpacity: 0.35,
-        gradient: { 0.15: '#2864b4', 0.45: '#9b4fc8', 0.72: '#c5402b', 1.0: '#fff8e1' }
-      };
-
-      let datasets = { start: null, end: null };
-      let currentLayer = null;
-      let activeDs    = 'start';
-      let activeHours = 'all';
-
-      function buildPoints(features, hourKey) {
-        const hours = HOUR_GROUPS[hourKey];
-        const raw = [];
-        let maxW = 0;
-        for (const f of features) {
-          const [lng, lat] = f.geometry.coordinates;
-          const w = hours
-            ? hours.reduce((s, h) => s + (f.properties.h[String(h)] || 0), 0)
-            : f.properties.total;
-          if (w > 0) { raw.push([lat, lng, w]); if (w > maxW) maxW = w; }
-        }
-        const logMax = Math.log(maxW + 1);
-        return raw.map(([lat, lng, w]) => [lat, lng, Math.log(w + 1) / logMax]);
-      }
-
-      function render() {
-        if (currentLayer) heatMap.removeLayer(currentLayer);
-        const features = datasets[activeDs];
-        if (!features) return;
-        currentLayer = L.heatLayer(buildPoints(features, activeHours), HEAT_OPTS);
-        currentLayer.addTo(heatMap);
-      }
-
-      const loadingEl = document.getElementById('heatmap-loading');
-      Promise.all([
-        fetch('data/heatmap_start.geojson').then(r => r.json()),
-        fetch('data/heatmap_end.geojson').then(r => r.json())
-      ]).then(([s, e]) => {
-        datasets.start = s.features;
-        datasets.end   = e.features;
-        if (loadingEl) loadingEl.style.display = 'none';
-        render();
-        window.addEventListener('resize', () => heatMap.invalidateSize());
-      }).catch(() => {
-        if (loadingEl) loadingEl.textContent = 'Heatmap data could not be loaded.';
-      });
-
-      document.querySelectorAll('.heat-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.heat-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeDs = btn.dataset.ds;
-          render();
-        });
-      });
-
-      document.querySelectorAll('.hour-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeHours = btn.dataset.hours;
-          render();
-        });
-      });
-    })();
   </script>
 </body>
 </html>
