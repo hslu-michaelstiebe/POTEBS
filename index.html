@@ -1103,8 +1103,8 @@
         night:   [20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6]
       };
 
-      const heatMap = L.map('heatmap-map', { scrollWheelZoom: false, zoomControl: true })
-        .setView([47.560, 7.610], 12);
+      const heatMap = L.map('heatmap-map', { scrollWheelZoom: false, zoomControl: true, minZoom: 11 })
+        .setView([47.560, 7.588], 13);
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
@@ -1112,12 +1112,11 @@
       }).addTo(heatMap);
 
       const HEAT_OPTS = {
-        radius: 18,
-        blur: 10,
+        radius: 16,
+        blur: 8,
         maxZoom: 18,
-        max: 0.75,
-        minOpacity: 0.4,
-        gradient: { 0.15: '#2864b4', 0.5: '#9b2335', 0.8: '#e8461e', 1.0: '#fbbf24' }
+        minOpacity: 0.3,
+        gradient: { 0.05: 'rgba(40,100,200,0.35)', 0.45: '#c5402b', 0.78: '#f59e0b', 1.0: '#fffde7' }
       };
 
       let datasets = { start: null, end: null };
