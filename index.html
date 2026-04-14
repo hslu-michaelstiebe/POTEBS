@@ -119,7 +119,8 @@
     .footer-copy { max-width:1120px; margin:32px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,.08); font-size:11px; color:rgba(255,255,255,.3); text-align:center; }
     @media (max-width:640px) { .footer-inner { grid-template-columns:1fr; gap:24px; } }
     #heatmap-map { height:520px; border:1px solid var(--line); border-radius:18px; overflow:hidden; position:relative; }
-    .heat-controls { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1rem; align-items:center; }
+    .heat-controls { display:flex; flex-direction:column; gap:10px; margin-bottom:1rem; }
+    .heat-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
     .heat-controls-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
     .heat-controls-sep { width:1px; height:24px; background:var(--line); margin:0 4px; }
     .heat-controls-label { font-size:10px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--muted); white-space:nowrap; }
@@ -127,10 +128,10 @@
     .heat-btn.active { background:var(--pick); color:#fff; border-color:var(--pick); }
     .heat-btn:hover:not(.active) { border-color:var(--pick); color:var(--pick); }
     .provider-btn { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
-    .provider-btn[data-provider="combined"].active { background:var(--muted); color:#fff; border-color:var(--muted); }
+    .provider-btn[data-provider="combined"].active { background:#264653; color:#fff; border-color:#264653; }
     .provider-btn[data-provider="peb"].active { background:var(--pick); color:#fff; border-color:var(--pick); }
     .provider-btn[data-provider="pb"].active { background:var(--publi); color:#fff; border-color:var(--publi); }
-    .provider-btn[data-provider="combined"]:hover:not(.active) { border-color:var(--muted); color:var(--muted); }
+    .provider-btn[data-provider="combined"]:hover:not(.active) { border-color:#264653; color:#264653; }
     .provider-btn[data-provider="peb"]:hover:not(.active) { border-color:var(--pick); color:var(--pick); }
     .provider-btn[data-provider="pb"]:hover:not(.active) { border-color:var(--publi); color:var(--publi); }
     .heat-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--muted); background:rgba(246,243,239,.88); border-radius:18px; z-index:500; pointer-events:none; }
@@ -141,13 +142,11 @@
     <div class="brand">POTE<span>BS</span></div>
     <div class="links">
       <a href="#context">Context</a>
-      <a href="#timeline">Timeline</a>
       <a href="#methods">Methods</a>
       <a href="#findings">Findings</a>
-      <a href="#policy">Policy</a>
-      <a href="#mapsec">Map</a>
+      <a href="#recommendations">Recommendations</a>
+      <a href="#heatmap">Data</a>
       <a href="#partners">Partners</a>
-      <a href="#team">Team</a>
       <a href="#publications">Publications</a>
     </div>
   </nav>
@@ -158,7 +157,7 @@
         <div class="badge">SFOE Research Project</div>
         <h1>POTEBS</h1>
         <div class="subtitle">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</div>
-        <div class="lead">POTEBS integrates survey data from 1,844 registered users with approximately 1.4 million operational trip records from free-floating and dock-based systems operating concurrently in Basel. Using Gaussian Mixture Model clustering and multinomial logit analysis, the study identifies what separates power users from dormant registrants — and challenges common assumptions about what drives intensive EBSS use.</div>
+        <div class="lead">Linking 1,844 survey responses to 1.4 million operational trip records across two concurrently operating systems in Basel, POTEBS identifies what separates power users from dormant registrants — and challenges common assumptions about what drives intensive EBSS use.</div>
       </div>
       <div class="quote">
         <h3>Electric bike sharing appears useful in a real but bounded way.</h3>
@@ -180,52 +179,14 @@
     </div>
   </section>
 
-  <section class="section" id="objectives">
+  <section class="section" id="objectives" style="padding-top:0; padding-bottom:36px;">
   <div class="container">
-    <div class="eyebrow">Project objectives</div>
-    <h2>What POTEBS aims to understand</h2>
-    <p class="muted" style="max-width:860px; margin-bottom:1.2rem;">
-      POTEBS investigates how e-bike-sharing systems can support sustainable mobility transitions as part of a flexible multimodal mobility system. Using the Basel metropolitan area as a case study, the project examines both user and provider perspectives to better understand where e-bike sharing creates value, what limits its uptake, and how it can be more effectively integrated with public transport.
-    </p>
-
-    <div class="grid findings">
-      <div class="card">
-        <h3>Main objective</h3>
-        <p class="muted">
-          To provide policymakers and decision-makers with evidence on the potential of e-bike-sharing systems as part of a sustainable mobility system, and on how the combined use of EBSS and public transport can be facilitated.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Core perspective</h3>
-        <p class="muted">
-          The project focuses on both user needs and provider perspectives, because matching supply and demand is crucial for the success of new mobility concepts and services.
-        </p>
-      </div>
-      <div class="card">
-        <h3>Spatial focus</h3>
-        <p class="muted">
-          The project explicitly considers urban and peri-urban contexts, allowing a more nuanced assessment of the role of EBSS across different spatial types.
-        </p>
-      </div>
-    </div>
-
-    <div style="margin-top:2rem;">
-      <h3 style="margin-bottom:.7rem;">Research questions</h3>
-      <div class="card">
-        <p style="margin-bottom:.8rem;">
-          <strong>Overarching question:</strong><br>
-          How can e-bike sharing systems (EBSS) support the mobility transition as part of a flexible multimodal mobility system?
-        </p>
-        <p class="muted" style="margin-bottom:.7rem;">
-          <strong>RQ1:</strong> How do different groups of people use EBSS, alone or as part of multimodal mobility, what hampers use and what benefits do users ascribe to this form of mobility?
-        </p>
-        <p class="muted" style="margin-bottom:.7rem;">
-          <strong>RQ2:</strong> What business models for EBSS or a combination of EBSS and public transport could build on user needs?
-        </p>
-        <p class="muted">
-          <strong>RQ3:</strong> How can EBSS contribute to a sustainable mobility system in urban and peri-urban regions, and which measures could support this contribution?
-        </p>
-      </div>
+    <div class="eyebrow">Research questions</div>
+    <div class="card" style="max-width:860px;">
+      <p style="margin-bottom:.7rem;"><strong>How can EBSS support the mobility transition as part of a flexible multimodal mobility system?</strong></p>
+      <p class="muted" style="font-size:13.5px; margin-bottom:.5rem;"><strong>RQ1</strong> — Which user groups use EBSS and in what multimodal contexts; what hampers use and what benefits do users report?</p>
+      <p class="muted" style="font-size:13.5px; margin-bottom:.5rem;"><strong>RQ2</strong> — What business models for EBSS or EBSS–PT combinations could build on user needs?</p>
+      <p class="muted" style="font-size:13.5px;"><strong>RQ3</strong> — How can EBSS contribute to sustainable mobility in urban and peri-urban regions, and which measures support this?</p>
     </div>
   </div>
 </section>
@@ -237,29 +198,29 @@
       <div class="eyebrow">Research background</div>
       <h2>What prior research tells us</h2>
       <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
-        EBSS is widely discussed as a lever for sustainable urban mobility. Yet existing research leaves a critical question open: <em>which</em> users ride intensively, and why? Five strands of prior literature define what is known — and where the gap lies.
+        EBSS is widely discussed as a lever for sustainable urban mobility — yet a critical question remains open: <em>which</em> users ride intensively, and why?
       </p>
 
       <div class="grid findings" style="margin-bottom:18px;">
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Adopters &amp; usage patterns</div>
-          <h3 style="margin-bottom:8px; font-size:16px;">Usage is both narrow and unequal</h3>
+          <h3 style="margin-bottom:8px; font-size:16px;">Usage is narrow and unequal</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            EBSS users skew young, male, and highly educated (Reck &amp; Axhausen, 2021). Usage is deeply concentrated: the top 22% of users account for 81% of trips (Langford et al., 2013), and roughly half of all registered users are dormant, never returning after sign-up. The financial health of any system therefore rests on a small core of frequent riders.
+            EBSS users skew young, male, and highly educated. The top 22% of users account for 81% of trips, and roughly half of all registrants never return after sign-up — making system viability dependent on a small core of frequent riders.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Mode characteristics</div>
           <h3 style="margin-bottom:8px; font-size:16px;">EBSS is a distinct mobility mode</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Electric assistance lowers physical effort, raises average speeds, and extends practical cycling range — flattening topographic barriers. Shared e-bike trips are longer in distance yet shorter in duration than pedal-bike trips, and demand is more resilient to adverse weather (Zheng et al., 2025). These properties position EBSS to compete directly with public transport for longer, time-sensitive urban trips (Guidon et al., 2019).
+            Electric assistance lowers effort and extends cycling range. Shared e-bike trips are longer in distance yet shorter in duration than pedal-bike trips, with demand more resilient to adverse weather — positioning EBSS to compete with PT on longer urban trips.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Economics</div>
           <h3 style="margin-bottom:8px; font-size:16px;">System viability is fragile</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Vehicle acquisition, maintenance, rebalancing, and vandalism costs frequently exceed revenues, creating subsidy dependence (de Chardon, 2019; Bieliński et al., 2024). Users show strong price sensitivity and low willingness-to-pay. Promotional free-ride periods generate short-lived demand spikes; expanded access options mostly encourage occasional rather than sustained high-frequency use (Weschke, 2024).
+            Vehicle, maintenance, and rebalancing costs frequently exceed revenues, creating subsidy dependence. Users show strong price sensitivity; promotional free-ride periods generate short-lived demand spikes rather than sustained high-frequency use.
           </p>
         </div>
       </div>
@@ -269,14 +230,14 @@
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">System design</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Dock-based and free-floating attract different users</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Dock-based systems offer predictable pickup and return locations suited to routine commutes; free-floating systems enable flexible point-to-point travel but introduce vehicle-availability uncertainty (Shaheen &amp; Chan, 2016). Evidence from Zurich suggests commuters favour dock-based EBSS for predictability, while free-floating systems show more dispersed spatial use (Reck et al., 2021). Whether intensity predictors differ across these designs has not been studied.
+            Dock-based systems suit predictable commute corridors; free-floating enables flexible point-to-point travel but introduces availability uncertainty. Evidence from Zurich suggests commuters prefer dock-based EBSS, while free-floating shows more dispersed spatial use — yet whether intensity predictors differ across designs remains unstudied.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Behavioral drivers</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Environmental attitudes are an uncertain predictor</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Environmental attitudes are frequently cited as adoption motivators, yet a persistent gap between pro-environmental attitudes and actual travel behavior is well documented (Kroesen et al., 2017; Steg &amp; Vlek, 2009). The Theory of Planned Behavior predicts greener attitudes should increase EBSS use; the Technology Acceptance Model points instead to perceived usefulness and ease of use. Which mechanism dominates among active users is empirically unsettled.
+            Environmental attitudes are frequently cited as adoption motivators, yet a persistent gap between pro-environmental self-identity and actual travel behavior is well documented. Whether environmental concern or perceived usefulness drives intensive EBSS use is empirically unsettled.
           </p>
         </div>
       </div>
@@ -284,7 +245,7 @@
       <div class="card" style="border-left:3px solid var(--pick); background:rgba(197,64,43,.04);">
         <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">The research gap</div>
         <p style="font-size:15px; line-height:1.75; max-width:920px;">
-          These five strands converge on a striking absence. <strong>To the best of our knowledge, no existing study provides clear empirical insight into which personal characteristics make a person more likely to use EBSS frequently — and how this interacts with the type of system in place.</strong> POTEBS directly addresses this gap by combining approximately 1.4&nbsp;million operational trip records with linked survey data across free-floating and dock-based systems in the Basel metropolitan area.
+          <strong>No existing study provides clear empirical insight into which personal characteristics make someone more likely to use EBSS frequently — and how this interacts with system type.</strong> POTEBS directly addresses this gap by linking ~1.4&nbsp;million operational trip records to individual survey data across both system types in Basel.
         </p>
       </div>
     </div>
@@ -381,7 +342,7 @@
       <div class="eyebrow">Analytical approach</div>
       <h2>How the study was conducted</h2>
       <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
-        A three-stage workflow connects raw data to inference: attitudinal measurement via exploratory factor analysis, data-driven user segmentation via Gaussian Mixture Modeling, and predictive modeling via multinomial logit with random forest validation.
+        Three stages connect raw data to inference: attitudinal measurement (EFA), data-driven segmentation (GMM), and predictive modeling (multinomial logit with random forest validation).
       </p>
 
       <div class="grid findings" style="margin-bottom:18px;">
@@ -389,21 +350,21 @@
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 1 — Data integration</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Linking survey and operational records</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Two parallel online surveys — structurally identical, differing only in operator branding — were distributed to approximately 32,000 registered users across both systems. After quality screening (speeders, straight-liners, low reCAPTCHA scores), 1,844 responses were retained. Of these, 1,743 were linked at individual level to the full operational trip history, combining stated preferences with revealed behavior.
+            Two parallel surveys were distributed to ~32,000 registered users. After quality screening, 1,844 responses were retained; 1,743 were linked at individual level to the full operational trip history — combining stated preferences with revealed behavior.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 2 — Measurement &amp; segmentation</div>
           <h3 style="margin-bottom:8px; font-size:16px;">EFA factors and GMM intensity clusters</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Exploratory Factor Analysis (EFA) reduced 32 Likert-scale survey items to seven latent attitudinal constructs, including weather tolerance, environmental self-identity, perceived functional superiority over PT, and multimodal complementarity behavior. Gaussian Mixture Model (GMM) clustering on log-transformed rentals per month then identified three data-driven usage segments — low, medium, and high intensity — without imposing arbitrary thresholds.
+            EFA reduced 32 Likert items to seven attitudinal constructs — including weather tolerance, environmental self-identity, and multimodal complementarity. GMM clustering then identified three data-driven usage segments (low, medium, high intensity) without imposing arbitrary thresholds.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 3 — Predictive modeling</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Multinomial logit with random forest validation</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Multinomial logit (MNL) models predicted segment membership from demographic, geographic, mobility-tool, and attitudinal predictors via backward elimination. Three models were estimated: a combined model with provider fixed effect, and separate models per system. Results were validated through 5-fold cross-validation and random forest feature importance rankings, which broadly corroborated the MNL findings.
+            Multinomial logit predicted segment membership from demographic, geographic, and attitudinal predictors via backward elimination. Results were validated through 5-fold cross-validation and random forest feature importance rankings, which broadly corroborated the MNL findings.
           </p>
         </div>
       </div>
@@ -411,7 +372,7 @@
       <div class="card" style="border-left:3px solid var(--pick); background:rgba(197,64,43,.04);">
         <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Key methodological advantage</div>
         <p style="font-size:15px; line-height:1.75; max-width:920px;">
-          Linking individual survey responses to operational trip histories enables triangulation between stated and revealed preferences. The key behavioral predictor — temperature variance across each user's actual trip history — captures demonstrated weather resilience independently of survey self-reports, and shows negligible correlation with trip volume (r=0.05), confirming it as a genuine behavioral trait.
+          Linking survey responses to trip histories enables triangulation between stated and revealed preferences. The key behavioral predictor — temperature variance across a user's ride history — captures demonstrated weather resilience independently of self-reports (r=0.05 with trip volume), confirming it as a genuine behavioral trait rather than a usage artifact.
         </p>
       </div>
     </div>
@@ -424,7 +385,7 @@
       <div class="eyebrow">Key findings</div>
       <h2>What the results show</h2>
       <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
-        The combined MNL model (McFadden's pseudo-R²=0.128, N=1,743) reveals a clear hierarchy: behavioral and utilitarian factors consistently outperform attitudinal and demographic predictors of usage intensity.
+        Behavioral and utilitarian factors consistently outperform attitudinal and demographic predictors of usage intensity (combined MNL: pseudo-R²=0.128, N=1,743).
       </p>
 
       <div class="grid findings" style="margin-bottom:18px;">
@@ -432,21 +393,21 @@
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Usage concentration</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Extreme concentration and near-50% dormancy</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            The top 20% of users generate 80.3% of all trips (Gini=0.77). GMM clustering identified three segments: low-intensity (48%, mean 0.20 rentals/month — approx. one rental every five months), medium-intensity (39%, mean 1.60), and high-intensity power users (13%, mean 12.71 — riding every two to three days). The ~48% dormancy rate closely replicates Reck &amp; Axhausen (2021) for Swiss EBSS.
+            The top 20% of users generate 80.3% of all trips (Gini=0.77). Three segments emerged: low-intensity (48%, ~one rental every five months), medium-intensity (39%), and power users (13%, riding every 2–3 days).
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">The environmental paradox</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Pro-environmental self-identity <em>reduces</em> power-user likelihood</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Users with stronger environmental self-identity were 32% less likely to be power users (RRR=0.68, p&lt;0.001). This directly contradicts Theory of Planned Behavior predictions and challenges policy narratives positioning EBSS as a solution for environmentally motivated users. In Basel's sustainable transport context, green-minded users may already travel by foot, conventional bike, or PT.
+            Users with stronger environmental self-identity were 32% less likely to be power users (RRR=0.68, p&lt;0.001) — directly contradicting Theory of Planned Behavior predictions. In Basel's sustainable transport context, green-minded users may already travel by foot, bike, or PT.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">What actually drives intensity</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Weather resilience and multimodal integration</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Revealed temperature variance — the SD of trip-level temperatures across a user's ride history — raised power-user likelihood by 40% (RRR=1.40, p&lt;0.001). Multimodal complementarity behavior was the strongest attitudinal predictor: users integrating EBSS with PT and treating it as a fallback were 64% more likely to be power users (RRR=1.64, p&lt;0.001). Hedonic enjoyment predicted moderate use but not power-user status.
+            Revealed temperature variance raised power-user likelihood by 40% (RRR=1.40, p&lt;0.001). Multimodal complementarity — integrating EBSS with PT as a reliable fallback — was the strongest attitudinal predictor (RRR=1.64, p&lt;0.001).
           </p>
         </div>
       </div>
@@ -456,14 +417,14 @@
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Two archetypes</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Routine optimizers and flexibility maximizers</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            System-specific models reveal two distinct power-user types. Dock-based <strong>routine optimizers</strong> are urban commuters whose exceptional weather resilience (RRR=2.78) and perceived PT superiority reflect habitual corridor-level commitment. Free-floating <strong>flexibility maximizers</strong> are younger multimodal travelers for whom seamless PT integration dominates (RRR=2.14). Both archetypes are pragmatic — neither is distinguished by environmental ideology.
+            Dock-based <strong>routine optimizers</strong> are urban commuters with exceptional weather resilience (RRR=2.78) and habitual corridor use. Free-floating <strong>flexibility maximizers</strong> are younger multimodal travelers for whom seamless PT integration dominates (RRR=2.14). Neither archetype is distinguished by environmental ideology.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Mode substitution</div>
           <h3 style="margin-bottom:8px; font-size:16px;">EBSS primarily substitutes public transport, not cars</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            75.5% of users report substituting public transport at least sometimes, versus 34% substituting car trips. Three-quarters of displaced trips already come from sustainable modes, limiting direct decarbonization impact. EBSS instead positions itself as a peak-hour PT overflow valve, a first/last-mile connector, and a reliable fallback that supports car-free lifestyles.
+            75.5% of users substitute PT at least sometimes; only 34% substitute car trips. Three-quarters of displaced trips already come from sustainable modes — limiting direct decarbonization impact but positioning EBSS as a PT overflow valve and first/last-mile connector.
           </p>
         </div>
       </div>
@@ -472,12 +433,12 @@
 
   <div class="divider"></div>
 
-  <section id="policy" class="section">
+  <section id="recommendations" class="section">
     <div class="container">
-      <div class="eyebrow">Implications</div>
-      <h2>What this means for policy</h2>
+      <div class="eyebrow">Recommendations</div>
+      <h2>What this means in practice</h2>
       <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
-        EBSS is a useful but bounded tool. Policy that calibrates expectations accordingly — and invests in the conditions that sustain power users — will extract more value than policy premised on broad environmental appeal or dramatic car substitution.
+        EBSS is a useful but bounded tool. Policy calibrated to this reality — investing in the conditions that sustain power users rather than chasing broad environmental appeal — will extract considerably more value.
       </p>
 
       <div class="grid findings" style="margin-bottom:18px;">
@@ -485,21 +446,21 @@
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">System design</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Portfolio over exclusivity</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Dock-based and free-floating systems serve complementary functions. Dock-based anchors urban commuter demand; free-floating extends coverage to suburban areas with higher car-substitution potential. Despite the dock-based system's higher power-user share, the free-floating system achieved 2.5× more rentals per bike per day — suggesting different efficiency profiles that justify co-existence rather than competition.
+            Dock-based and free-floating systems serve complementary functions: dock-based anchors commuter demand; free-floating extends suburban coverage. The free-floating system achieved 2.5× more rentals per bike per day — different efficiency profiles that justify co-existence rather than competition.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Messaging</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Utility, not sustainability</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            The negative association between environmental self-identity and power-user status suggests that sustainability-focused marketing may actively misfire among the target segment. Power users value time savings, flexibility, and reliability. Communications should lead with concrete functional benefits — door-to-door speed versus PT, weather-independent commuting — rather than environmental framing.
+            Sustainability-focused marketing may actively misfire among the power-user segment. Communications should lead with concrete functional benefits — door-to-door speed, weather-independent commuting — rather than environmental framing.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Infrastructure</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Reduce weather barriers</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Revealed weather resilience is the strongest behavioral predictor of intensive use. Expanding this user base requires infrastructure that lowers the cost of riding in adverse conditions: consistent winter maintenance of cycling paths, covered parking at transit hubs, and real-time path condition information. Prioritizing maintenance over new construction could yield meaningful returns.
+            Weather resilience is the strongest behavioral predictor of intensive use. Winter maintenance of cycling paths, covered parking at transit hubs, and real-time path condition information could meaningfully expand the power-user base.
           </p>
         </div>
       </div>
@@ -509,21 +470,21 @@
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Service quality</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Reliability protects the power-user pipeline</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Service reliability concerns disproportionately suppressed potential power users — exactly the segment operators most need to retain. Appropriate fleet sizing, demand-responsive rebalancing, real-time availability information, and short-term advance booking (e.g., 15-minute reservation windows) could convert occasional riders into regulars. Service quality improvements may have multiplicative effects on system viability.
+            Reliability concerns disproportionately suppressed potential power users. Fleet sizing, demand-responsive rebalancing, real-time availability, and short-term advance booking (e.g., 15-minute windows) could convert occasional riders into regulars.
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Integration</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Connect EBSS into the multimodal ecosystem</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Multimodal complementarity is the strongest attitudinal predictor of power-user status. Three integration priorities follow: <strong>fare integration</strong> enabling combined subscriptions (EBSS + PT), <strong>information integration</strong> displaying EBSS availability in journey planners (SBB App, Google Maps), and <strong>physical integration</strong> ensuring EBSS stations facilitate seamless transit transfers at key hubs.
+            Three integration priorities: <strong>fare integration</strong> (combined EBSS + PT subscriptions), <strong>information integration</strong> (EBSS availability in journey planners), and <strong>physical integration</strong> (stations at key transit hubs).
           </p>
         </div>
         <div class="card">
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Evaluation</div>
           <h3 style="margin-bottom:8px; font-size:16px;">Rethink what counts as success</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            Direct decarbonization is limited — three-quarters of substituted trips come from sustainable modes. But EBSS generates value as multimodal glue, a peak-hour PT overflow valve, and a confidence-builder for car-free lifestyles. If EBSS incubates private e-bike adoption among users who then reduce car use, that is a societal benefit even if shared rental counts decline. Evaluation frameworks should reflect this broader role.
+            Direct decarbonization is limited — most substituted trips come from sustainable modes. Evaluation frameworks should reflect EBSS's broader role: multimodal glue, a PT overflow valve, and a confidence-builder for car-free lifestyles.
           </p>
         </div>
       </div>
@@ -537,7 +498,7 @@
       <div class="eyebrow">Study area</div>
       <h2>Basel as a testbed — and a demanding one</h2>
       <p class="muted" style="max-width:860px; margin-bottom:1.2rem;">
-        Basel is an ideal but challenging setting. With Switzerland's highest PT modal share (32.5%), a strong cycling culture (11.7% modal share), and the country's lowest motorization rate among major cities (319 cars/1,000 inhabitants), sustainable travel is already the norm — making EBSS adoption harder to explain by necessity alone.
+        Basel is an ideal but demanding testbed: Switzerland's highest PT modal share, a strong cycling culture, and the lowest motorization rate among major Swiss cities mean sustainable travel is already the norm — making EBSS adoption harder to explain by necessity alone.
       </p>
       <div class="grid stats" style="margin-bottom:1.5rem;">
         <div class="card" style="text-align:center;">
@@ -569,30 +530,33 @@
       <div class="eyebrow">Spatial patterns</div>
       <h2>Where trips begin and end</h2>
       <p class="muted" style="max-width:860px; margin-bottom:1.2rem;">
-        Each point represents a 200&thinsp;m grid cell. Intensity reflects trip count on a log scale. Use the hour filter to reveal the morning commute peak, the dominant evening spike, and the more dispersed leisure pattern on nights and weekends.
+        Each point represents a 200&thinsp;m grid cell; intensity reflects trip count on a log scale. Filter by time of day or provider to explore spatial patterns across both systems.
       </p>
 
       <div class="heat-controls">
-        <div class="heat-controls-group">
-          <span class="heat-controls-label">Show</span>
-          <button class="heat-btn active" data-ds="start">Trip origins</button>
-          <button class="heat-btn" data-ds="end">Trip destinations</button>
+        <div class="heat-row">
+          <div class="heat-controls-group">
+            <span class="heat-controls-label">Show</span>
+            <button class="heat-btn active" data-ds="start">Origins</button>
+            <button class="heat-btn" data-ds="end">Destinations</button>
+          </div>
+          <div class="heat-controls-sep"></div>
+          <div class="heat-controls-group">
+            <span class="heat-controls-label">Provider</span>
+            <button class="provider-btn active" data-provider="combined">Combined</button>
+            <button class="provider-btn" data-provider="peb">Pick-e-Bike</button>
+            <button class="provider-btn" data-provider="pb">PubliBike</button>
+          </div>
         </div>
-        <div class="heat-controls-sep"></div>
-        <div class="heat-controls-group">
-          <span class="heat-controls-label">Time of day</span>
-          <button class="hour-btn active" data-hours="all">All day</button>
-          <button class="hour-btn" data-hours="morning">Morning peak (07–09)</button>
-          <button class="hour-btn" data-hours="evening">Evening peak (16–19)</button>
-          <button class="hour-btn" data-hours="midday">Midday (10–15)</button>
-          <button class="hour-btn" data-hours="night">Night (20–06)</button>
-        </div>
-        <div class="heat-controls-sep"></div>
-        <div class="heat-controls-group">
-          <span class="heat-controls-label">Provider</span>
-          <button class="provider-btn active" data-provider="combined">Combined</button>
-          <button class="provider-btn" data-provider="peb">Pick-e-Bike</button>
-          <button class="provider-btn" data-provider="pb">PubliBike Velospot</button>
+        <div class="heat-row">
+          <div class="heat-controls-group">
+            <span class="heat-controls-label">Time of day</span>
+            <button class="hour-btn active" data-hours="all">All day</button>
+            <button class="hour-btn" data-hours="morning">Morning (07–09)</button>
+            <button class="hour-btn" data-hours="evening">Evening (16–19)</button>
+            <button class="hour-btn" data-hours="midday">Midday (10–15)</button>
+            <button class="hour-btn" data-hours="night">Night (20–06)</button>
+          </div>
         </div>
       </div>
 
