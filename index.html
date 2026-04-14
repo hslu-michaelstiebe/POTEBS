@@ -1152,9 +1152,17 @@
         let maxW = 0;
         for (const f of features) {
           const [lng, lat] = f.geometry.coordinates;
-          const w = hours
-            ? hours.reduce((s, h) => s + (f.properties.h[String(h)] || 0), 0)
-            : f.properties.total;
+          const p = f.properties;
+          let w;
+          if (hours) {
+            w = hours.reduce((s, h) => {
+              const hs = String(h);
+              return s + (p.peb ? (p.peb.h[hs] || 0) : 0)
+                       + (p.pb  ? (p.pb.h[hs]  || 0) : 0);
+            }, 0);
+          } else {
+            w = (p.peb ? p.peb.t : 0) + (p.pb ? p.pb.t : 0);
+          }
           if (w > 0) { raw.push([lat, lng, w]); if (w > maxW) maxW = w; }
         }
         const logMax = Math.log(maxW + 1);
