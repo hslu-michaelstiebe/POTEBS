@@ -9,14 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <style>
     :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; }
     * { box-sizing:border-box; margin:0; padding:0; }
     html { scroll-behavior:smooth; }
     body { font-family:"DM Sans", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
     a { color:inherit; text-decoration:none; }
+    /* New Heatmap Filter Styles */
     .map-container { position:relative; width:100%; }
     .map-filters { position:absolute; top:12px; left:52px; z-index:1000; background:rgba(255,255,255,0.95); padding:10px 14px; border-radius:10px; border:1px solid var(--line); box-shadow:0 4px 12px rgba(0,0,0,0.1); display:flex; gap:16px; align-items:center; backdrop-filter:blur(4px); }
     .filter-group { display:flex; flex-direction:column; gap:2px; }
@@ -25,7 +26,7 @@
     input[type="range"] { width:120px; accent-color:var(--pick); cursor:pointer; }
     .hour-display { font-weight:700; font-size:12px; color:var(--pick); min-width:35px; }
     .toggle-group { display:flex; background:var(--bg); padding:2px; border-radius:6px; border:1px solid var(--line); }
-    .toggle-btn { padding:4px 10px; font-size:11px; font-weight:600; border-radius:4px; cursor:pointer; border:none; background:transparent; color:var(--muted); }
+    .toggle-btn { padding:4px 10px; font-size:11px; font-weight:600; border-radius:4px; cursor:pointer; border:none; background:transparent; color:var(--muted); transition:all 0.2s; }
     .toggle-btn.active { background:white; color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,0.1); }
     nav { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:14px 20px; background:rgba(20,20,20,.92); backdrop-filter:blur(12px); color:#fff; border-bottom:1px solid rgba(255,255,255,.08); }
     nav .brand { font-weight:700; letter-spacing:.06em; }
@@ -1102,12 +1103,12 @@
         map.fitBounds(boundsLayer.getBounds().pad(0.10), { padding: [24, 24] });
       }
 
-      // --- Heatmap Logic ---
+      // --- NEW: Heatmap Implementation ---
       let heatmapData = null;
       let heatLayer = L.heatLayer([], {
         radius: 15,
         blur: 18,
-        max: 50,
+        max: 0.5,
         gradient: { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1: 'red' }
       }).addTo(map);
 
@@ -1126,27 +1127,24 @@
         heatmapData.features.forEach(f => {
           const p = f.properties;
           const coords = f.geometry.coordinates;
-          
           let count = 0;
           
           if (system === 'all') {
             count = p.h[hour] || 0;
-            if (dayType === 'weekday') count = count * (1 - p.w / p.total);
-            if (dayType === 'weekend') count = count * (p.w / p.total);
+            if (dayType === 'weekday') count *= (1 - p.w / p.total);
+            if (dayType === 'weekend') count *= (p.w / p.total);
           } else {
-            const sData = p[system]; // 'peb' or 'pb'
+            const sData = p[system];
             if (sData) {
               count = sData.h[hour] || 0;
-              if (dayType === 'weekday') count = count * (1 - sData.w / sData.t);
-              if (dayType === 'weekend') count = count * (sData.w / sData.t);
+              if (dayType === 'weekday') count *= (1 - sData.w / sData.t);
+              if (dayType === 'weekend') count *= (sData.w / sData.t);
             }
           }
-          
           if (count > 0.05) {
-            points.push([coords[1], coords[0], count * 3]);
+            points.push([coords[1], coords[0], count * 8]); // Intensity multiplier
           }
         });
-        
         heatLayer.setLatLngs(points);
       }
 
@@ -1171,9 +1169,10 @@
           heatmapData = data;
           updateHeatmap();
           overlays['Rental Heatmap (Starts)'] = heatLayer;
-          // Re-add layer control to include new overlay
-          L.control.layers(null, overlays, { collapsed: false }).addTo(map);
-        });
+          // Refresh layer control
+          map.removeControl(layerControl);
+          layerControl = L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+        }).catch(err => console.error("Heatmap load error:", err));
 
     }).catch(err => {
       console.error(err);
