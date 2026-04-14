@@ -1112,11 +1112,12 @@
       }).addTo(heatMap);
 
       const HEAT_OPTS = {
-        radius: 20,
-        blur: 14,
+        radius: 18,
+        blur: 10,
         maxZoom: 18,
-        minOpacity: 0.5,
-        gradient: { 0.2: '#1d4ed8', 0.45: '#7c3aed', 0.72: '#ea580c', 1.0: '#facc15' }
+        max: 0.75,
+        minOpacity: 0.4,
+        gradient: { 0.15: '#2864b4', 0.5: '#9b2335', 0.8: '#e8461e', 1.0: '#fbbf24' }
       };
 
       let datasets = { start: null, end: null };
