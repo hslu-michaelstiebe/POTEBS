@@ -126,6 +126,13 @@
     .heat-btn { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
     .heat-btn.active { background:var(--pick); color:#fff; border-color:var(--pick); }
     .heat-btn:hover:not(.active) { border-color:var(--pick); color:var(--pick); }
+    .provider-btn { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
+    .provider-btn[data-provider="combined"].active { background:var(--muted); color:#fff; border-color:var(--muted); }
+    .provider-btn[data-provider="peb"].active { background:var(--pick); color:#fff; border-color:var(--pick); }
+    .provider-btn[data-provider="pb"].active { background:var(--publi); color:#fff; border-color:var(--publi); }
+    .provider-btn[data-provider="combined"]:hover:not(.active) { border-color:var(--muted); color:var(--muted); }
+    .provider-btn[data-provider="peb"]:hover:not(.active) { border-color:var(--pick); color:var(--pick); }
+    .provider-btn[data-provider="pb"]:hover:not(.active) { border-color:var(--publi); color:var(--publi); }
     .heat-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--muted); background:rgba(246,243,239,.88); border-radius:18px; z-index:500; pointer-events:none; }
   </style>
 </head>
@@ -579,6 +586,13 @@
           <button class="hour-btn" data-hours="evening">Evening peak (16–19)</button>
           <button class="hour-btn" data-hours="midday">Midday (10–15)</button>
           <button class="hour-btn" data-hours="night">Night (20–06)</button>
+        </div>
+        <div class="heat-controls-sep"></div>
+        <div class="heat-controls-group">
+          <span class="heat-controls-label">Provider</span>
+          <button class="provider-btn active" data-provider="combined">Combined</button>
+          <button class="provider-btn" data-provider="peb">Pick-e-Bike</button>
+          <button class="provider-btn" data-provider="pb">PubliBike Velospot</button>
         </div>
       </div>
 
@@ -1143,10 +1157,11 @@
 
       let datasets = { start: null, end: null };
       let currentLayer = null;
-      let activeDs    = 'start';
-      let activeHours = 'all';
+      let activeDs       = 'start';
+      let activeHours    = 'all';
+      let activeProvider = 'combined';
 
-      function buildPoints(features, hourKey) {
+      function buildPoints(features, hourKey, provider) {
         const hours = HOUR_GROUPS[hourKey];
         const raw = [];
         let maxW = 0;
@@ -1157,11 +1172,14 @@
           if (hours) {
             w = hours.reduce((s, h) => {
               const hs = String(h);
-              return s + (p.peb ? (p.peb.h[hs] || 0) : 0)
-                       + (p.pb  ? (p.pb.h[hs]  || 0) : 0);
+              const fromPeb = (provider !== 'pb')  ? (p.peb ? (p.peb.h[hs] || 0) : 0) : 0;
+              const fromPb  = (provider !== 'peb') ? (p.pb  ? (p.pb.h[hs]  || 0) : 0) : 0;
+              return s + fromPeb + fromPb;
             }, 0);
           } else {
-            w = (p.peb ? p.peb.t : 0) + (p.pb ? p.pb.t : 0);
+            const fromPeb = (provider !== 'pb')  ? (p.peb ? p.peb.t : 0) : 0;
+            const fromPb  = (provider !== 'peb') ? (p.pb  ? p.pb.t  : 0) : 0;
+            w = fromPeb + fromPb;
           }
           if (w > 0) { raw.push([lat, lng, w]); if (w > maxW) maxW = w; }
         }
@@ -1173,7 +1191,7 @@
         if (currentLayer) heatMap.removeLayer(currentLayer);
         const features = datasets[activeDs];
         if (!features) return;
-        currentLayer = L.heatLayer(buildPoints(features, activeHours), HEAT_OPTS);
+        currentLayer = L.heatLayer(buildPoints(features, activeHours, activeProvider), HEAT_OPTS);
         currentLayer.addTo(heatMap);
       }
 
@@ -1205,6 +1223,15 @@
           document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           activeHours = btn.dataset.hours;
+          render();
+        });
+      });
+
+      document.querySelectorAll('.provider-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeProvider = btn.dataset.provider;
           render();
         });
       });
