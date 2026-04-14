@@ -129,21 +129,34 @@
       const dayType = document.querySelector('#day-toggle .active').dataset.val;
       const system = document.querySelector('#sys-toggle .active').dataset.val;
       const points = [];
+      
       heatmapData.features.forEach(f => {
-        const p = f.properties; const coords = f.geometry.coordinates; let count = 0;
-        if (system === 'all') {
-          count = p.h[hour] || 0;
-          if (dayType === 'weekday') count *= (1 - p.w / p.total);
-          if (dayType === 'weekend') count *= (p.w / p.total);
-        } else {
-          const sData = p[system];
-          if (sData) {
-            count = sData.h[hour] || 0;
-            if (dayType === 'weekday') count *= (1 - sData.w / sData.t);
-            if (dayType === 'weekend') count *= (sData.w / sData.t);
+        const p = f.properties;
+        const coords = f.geometry.coordinates;
+        let count = 0;
+        
+        if (system === 'all' || system === 'peb') {
+          if (p.peb) {
+            let c = p.peb.h[hour] || 0;
+            if (dayType === 'weekday') c *= (1 - p.peb.w / p.peb.t);
+            if (dayType === 'weekend') c *= (p.peb.w / p.peb.t);
+            count += c;
           }
         }
-        if (count > 0.05) points.push([coords[1], coords[0], count * 12]);
+        
+        if (system === 'all' || system === 'pb') {
+          if (p.pb) {
+            let c = p.pb.h[hour] || 0;
+            if (dayType === 'weekday') c *= (1 - p.pb.w / p.pb.t);
+            if (dayType === 'weekend') c *= (p.pb.w / p.pb.t);
+            count += c;
+          }
+        }
+        
+        if (count > 0.02) {
+          // Increase multiplier for better visibility of station-based PB points
+          points.push([coords[1], coords[0], count * 15]);
+        }
       });
       heatLayer.setLatLngs(points);
     }
