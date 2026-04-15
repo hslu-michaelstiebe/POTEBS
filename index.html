@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>POTEBS Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</title>
   <meta name="description" content="POTEBS investigates the potential of e-bike-sharing systems for sustainable mobility in different spatial types using linked operational and survey data from the Basel metropolitan area." />
+  <meta name="keywords" content="e-bike sharing, EBSS, usage intensity, sustainable mobility, multimodal transport, Basel, free-floating, dock-based, multinomial logit, Gaussian mixture model, power users, weather resilience" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
@@ -45,7 +46,8 @@
     .logos .card { display:flex; align-items:center; justify-content:center; min-height:110px; }
     .logos img { max-width:100%; max-height:64px; object-fit:contain; }
     .charts { grid-template-columns:1fr 1fr; }
-    .card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.03); }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.03); transition:box-shadow .2s, border-color .2s; }
+    .card:hover { box-shadow:0 16px 40px rgba(0,0,0,.07); border-color:rgba(0,0,0,.09); }
     .stat { font-family:"DM Serif Display", serif; font-size:42px; line-height:1; margin-bottom:6px; }
     .muted { color:var(--muted); }
     .divider { height:1px; background:var(--line); max-width:1120px; margin:0 auto; }
@@ -134,6 +136,9 @@
     .provider-btn[data-provider="combined"]:hover:not(.active) { border-color:#264653; color:#264653; }
     .provider-btn[data-provider="peb"]:hover:not(.active) { border-color:var(--pick); color:var(--pick); }
     .provider-btn[data-provider="pb"]:hover:not(.active) { border-color:var(--publi); color:var(--publi); }
+    .hour-btn { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
+    .hour-btn.active { background:var(--dark); color:#fff; border-color:var(--dark); }
+    .hour-btn:hover:not(.active) { border-color:var(--dark); color:var(--dark); }
     .heat-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--muted); background:rgba(246,243,239,.88); border-radius:18px; z-index:500; pointer-events:none; }
   </style>
 </head>
@@ -158,6 +163,10 @@
         <h1>POTEBS</h1>
         <div class="subtitle">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</div>
         <div class="lead">Linking 1,844 survey responses to 1.4 million operational trip records across two concurrently operating systems in Basel, POTEBS identifies what separates power users from dormant registrants — and challenges common assumptions about what drives intensive EBSS use.</div>
+        <p style="margin-top:18px; font-size:11px; color:rgba(255,255,255,.42); letter-spacing:.04em; line-height:1.9;">
+          <span style="color:rgba(255,255,255,.28); font-weight:700; text-transform:uppercase; letter-spacing:.1em; font-size:10px;">Keywords&ensp;</span>
+          e-bike sharing &middot; usage intensity &middot; multimodal mobility &middot; revealed preference &middot; Gaussian Mixture Model &middot; multinomial logit &middot; Basel
+        </p>
       </div>
       <div class="quote">
         <h3>Electric bike sharing appears useful in a real but bounded way.</h3>
@@ -173,7 +182,7 @@
       <div class="grid stats">
         <div class="card"><div class="stat" id="stat-trips">1.5M</div><div class="muted">operational trip records</div></div>
         <div class="card"><div class="stat">1,844</div><div class="muted">survey respondents retained</div></div>
-        <div class="card"><div class="stat" id="stat-linked">1,756</div><div class="muted">linked user cases</div></div>
+        <div class="card"><div class="stat" id="stat-linked">1,743</div><div class="muted">linked user cases (MNL model N)</div></div>
         <div class="card"><div class="stat" id="stat-gini">0.77</div><div class="muted">Gini coefficient of usage concentration</div></div>
       </div>
     </div>
@@ -424,9 +433,16 @@
           <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Mode substitution</div>
           <h3 style="margin-bottom:8px; font-size:16px;">EBSS primarily substitutes public transport, not cars</h3>
           <p class="muted" style="font-size:13.5px; line-height:1.65;">
-            75.5% of users substitute PT at least sometimes; only 34% substitute car trips. Three-quarters of displaced trips already come from sustainable modes — limiting direct decarbonization impact but positioning EBSS as a PT overflow valve and first/last-mile connector.
+            75.5% of users substitute PT at least sometimes; only 34% substitute car trips. 73% of all trips originate or end within 150&thinsp;m of a PT stop — positioning EBSS as an overflow valve for crowded transit rather than a car replacement. Three-quarters of displaced trips already come from sustainable modes.
           </p>
         </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--gold); background:rgba(209,154,24,.04); margin-bottom:18px;">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--gold); margin-bottom:8px;">The incubator effect</div>
+        <p style="font-size:15px; line-height:1.75; max-width:920px;">
+          <strong>Private e-bike ownership significantly reduces shared system use (RRR=0.76, p&lt;0.001).</strong> Users who report that EBSS motivated their purchase of a private e-bike suggest these systems function as an <em>incubator</em> — gradually graduating users from shared toward private micromobility. In Basel's transit-rich, low-motorization context, EBSS may partly undermine its own long-term demand by seeding private ownership.
+        </p>
       </div>
     </div>
   </section>
@@ -728,15 +744,23 @@
       <div class="eyebrow">Governance</div>
       <h2>Advisory Board</h2>
       <p class="muted" style="margin-bottom:1.5rem;">The project is guided by an advisory board of practitioners and researchers from transport, mobility policy, and public finance.</p>
-      <div class="advisory-list">
-        <span class="advisory-tag">WWZ, University of Basel</span>
-        <span class="advisory-tag">Office of Mobility, Canton of Basel-Stadt</span>
-        <span class="advisory-tag">Basler Verkehrs-Betriebe (BVB)</span>
-        <span class="advisory-tag">TNW Tarifverbund Nordwestschweiz</span>
-        <span class="advisory-tag">SBB Swiss Federal Railways</span>
-        <span class="advisory-tag">Federal Roads Office (ASTRA)</span>
-        <span class="advisory-tag">Pro Velo beider Basel</span>
-      </div>
+      <table class="advisory-table" style="margin-top:.5rem;">
+        <thead>
+          <tr>
+            <th>Organisation</th>
+            <th>Sector</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-name">WWZ, University of Basel</td><td>Research &amp; Economics</td></tr>
+          <tr><td class="td-name">Office of Mobility, Canton of Basel-Stadt</td><td>Cantonal Transport Policy</td></tr>
+          <tr><td class="td-name">Basler Verkehrs-Betriebe (BVB)</td><td>Public Transport Operations</td></tr>
+          <tr><td class="td-name">TNW Tarifverbund Nordwestschweiz</td><td>Regional Fare Integration</td></tr>
+          <tr><td class="td-name">SBB Swiss Federal Railways</td><td>National Rail</td></tr>
+          <tr><td class="td-name">Federal Roads Office (ASTRA)</td><td>Federal Infrastructure</td></tr>
+          <tr><td class="td-name">Pro Velo beider Basel</td><td>Active Mobility Advocacy</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
