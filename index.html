@@ -140,6 +140,9 @@
     .hour-btn.active { background:var(--dark); color:#fff; border-color:var(--dark); }
     .hour-btn:hover:not(.active) { border-color:var(--dark); color:var(--dark); }
     .heat-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--muted); background:rgba(246,243,239,.88); border-radius:18px; z-index:500; pointer-events:none; }
+    .heat-legend { display:flex; align-items:center; gap:10px; margin-top:10px; }
+    .heat-legend-bar { flex:1; height:7px; border-radius:4px; background:linear-gradient(to right, rgba(80,10,90,0.85), #7b1c1c, #c5402b, #e8840a, #f5d060, #fffde7); }
+    .heat-legend-label { font-size:10px; color:var(--muted); white-space:nowrap; }
   </style>
 </head>
 <body>
@@ -546,7 +549,7 @@
       <div class="eyebrow">Spatial patterns</div>
       <h2>Where trips begin and end</h2>
       <p class="muted" style="max-width:860px; margin-bottom:1.2rem;">
-        Each point represents a 200&thinsp;m grid cell; intensity reflects trip count on a log scale. Filter by time of day or provider to explore spatial patterns across both systems.
+        Each point represents a 200&thinsp;m grid cell. Colour intensity reflects trip count on a log scale, clamped at the 99th percentile to reveal spatial differentiation across the full distribution. Filter by time of day or provider to compare patterns between systems.
       </p>
 
       <div class="heat-controls">
@@ -579,6 +582,11 @@
       <div style="position:relative;">
         <div id="heatmap-map"></div>
         <div class="heat-loading" id="heatmap-loading">Loading trip data&hellip;</div>
+      </div>
+      <div class="heat-legend">
+        <span class="heat-legend-label">lower trip density</span>
+        <div class="heat-legend-bar"></div>
+        <span class="heat-legend-label">higher trip density</span>
       </div>
     </div>
   </section>
@@ -1136,11 +1144,19 @@
       }).addTo(heatMap);
 
       const HEAT_OPTS = {
-        radius: 16,
-        blur: 8,
+        radius: 22,
+        blur: 12,
         maxZoom: 18,
-        minOpacity: 0.3,
-        gradient: { 0.35: '#313695', 0.65: '#ffffbf', 1.0: '#a50026' }
+        minOpacity: 0.22,
+        gradient: {
+          0.00: 'rgba(0,0,0,0)',
+          0.15: 'rgba(80,10,90,0.72)',
+          0.35: '#7b1c1c',
+          0.55: '#c5402b',
+          0.72: '#e8840a',
+          0.87: '#f5d060',
+          1.00: '#fffde7'
+        }
       };
 
       let datasets = { start: null, end: null };
@@ -1152,7 +1168,6 @@
       function buildPoints(features, hourKey, provider) {
         const hours = HOUR_GROUPS[hourKey];
         const raw = [];
-        let maxW = 0;
         for (const f of features) {
           const [lng, lat] = f.geometry.coordinates;
           const p = f.properties;
@@ -1169,10 +1184,14 @@
             const fromPb  = (provider !== 'peb') ? (p.pb  ? p.pb.t  : 0) : 0;
             w = fromPeb + fromPb;
           }
-          if (w > 0) { raw.push([lat, lng, w]); if (w > maxW) maxW = w; }
+          if (w > 0) raw.push([lat, lng, w]);
         }
-        const logMax = Math.log(maxW + 1);
-        return raw.map(([lat, lng, w]) => [lat, lng, Math.log(w + 1) / logMax]);
+        // P99-clamped log normalization: spreads visual variation across the full
+        // gradient instead of compressing everything toward one extreme hotspot
+        const sorted = raw.map(r => r[2]).sort((a, b) => a - b);
+        const p99val = sorted[Math.floor(sorted.length * 0.99)] || sorted[sorted.length - 1];
+        const logRef = Math.log(p99val + 1);
+        return raw.map(([lat, lng, w]) => [lat, lng, Math.min(1.0, Math.log(w + 1) / logRef)]);
       }
 
       function render() {
