@@ -73,6 +73,9 @@
     .partner-logos .card { flex:1 1 120px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:96px; gap:8px; }
     .partner-logos .card img { max-width:100%; max-height:52px; object-fit:contain; }
     .partner-role { font-size:10px; color:var(--muted); text-align:center; }
+    .partner-logo-link { display:contents; text-decoration:none; }
+    .partner-logo-link img { transition:opacity .15s; }
+    .partner-logo-link:hover img { opacity:0.65; }
     .team-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
     .team-card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; }
     .team-card .team-name { font-weight:700; font-size:15px; margin-bottom:4px; }
@@ -637,7 +640,9 @@
           <div class="partner-group-label">Funding</div>
           <div class="partner-logos">
             <div class="card" style="min-height:130px; padding:24px 20px;">
-              <img alt="Swiss Federal Office of Energy (SFOE)" src="ASSETS/BFE.png" style="max-height:72px;" />
+              <a href="https://www.bfe.admin.ch/bfe/en/home.html" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="Swiss Federal Office of Energy (SFOE)" src="ASSETS/BFE.png" style="max-height:72px;" />
+              </a>
               <div class="partner-role">Swiss Federal Office of Energy (SFOE)</div>
               <div class="partner-role" style="margin-top:6px;"><a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener" style="color:var(--pick); font-size:11px;">ARAMIS ↗</a></div>
             </div>
@@ -648,11 +653,15 @@
           <div class="partner-group-label">Academic Partners</div>
           <div class="partner-logos">
             <div class="card">
-              <img alt="HSLU — Lucerne University of Applied Sciences and Arts" src="ASSETS/HSLU.png" />
+              <a href="https://www.hslu.ch/de-ch/wirtschaft/institute/itm/mobilitaet/" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="HSLU — Lucerne University of Applied Sciences and Arts" src="ASSETS/HSLU.png" />
+              </a>
               <div class="partner-role">Lead institution</div>
             </div>
             <div class="card">
-              <img alt="University of Basel" src="ASSETS/unibasel.png" />
+              <a href="https://wwz.unibas.ch/de/" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="University of Basel" src="ASSETS/unibasel.png" />
+              </a>
               <div class="partner-role">Research partner</div>
             </div>
           </div>
@@ -662,11 +671,15 @@
           <div class="partner-group-label">Implementation Partners</div>
           <div class="partner-logos">
             <div class="card">
-              <img alt="Pick-e-Bike" src="ASSETS/pickebike.svg" />
+              <a href="https://www.pickebike.ch/de/" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="Pick-e-Bike" src="ASSETS/pickebike.svg" />
+              </a>
               <div class="partner-role">Pick-e-Bike</div>
             </div>
             <div class="card">
-              <img alt="PubliBike Velospot" src="ASSETS/publibike.png" style="max-height:64px; max-width:72px;" />
+              <a href="https://www.velospot.info" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="PubliBike Velospot" src="ASSETS/publibike.png" style="max-height:64px; max-width:72px;" />
+              </a>
               <div class="partner-role">PubliBike Velospot</div>
             </div>
           </div>
