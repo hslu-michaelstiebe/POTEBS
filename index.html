@@ -19,7 +19,8 @@
     body { font-family:"DM Sans", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
     a { color:inherit; text-decoration:none; }
     nav { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:14px 20px; background:rgba(20,20,20,.92); backdrop-filter:blur(12px); color:#fff; border-bottom:1px solid rgba(255,255,255,.08); }
-    nav .brand { font-weight:700; letter-spacing:.06em; }
+    nav .brand { font-weight:700; letter-spacing:.06em; cursor:pointer; }
+    nav .brand:hover { opacity:.8; transition:opacity .15s; }
     nav .brand span { color:var(--red); }
     nav .links { display:flex; gap:18px; }
     nav .links a { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.75); }
@@ -147,7 +148,7 @@
 </head>
 <body>
   <nav>
-    <div class="brand">POTE<span>BS</span></div>
+    <a href="#top" class="brand" style="text-decoration:none; color:inherit;">POTE<span>BS</span></a>
     <div class="links">
       <a href="#context">Context</a>
       <a href="#methods">Methods</a>
@@ -635,8 +636,8 @@
         <div>
           <div class="partner-group-label">Funding</div>
           <div class="partner-logos">
-            <div class="card">
-              <img alt="Swiss Federal Office of Energy (SFOE)" src="ASSETS/BFE.png" />
+            <div class="card" style="min-height:130px; padding:24px 20px;">
+              <img alt="Swiss Federal Office of Energy (SFOE)" src="ASSETS/BFE.png" style="max-height:72px;" />
               <div class="partner-role">Swiss Federal Office of Energy (SFOE)</div>
               <div class="partner-role" style="margin-top:6px;"><a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener" style="color:var(--pick); font-size:11px;">ARAMIS ↗</a></div>
             </div>
@@ -665,7 +666,7 @@
               <div class="partner-role">Pick-e-Bike</div>
             </div>
             <div class="card">
-              <img alt="PubliBike Velospot" src="ASSETS/publibike.png" />
+              <img alt="PubliBike Velospot" src="ASSETS/publibike.png" style="max-height:64px; max-width:72px;" />
               <div class="partner-role">PubliBike Velospot</div>
             </div>
           </div>
