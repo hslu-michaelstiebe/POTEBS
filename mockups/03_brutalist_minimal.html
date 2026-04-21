@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>POTEBS — Mock 03 · Brutalist / Minimal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f4f2ec;
+    --ink:#0a0a0a;
+    --line:#0a0a0a;
+    --muted:#555;
+    --red:#e5372b;
+    --grid:rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Space Grotesk",sans-serif;background:var(--bg);color:var(--ink);line-height:1.4;font-size:15px;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"JetBrains Mono",monospace;font-feature-settings:"ss01"}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+  /* Hartes Raster als Hintergrund */
+  body{
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
+  }
+
+  /* NAV — harte Linie, monospace */
+  nav{border-bottom:2px solid var(--ink);background:var(--bg)}
+  nav .row{max-width:1200px;margin:0 auto;padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+  nav .brand{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase}
+  nav .brand em{font-style:normal;background:var(--red);color:#fff;padding:2px 6px;margin-left:2px}
+  nav .links{display:flex;gap:0}
+  nav .links a{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);text-decoration:none;padding:10px 14px;border-left:1px solid var(--ink)}
+  nav .links a:hover{background:var(--ink);color:var(--bg)}
+
+  /* HERO — block-basiert, harte Kontraste */
+  .hero{border-bottom:2px solid var(--ink);background:var(--bg)}
+  .hero-grid{display:grid;grid-template-columns:2fr 1fr;min-height:78vh}
+  .hero-left{padding:48px 40px;border-right:2px solid var(--ink);display:flex;flex-direction:column;justify-content:space-between;gap:40px}
+  .hero-tag{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:flex;gap:14px;align-items:center}
+  .hero-tag .sq{width:10px;height:10px;background:var(--red);display:inline-block}
+  .hero h1{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:128px;line-height:.88;letter-spacing:-.04em;text-transform:uppercase}
+  .hero h1 .red{color:var(--red)}
+  .hero h1 .block{background:var(--ink);color:var(--bg);padding:0 8px}
+  .hero-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;padding-top:18px;border-top:1px solid var(--ink)}
+  .hero-meta div span{display:block;color:var(--muted);margin-bottom:4px}
+  .hero-meta div strong{font-weight:700}
+  .hero-right{padding:48px 36px;display:flex;flex-direction:column;justify-content:space-between;background:var(--ink);color:var(--bg)}
+  .hero-right .label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:16px}
+  .hero-right h2{font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:24px;line-height:1.2;letter-spacing:-.01em}
+  .hero-right .attribution{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:24px}
+
+  /* STATS — als große Blöcke mit Zahlen im Mono */
+  section.stats{border-bottom:2px solid var(--ink);background:var(--bg)}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat-cell{padding:32px 28px;border-right:1px solid var(--ink);display:flex;flex-direction:column;gap:16px;min-height:200px;justify-content:space-between}
+  .stat-cell:last-child{border-right:none}
+  .stat-cell .tag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .stat-cell .num{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:64px;line-height:1;letter-spacing:-.03em}
+  .stat-cell .num.red{color:var(--red)}
+  .stat-cell .lbl{font-size:13px;line-height:1.4;max-width:180px}
+
+  /* FINDINGS — Block-Liste mit harten Rändern */
+  section.findings{border-bottom:2px solid var(--ink);background:var(--bg);padding:60px 0}
+  .sec-head{padding:0 28px;max-width:1200px;margin:0 auto 32px;display:flex;justify-content:space-between;align-items:baseline;gap:24px;border-bottom:1px solid var(--ink);padding-bottom:18px}
+  .sec-head .num{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+  .sec-head h2{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:44px;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+  .findings-list{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin:0 28px;max-width:1200px;margin:0 auto}
+  .f-cell{padding:28px;border-right:1px solid var(--ink);display:flex;flex-direction:column;gap:16px;min-height:340px}
+  .f-cell:last-child{border-right:none}
+  .f-cell .f-num{font-family:"JetBrains Mono",monospace;font-size:48px;font-weight:700;letter-spacing:-.02em;line-height:1}
+  .f-cell .f-num.red{color:var(--red)}
+  .f-cell h3{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:20px;line-height:1.2;letter-spacing:-.01em}
+  .f-cell p{font-size:14px;line-height:1.55;color:#222}
+  .f-cell .pill{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);padding:4px 8px;align-self:flex-start;margin-top:auto}
+
+  /* PARTNERS — Blockraster */
+  section.partners{background:var(--bg);padding:60px 0;border-bottom:2px solid var(--ink)}
+  .part-grid{display:grid;grid-template-columns:repeat(5,1fr);max-width:1200px;margin:0 auto;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+  .part-cell{padding:32px 22px;border-right:1px solid var(--ink);display:flex;flex-direction:column;gap:10px;min-height:160px;justify-content:space-between}
+  .part-cell:last-child{border-right:none}
+  .part-cell .tag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .part-cell .name{font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .part-cell .id{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted);letter-spacing:.08em}
+
+  footer{background:var(--ink);color:var(--bg);padding:36px 0}
+  footer .wrap{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  footer a{color:var(--red);text-decoration:none}
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr}
+    .hero-left{border-right:none;border-bottom:2px solid var(--ink)}
+    .hero h1{font-size:72px}
+    .stats-grid,.findings-list,.part-grid{grid-template-columns:1fr 1fr}
+    .stat-cell,.f-cell,.part-cell{border-bottom:1px solid var(--ink)}
+  }
+  @media (max-width:600px){
+    .hero h1{font-size:56px}
+    .stats-grid,.findings-list,.part-grid{grid-template-columns:1fr}
+    nav .links a:nth-child(n+3){display:none}
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="row">
+      <div class="brand">POTE<em>BS</em></div>
+      <div class="links">
+        <a href="#">01 Context</a>
+        <a href="#">02 Methods</a>
+        <a href="#">03 Findings</a>
+        <a href="#">04 Data</a>
+        <a href="#">05 Team</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-tag"><span class="sq"></span> SFOE / BFE · GRANT SI/502720-01 · 2023—2027</div>
+        <h1>E-BIKE<br/>SHARING,<br/><span class="red">MEASURED.</span></h1>
+        <div class="hero-meta">
+          <div><span>N TRIPS</span><strong>1,487,332</strong></div>
+          <div><span>N SURVEY</span><strong>1,844</strong></div>
+          <div><span>N LINKED</span><strong>1,743</strong></div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div>
+          <div class="label">Interim Finding / 01</div>
+          <h2>Electric bike sharing appears useful in a real but bounded way.</h2>
+        </div>
+        <div class="attribution">— POTEBS / HSLU · Basel</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="tag">[01] Trips</div>
+        <div class="num">1.5M</div>
+        <div class="lbl">operational trip records analyzed across both systems</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">[02] Respondents</div>
+        <div class="num">1,844</div>
+        <div class="lbl">survey respondents retained after cleaning</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">[03] Linked</div>
+        <div class="num">1,743</div>
+        <div class="lbl">linked cases used in the multinomial logit</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">[04] Gini</div>
+        <div class="num red">0.77</div>
+        <div class="lbl">coefficient of usage concentration — extreme</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINDINGS -->
+  <section class="findings">
+    <div class="sec-head">
+      <div class="num">§ 03 · FINDINGS</div>
+      <h2>What the Data Says.</h2>
+    </div>
+    <div class="findings-list">
+      <div class="f-cell">
+        <div class="f-num red">I.</div>
+        <h3>Extreme concentration, near-50% dormancy.</h3>
+        <p>A minority of registered users produces the overwhelming majority of trips, while almost half complete no trip at all. Gini = 0.77.</p>
+        <span class="pill">Concentration</span>
+      </div>
+      <div class="f-cell">
+        <div class="f-num red">II.</div>
+        <h3>Green values do not predict intensive use.</h3>
+        <p>Pro-environmental self-identity <em>reduces</em> power-user likelihood once context is controlled. Power users are utility-optimizers, not ideologues.</p>
+        <span class="pill">Against narrative</span>
+      </div>
+      <div class="f-cell">
+        <div class="f-num red">III.</div>
+        <h3>Substitutes transit — not cars.</h3>
+        <p>Shared e-bike trips most often replace public transport and walking. Direct car-replacement accounts for a small minority of substitutions.</p>
+        <span class="pill">Policy</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="partners">
+    <div class="sec-head">
+      <div class="num">§ 04 · PARTNERS</div>
+      <h2>Consortium.</h2>
+    </div>
+    <div class="part-grid">
+      <div class="part-cell"><div class="tag">[Funding]</div><div class="name">SFOE / BFE</div><div class="id">SI-502720-01</div></div>
+      <div class="part-cell"><div class="tag">[Lead]</div><div class="name">HSLU</div><div class="id">Luzern, CH</div></div>
+      <div class="part-cell"><div class="tag">[Research]</div><div class="name">Uni Basel</div><div class="id">Basel, CH</div></div>
+      <div class="part-cell"><div class="tag">[Operator]</div><div class="name">PubliBike</div><div class="id">Station-based</div></div>
+      <div class="part-cell"><div class="tag">[Operator]</div><div class="name">Pick-e-Bike</div><div class="id">Free-floating</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div>© POTEBS / HSLU / 2026</div>
+      <div><a href="mailto:michael.stiebe@hslu.ch">MICHAEL.STIEBE@HSLU.CH</a></div>
+    </div>
+  </footer>
+</body>
+</html>

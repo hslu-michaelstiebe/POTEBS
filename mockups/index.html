@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>POTEBS — Design Mock-ups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter",sans-serif;background:#fafaf7;color:#111;line-height:1.55;padding:48px 24px 80px}
+  .wrap{max-width:980px;margin:0 auto}
+  .kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#c5402b;margin-bottom:16px;font-weight:600}
+  h1{font-family:"DM Serif Display",serif;font-size:56px;line-height:1.05;letter-spacing:-.02em;margin-bottom:12px}
+  .sub{font-size:17px;color:#444;max-width:640px;margin-bottom:48px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{background:#fff;border:1px solid #e7e1d9;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px;transition:transform .15s, box-shadow .15s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.06)}
+  .card .num{font-family:"DM Serif Display",serif;font-size:34px;line-height:1}
+  .card h2{font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .card p{font-size:14px;color:#555;line-height:1.55}
+  .card .tag{display:inline-block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#c5402b;border:1px solid #c5402b;padding:3px 8px;border-radius:999px;align-self:flex-start}
+  .card a.btn{margin-top:auto;font-size:13px;font-weight:600;color:#111;text-decoration:none;border-bottom:1px solid #111;padding-bottom:2px;align-self:flex-start}
+  .card a.btn:hover{color:#c5402b;border-color:#c5402b}
+  .foot{margin-top:48px;font-size:13px;color:#666;border-top:1px solid #e7e1d9;padding-top:20px}
+  @media (max-width:800px){.grid{grid-template-columns:1fr}h1{font-size:38px}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">POTEBS · Design-Mock-ups</div>
+    <h1>Drei Richtungen zum Anschauen.</h1>
+    <p class="sub">Gleicher Inhalt, gleiche Zahlen, drei sehr unterschiedliche Handschriften. Einfach auf eine Kachel klicken, um das Mock-up in voller Breite zu öffnen.</p>
+
+    <div class="grid">
+      <div class="card">
+        <span class="tag">Mock 01</span>
+        <div class="num">Swiss · Editorial</div>
+        <h2>Ruhig, akademisch, Bauhaus-nah.</h2>
+        <p>Cremefarbener Hintergrund, große Serif, eine Akzentfarbe, dünne Linien statt Cards. Passt zum Basel-Kontext und zum Ton einer Forschungsarbeit.</p>
+        <a class="btn" href="01_swiss_editorial.html">Mock 01 öffnen →</a>
+      </div>
+      <div class="card">
+        <span class="tag">Mock 02</span>
+        <div class="num">Data · Journalism</div>
+        <h2>Long-Read-Format, NYT-ähnlich.</h2>
+        <p>Schmale Lesespalte, Serif-Fließtext, farbliche Kodierung nur dort, wo sie Daten trägt (Pick = orange, PubliBike = blau). Sehr lesefreundlich.</p>
+        <a class="btn" href="02_data_journalism.html">Mock 02 öffnen →</a>
+      </div>
+      <div class="card">
+        <span class="tag">Mock 03</span>
+        <div class="num">Brutalist · Minimal</div>
+        <h2>Raster, Mono, harte Kanten.</h2>
+        <p>Hochkontrastig, block-basiert, Mono-Typo für Zahlen. Mutig und prägnant — eher Signatur eines Labs als eines klassischen Forschungsprojekts.</p>
+        <a class="btn" href="03_brutalist_minimal.html">Mock 03 öffnen →</a>
+      </div>
+    </div>
+
+    <div class="foot">
+      Alle drei Mocks zeigen dieselben Bausteine: Hero, Stats-Strip, drei Findings, Partner-Leiste, Footer. So lässt sich der Unterschied zwischen den Handschriften direkt vergleichen.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>POTEBS — Mock 02 · Data Journalism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#1a1a1a;
+    --muted:#6b7280;
+    --line:#e5e7eb;
+    --softbg:#f9fafb;
+    --pick:#d65a3c;
+    --publi:#2563eb;
+    --highlight:#fef3c7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Inter",-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  .wide{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  /* Nav — sehr zurückhaltend, NYT-artig */
+  nav{border-bottom:1px solid var(--line);padding:12px 0;position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);z-index:100}
+  nav .row{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+  nav .brand{font-weight:700;letter-spacing:.01em}
+  nav .brand em{font-style:normal;color:var(--pick)}
+  nav .links{display:flex;gap:22px}
+  nav .links a{color:var(--muted);text-decoration:none}
+  nav .links a:hover{color:var(--ink)}
+
+  /* Hero — wie ein Long-Read-Artikel */
+  .hero{padding:72px 0 48px;text-align:left;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pick);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .eyebrow .sep{width:24px;height:1px;background:var(--pick)}
+  .hero h1{font-family:"Source Serif 4",Georgia,serif;font-size:56px;line-height:1.08;font-weight:700;letter-spacing:-.02em;margin-bottom:20px;max-width:720px}
+  .dek{font-family:"Source Serif 4",Georgia,serif;font-size:22px;line-height:1.45;color:#333;max-width:680px;font-weight:400}
+  .byline{margin-top:32px;font-size:13px;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+  .byline b{color:var(--ink);font-weight:600}
+  .byline .dot{width:3px;height:3px;background:var(--muted);border-radius:50%;display:inline-block}
+
+  /* Reading column */
+  .article{padding:56px 0}
+  .article p{font-family:"Source Serif 4",Georgia,serif;font-size:19px;line-height:1.65;margin-bottom:22px;color:#1f1f1f}
+  .article p .hl{background:var(--highlight);padding:0 2px}
+  .article h2{font-family:"Source Serif 4",Georgia,serif;font-size:30px;line-height:1.2;font-weight:700;margin:48px 0 16px;letter-spacing:-.01em}
+  .article h3{font-family:"Inter",sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--muted);margin:40px 0 12px}
+
+  /* Stats strip — inline, typografisch */
+  .keystats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);margin:36px 0;padding:24px 0}
+  .keystats .s{padding:0 16px;border-right:1px solid var(--line)}
+  .keystats .s:last-child{border-right:none}
+  .keystats .num{font-family:"Source Serif 4",serif;font-size:36px;font-weight:700;line-height:1;letter-spacing:-.02em}
+  .keystats .num.pick{color:var(--pick)}
+  .keystats .num.publi{color:var(--publi)}
+  .keystats .lbl{font-size:12px;color:var(--muted);line-height:1.4;margin-top:6px}
+
+  /* Inline chart — zeigt wie Daten farblich kodiert werden */
+  .chart-block{margin:40px 0;padding:24px;background:var(--softbg);border:1px solid var(--line);border-radius:4px}
+  .chart-block .chart-title{font-size:13px;font-weight:700;margin-bottom:4px}
+  .chart-block .chart-sub{font-size:12px;color:var(--muted);margin-bottom:18px}
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
+  .bar-row .lbl{width:140px;color:#333}
+  .bar-row .bar{height:16px;display:flex;align-items:center;justify-content:flex-end;color:#fff;font-size:10px;font-weight:700;padding-right:8px;border-radius:2px}
+  .bar.pick{background:var(--pick)}
+  .bar.publi{background:var(--publi)}
+  .bar.muted{background:#9ca3af}
+  .chart-legend{display:flex;gap:18px;font-size:11px;color:var(--muted);margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+  .chart-legend span{display:flex;align-items:center;gap:6px}
+  .chart-legend .sw{width:12px;height:12px;border-radius:2px}
+
+  /* Pull out findings */
+  .finding-card{margin:32px 0;padding:24px 28px;border-left:3px solid var(--pick);background:var(--softbg)}
+  .finding-card .tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--pick);font-weight:700;margin-bottom:8px}
+  .finding-card h3{font-family:"Source Serif 4",serif;font-size:22px;line-height:1.25;font-weight:700;margin-bottom:8px;text-transform:none;letter-spacing:0;color:var(--ink)}
+  .finding-card p{font-size:15px;line-height:1.6;color:#333;font-family:"Inter",sans-serif;margin:0}
+
+  /* Section separator */
+  .sep{border:none;border-top:1px solid var(--line);margin:56px auto;max-width:120px}
+
+  /* Footer */
+  footer{background:var(--softbg);border-top:1px solid var(--line);padding:40px 0;margin-top:72px}
+  .f-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;font-size:13px}
+  .f-grid h4{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:700}
+  .f-grid a{color:var(--ink);text-decoration:none;display:block;line-height:1.9}
+  .f-grid a:hover{color:var(--pick)}
+
+  @media (max-width:700px){
+    .hero h1{font-size:38px}
+    .dek{font-size:18px}
+    .keystats{grid-template-columns:1fr 1fr}
+    .keystats .s{border-bottom:1px solid var(--line);padding:12px 16px}
+    .f-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="row">
+      <div class="brand">POTE<em>BS</em> · Research</div>
+      <div class="links">
+        <a href="#">Findings</a><a href="#">Methods</a><a href="#">Data</a><a href="#">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow"><span class="sep"></span>SFOE Research · Basel · 2023–2027</div>
+      <h1>Who actually uses shared e-bikes — and who just signs up and disappears?</h1>
+      <p class="dek">Linking 1,844 survey responses to 1.4 million trip records across two concurrent sharing systems in the Basel metropolitan area reveals a pattern that challenges the dominant narrative.</p>
+      <div class="byline">
+        <span><b>Michael Stiebe</b> &nbsp;HSLU Luzern</span><span class="dot"></span>
+        <span>With Uni Basel, PubliBike, Pick-e-Bike</span><span class="dot"></span>
+        <span>Updated April 2026</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ARTICLE -->
+  <article class="article">
+    <div class="wrap">
+      <p>In debates about micromobility and the energy transition, shared e-bikes are frequently framed as a tool for environmentally motivated users. <span class="hl">The POTEBS project finds something else entirely.</span></p>
+
+      <p>Across the two systems studied in Basel — the station-based <strong style="color:var(--publi)">PubliBike</strong> network and the free-floating <strong style="color:var(--pick)">Pick-e-Bike</strong> service — usage is extraordinarily concentrated. A small minority of riders produces the bulk of the trips, while almost half of registered users complete no trip at all.</p>
+
+      <!-- KEY STATS -->
+      <div class="keystats">
+        <div class="s"><div class="num">1.5M</div><div class="lbl">operational trip records</div></div>
+        <div class="s"><div class="num">1,844</div><div class="lbl">survey respondents</div></div>
+        <div class="s"><div class="num pick">0.77</div><div class="lbl">Gini coefficient of usage</div></div>
+        <div class="s"><div class="num publi">~50%</div><div class="lbl">of registrants never ride</div></div>
+      </div>
+
+      <h2>What separates power users from dormant accounts?</h2>
+      <p>POTEBS links individual survey answers to each user's actual riding record — a rare pairing in the literature — and runs a multinomial logit model on 1,743 linked cases, validated by a random forest benchmark. The model doesn't find what one might expect.</p>
+
+      <div class="finding-card">
+        <div class="tag">Finding 01 · Against the narrative</div>
+        <h3>Pro-environmental self-identity <em>reduces</em> power-user likelihood.</h3>
+        <p>Controlling for demographics and travel context, users with strong environmentalist self-identity are less likely to be intensive EBSS users — not more. Power use is pragmatic, not ideological.</p>
+      </div>
+
+      <!-- CHART (inline, farblich kodiert) -->
+      <div class="chart-block">
+        <div class="chart-title">Mode that EBSS trips most often replace</div>
+        <div class="chart-sub">Self-reported substitution, all linked respondents</div>
+        <div class="bar-row"><div class="lbl">Public transport</div><div class="bar muted" style="width:62%">62%</div></div>
+        <div class="bar-row"><div class="lbl">Walking</div><div class="bar muted" style="width:18%">18%</div></div>
+        <div class="bar-row"><div class="lbl">Private bicycle</div><div class="bar muted" style="width:10%">10%</div></div>
+        <div class="bar-row"><div class="lbl">Car</div><div class="bar pick" style="width:7%">7%</div></div>
+        <div class="bar-row"><div class="lbl">Other</div><div class="bar muted" style="width:3%">3%</div></div>
+        <div class="chart-legend">
+          <span><span class="sw" style="background:var(--pick)"></span>Policy-relevant shift</span>
+          <span><span class="sw" style="background:#9ca3af"></span>Other substitution</span>
+        </div>
+      </div>
+
+      <div class="finding-card">
+        <div class="tag">Finding 02 · Policy implication</div>
+        <h3>EBSS primarily substitutes public transport, not cars.</h3>
+        <p>This has direct consequences for how emissions savings are reported and how cities should frame their investment in shared micromobility.</p>
+      </div>
+
+      <h2>The bounded usefulness of electric bike sharing</h2>
+      <p>Read together, the findings suggest that EBSS solves a real but narrow set of problems — multimodal last-mile connections, routine optimization, flexible trip planning — and that its social impact depends on whether operators and policymakers design around <em>that</em> reality rather than an idealized one.</p>
+
+      <hr class="sep" />
+    </div>
+  </article>
+
+  <footer>
+    <div class="wide">
+      <div class="f-grid">
+        <div>
+          <h4>About</h4>
+          <p style="font-size:13px;line-height:1.7;color:#333">POTEBS is a 2023–2027 Swiss Federal Office of Energy research project investigating the potential of e-bike sharing for sustainable mobility in urban, peri-urban, and rural spatial types.</p>
+        </div>
+        <div>
+          <h4>Sections</h4>
+          <a href="#">Findings</a><a href="#">Methods</a><a href="#">Data</a><a href="#">Publications</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a>
+          <a href="#">HSLU Luzern</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

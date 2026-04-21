@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POTEBS Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</title>
+  <meta name="description" content="POTEBS investigates the potential of e-bike-sharing systems for sustainable mobility in different spatial types using linked operational and survey data from the Basel metropolitan area." />
+  <meta name="keywords" content="e-bike sharing, EBSS, usage intensity, sustainable mobility, multimodal transport, Basel, free-floating, dock-based, multinomial logit, Gaussian mixture model, power users, weather resilience" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <style>
+    :root { --red:#dc0018; --dark:#171717; --bg:#f6f3ef; --card:#ffffff; --line:#e7e1d9; --text:#2b2b2b; --muted:#6f685f; --pick:#c5402b; --publi:#2864b4; --gold:#d19a18; --overlap:#6a3d9a; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body { font-family:"DM Sans", sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+    a { color:inherit; text-decoration:none; }
+    nav { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:14px 20px; background:rgba(20,20,20,.92); backdrop-filter:blur(12px); color:#fff; border-bottom:1px solid rgba(255,255,255,.08); }
+    nav .brand { font-weight:700; letter-spacing:.06em; cursor:pointer; }
+    nav .brand:hover { opacity:.8; transition:opacity .15s; }
+    nav .brand span { color:var(--red); }
+    nav .links { display:flex; gap:18px; }
+    nav .links a { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.75); }
+    nav .links a:hover { color:#fff; }
+    .hero { min-height:100vh; padding:110px 24px 48px; background:radial-gradient(circle at 75% 25%, rgba(197,64,43,.22), transparent 28%), linear-gradient(160deg, #111 0%, #241913 60%, #3a1e18 100%); color:#fff; display:flex; align-items:center; position:relative; overflow:hidden; }
+    .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,.58) 12%, rgba(0,0,0,.40) 48%, rgba(0,0,0,.18) 100%); pointer-events:none; }
+    .wrap { max-width:1120px; margin:0 auto; width:100%; position:relative; z-index:1; }
+    .hero-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:28px; align-items:end; }
+    .badge { display:inline-block; border:1px solid rgba(255,255,255,.2); border-radius:999px; padding:8px 14px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:16px; background:rgba(0,0,0,.18); }
+    .hero h1 { font-family:"DM Serif Display", serif; font-size:64px; line-height:1; margin:0; color:#fff; }
+    .subtitle { font-size:22px; max-width:800px; margin:10px 0 18px; color:rgba(255,255,255,.88); }
+    .lead { font-size:18px; max-width:820px; color:rgba(255,255,255,.9); }
+    .quote { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); border-radius:20px; padding:24px; }
+    .quote h3 { font-family:"DM Serif Display", serif; font-size:34px; line-height:1.2; color:#fff; margin:0 0 10px; }
+    .quote p { color:rgba(255,255,255,.82); margin:0; }
+    .section { padding:68px 24px; }
+    .container { max-width:1120px; margin:0 auto; }
+    .eyebrow { font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--pick); font-weight:700; margin-bottom:10px; }
+    h2 { font-family:"DM Serif Display", serif; font-size:42px; line-height:1.1; margin:0 0 12px; }
+    .grid { display:grid; gap:18px; }
+    .stats { grid-template-columns:repeat(4,1fr); }
+    .findings { grid-template-columns:repeat(3,1fr); }
+    .logos { grid-template-columns:repeat(5,1fr); align-items:center; }
+    .logos .card { display:flex; align-items:center; justify-content:center; min-height:110px; }
+    .logos img { max-width:100%; max-height:64px; object-fit:contain; }
+    .charts { grid-template-columns:1fr 1fr; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.03); transition:box-shadow .2s, border-color .2s; }
+    .card:hover { box-shadow:0 16px 40px rgba(0,0,0,.07); border-color:rgba(0,0,0,.09); }
+    .stat { font-family:"DM Serif Display", serif; font-size:42px; line-height:1; margin-bottom:6px; }
+    .muted { color:var(--muted); }
+    .divider { height:1px; background:var(--line); max-width:1120px; margin:0 auto; }
+    .chart-wrap { height:300px; }
+    .lorenz-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .lorenz-panel { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 18px 12px; box-shadow:0 10px 30px rgba(0,0,0,.03); }
+    .lorenz-panel h3 { font-size:14px; font-weight:700; margin-bottom:4px; }
+    .lorenz-panel .panel-sub { font-size:12px; color:var(--muted); margin-bottom:10px; }
+    .lorenz-chart { height:280px; }
+    .lorenz-legend { display:flex; gap:14px; margin-top:8px; flex-wrap:wrap; }
+    .lorenz-legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); }
+    .lorenz-legend-dot { width:20px; height:3px; border-radius:2px; flex-shrink:0; }
+    .lorenz-placeholder { display:flex; align-items:center; justify-content:center; height:280px; color:var(--muted); font-size:13px; text-align:center; gap:8px; flex-direction:column; }
+    @media (max-width:640px) { .lorenz-grid { grid-template-columns:1fr; } }
+    #map { height:560px; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+    .leaflet-control.legend { background:#fff; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.12); box-shadow:0 8px 24px rgba(0,0,0,.08); line-height:1.35; }
+    .legend-row { display:flex; align-items:center; gap:8px; margin:5px 0; font-size:13px; color:#2b2b2b; }
+    .legend-swatch { width:14px; height:14px; border-radius:3px; border:1px solid rgba(0,0,0,.18); flex:0 0 14px; }
+    .partner-groups { display:grid; grid-template-columns:1fr 2fr 2fr; gap:28px; align-items:start; }
+    .partner-group-label { font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--muted); margin-bottom:10px; }
+    .partner-logos { display:flex; flex-wrap:wrap; gap:12px; }
+    .partner-logos .card { flex:1 1 120px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:96px; gap:8px; }
+    .partner-logos .card img { max-width:100%; max-height:52px; object-fit:contain; }
+    .partner-role { font-size:10px; color:var(--muted); text-align:center; }
+    .partner-logo-link { display:contents; text-decoration:none; }
+    .partner-logo-link img { transition:opacity .15s; }
+    .partner-logo-link:hover img { opacity:0.65; }
+    .team-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .team-card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; }
+    .team-card .team-name { font-weight:700; font-size:15px; margin-bottom:4px; }
+    .team-card .team-title { font-size:12px; color:var(--muted); margin-bottom:2px; }
+    .team-card .team-inst { font-size:12px; color:var(--pick); font-weight:600; }
+    @media (max-width:900px) { .team-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:640px) { .team-grid { grid-template-columns:1fr; } }
+    .team-card .team-contact { margin-top:12px; padding-top:12px; border-top:1px solid var(--line); font-size:12px; line-height:1.7; color:var(--muted); }
+    .team-card .team-contact a { color:var(--pick); text-decoration:none; }
+    .team-card .team-contact a:hover { text-decoration:underline; }
+    .timeline { position:relative; padding-left:30px; margin-top:1.5rem; }
+    .timeline::before { content:''; position:absolute; left:0; top:6px; bottom:6px; width:2px; background:var(--line); border-radius:2px; }
+    .tl-item { position:relative; margin-bottom:28px; }
+    .tl-item:last-child { margin-bottom:0; }
+    .tl-item::before { content:''; position:absolute; left:-37px; top:5px; width:10px; height:10px; border-radius:50%; background:var(--card); border:2px solid var(--pick); }
+    .tl-item.tl-phase::before { background:var(--pick); }
+    .tl-date { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; }
+    .tl-title { font-weight:600; font-size:15px; margin:2px 0 3px; }
+    .tl-desc { font-size:13px; color:var(--muted); line-height:1.5; }
+    .advisory-list { display:flex; flex-wrap:wrap; gap:10px; }
+    .advisory-tag { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 14px; font-size:13px; color:var(--text); }
+    .pub-list { list-style:none; padding:0; }
+    .pub-list li { padding:14px 0; border-bottom:1px solid var(--line); display:flex; gap:14px; align-items:flex-start; }
+    .pub-list li:last-child { border-bottom:none; }
+    .pub-badge { flex-shrink:0; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:3px 8px; border-radius:4px; margin-top:3px; }
+    .pub-badge.journal   { background:#fef3e2; color:#b45309; }
+    .pub-badge.conf      { background:#eff6ff; color:#1d4ed8; }
+    .pub-badge.talk      { background:#f0fdf4; color:#166534; }
+    .pub-badge.press     { background:#faf5ff; color:#7e22ce; }
+    .pub-cite { font-size:13.5px; line-height:1.6; }
+    .pub-cite a { color:var(--pick); word-break:break-all; }
+    .advisory-table { width:100%; border-collapse:collapse; font-size:13.5px; }
+    .advisory-table th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; padding:0 12px 8px 0; border-bottom:1px solid var(--line); }
+    .advisory-table td { padding:10px 12px 10px 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text); }
+    .advisory-table tr:last-child td { border-bottom:none; }
+    .advisory-table .td-name { font-weight:600; white-space:nowrap; }
+    @media (max-width:900px) { .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr 1fr; } .hero h1 { font-size:48px; } .partner-groups { grid-template-columns:1fr 1fr; } }
+    @media (max-width:640px) { nav .links { display:none; } .hero-grid, .stats, .findings, .logos, .charts { grid-template-columns:1fr; } .hero h1 { font-size:40px; } .subtitle { font-size:18px; } .partner-groups { grid-template-columns:1fr; } }
+    footer { background:#111; color:rgba(255,255,255,.72); padding:48px 24px 32px; }
+    .footer-inner { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:32px; align-items:start; }
+    .footer-brand { font-weight:700; font-size:16px; color:#fff; letter-spacing:.06em; margin-bottom:8px; }
+    .footer-brand span { color:var(--pick); }
+    .footer-label { font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.38); font-weight:700; margin-bottom:8px; }
+    .footer-text { font-size:12.5px; line-height:1.8; }
+    .footer-text a { color:rgba(255,255,255,.55); text-decoration:none; }
+    .footer-text a:hover { color:#fff; }
+    .footer-copy { max-width:1120px; margin:32px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,.08); font-size:11px; color:rgba(255,255,255,.3); text-align:center; }
+    @media (max-width:640px) { .footer-inner { grid-template-columns:1fr; gap:24px; } }
+    #heatmap-map { height:520px; border:1px solid var(--line); border-radius:18px; overflow:hidden; position:relative; }
+    .heat-controls { display:flex; flex-direction:column; gap:10px; margin-bottom:1rem; }
+    .heat-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .heat-controls-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .heat-controls-sep { width:1px; height:24px; background:var(--line); margin:0 4px; }
+    .heat-controls-label { font-size:10px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--muted); white-space:nowrap; }
+    .heat-btn { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
+    .heat-btn.active { background:var(--pick); color:#fff; border-color:var(--pick); }
+    .heat-btn:hover:not(.active) { border-color:var(--pick); color:var(--pick); }
+    .provider-btn { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
+    .provider-btn[data-provider="combined"].active { background:#264653; color:#fff; border-color:#264653; }
+    .provider-btn[data-provider="peb"].active { background:var(--pick); color:#fff; border-color:var(--pick); }
+    .provider-btn[data-provider="pb"].active { background:var(--publi); color:#fff; border-color:var(--publi); }
+    .provider-btn[data-provider="combined"]:hover:not(.active) { border-color:#264653; color:#264653; }
+    .provider-btn[data-provider="peb"]:hover:not(.active) { border-color:var(--pick); color:var(--pick); }
+    .provider-btn[data-provider="pb"]:hover:not(.active) { border-color:var(--publi); color:var(--publi); }
+    .hour-btn { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:6px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted); cursor:pointer; transition:background .12s,color .12s,border-color .12s; }
+    .hour-btn.active { background:var(--dark); color:#fff; border-color:var(--dark); }
+    .hour-btn:hover:not(.active) { border-color:var(--dark); color:var(--dark); }
+    .heat-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--muted); background:rgba(246,243,239,.88); border-radius:18px; z-index:500; pointer-events:none; }
+    .heat-legend { display:flex; align-items:center; gap:10px; margin-top:10px; }
+    .heat-legend-bar { flex:1; height:7px; border-radius:4px; background:linear-gradient(to right, rgba(80,10,90,0.85), #7b1c1c, #c5402b, #e8840a, #f5d060, #fffde7); }
+    .heat-legend-label { font-size:10px; color:var(--muted); white-space:nowrap; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#top" class="brand" style="text-decoration:none; color:inherit;">POTE<span>BS</span></a>
+    <div class="links">
+      <a href="#context">Context</a>
+      <a href="#methods">Methods</a>
+      <a href="#findings">Findings</a>
+      <a href="#recommendations">Recommendations</a>
+      <a href="#heatmap">Data</a>
+      <a href="#partners">Partners</a>
+      <a href="#publications">Publications</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="badge">SFOE Research Project</div>
+        <h1>POTEBS</h1>
+        <div class="subtitle">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</div>
+        <div class="lead">Linking 1,844 survey responses to 1.4 million operational trip records across two concurrently operating systems in Basel, POTEBS identifies what separates power users from dormant registrants — and challenges common assumptions about what drives intensive EBSS use.</div>
+        <p style="margin-top:18px; font-size:11px; color:rgba(255,255,255,.42); letter-spacing:.04em; line-height:1.9;">
+          <span style="color:rgba(255,255,255,.28); font-weight:700; text-transform:uppercase; letter-spacing:.1em; font-size:10px;">Keywords&ensp;</span>
+          e-bike sharing &middot; usage intensity &middot; multimodal mobility &middot; revealed preference &middot; Gaussian Mixture Model &middot; multinomial logit &middot; Basel
+        </p>
+      </div>
+      <div class="quote">
+        <h3>Electric bike sharing appears useful in a real but bounded way.</h3>
+        <p>Rather than being mainly an expression of environmental ideology, intensive EBSS use seems to emerge where shared e-bikes solve concrete mobility problems better than available alternatives.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">At a glance</div>
+      <h2>Scale meets depth</h2>
+      <div class="grid stats">
+        <div class="card"><div class="stat" id="stat-trips">1.5M</div><div class="muted">operational trip records</div></div>
+        <div class="card"><div class="stat">1,844</div><div class="muted">survey respondents retained</div></div>
+        <div class="card"><div class="stat" id="stat-linked">1,743</div><div class="muted">linked user cases (MNL model N)</div></div>
+        <div class="card"><div class="stat" id="stat-gini">0.77</div><div class="muted">Gini coefficient of usage concentration</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="objectives" style="padding-top:0; padding-bottom:36px;">
+  <div class="container">
+    <div class="eyebrow">Research questions</div>
+    <div class="card" style="max-width:860px;">
+      <p style="margin-bottom:.7rem;"><strong>How can EBSS support the mobility transition as part of a flexible multimodal mobility system?</strong></p>
+      <p class="muted" style="font-size:13.5px; margin-bottom:.5rem;"><strong>RQ1</strong> — Which user groups use EBSS and in what multimodal contexts; what hampers use and what benefits do users report?</p>
+      <p class="muted" style="font-size:13.5px; margin-bottom:.5rem;"><strong>RQ2</strong> — What business models for EBSS or EBSS–PT combinations could build on user needs?</p>
+      <p class="muted" style="font-size:13.5px;"><strong>RQ3</strong> — How can EBSS contribute to sustainable mobility in urban and peri-urban regions, and which measures support this?</p>
+    </div>
+  </div>
+</section>
+
+  <div class="divider"></div>
+
+  <section id="context" class="section">
+    <div class="container">
+      <div class="eyebrow">Research background</div>
+      <h2>What prior research tells us</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
+        EBSS is widely discussed as a lever for sustainable urban mobility — yet a critical question remains open: <em>which</em> users ride intensively, and why?
+      </p>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Adopters &amp; usage patterns</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Usage is narrow and unequal</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            EBSS users skew young, male, and highly educated. The top 22% of users account for 81% of trips, and roughly half of all registrants never return after sign-up — making system viability dependent on a small core of frequent riders.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Mode characteristics</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">EBSS is a distinct mobility mode</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Electric assistance lowers effort and extends cycling range. Shared e-bike trips are longer in distance yet shorter in duration than pedal-bike trips, with demand more resilient to adverse weather — positioning EBSS to compete with PT on longer urban trips.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Economics</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">System viability is fragile</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Vehicle, maintenance, and rebalancing costs frequently exceed revenues, creating subsidy dependence. Users show strong price sensitivity; promotional free-ride periods generate short-lived demand spikes rather than sustained high-frequency use.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid charts" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">System design</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Dock-based and free-floating attract different users</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Dock-based systems suit predictable commute corridors; free-floating enables flexible point-to-point travel but introduces availability uncertainty. Evidence from Zurich suggests commuters prefer dock-based EBSS, while free-floating shows more dispersed spatial use — yet whether intensity predictors differ across designs remains unstudied.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Behavioral drivers</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Environmental attitudes are an uncertain predictor</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Environmental attitudes are frequently cited as adoption motivators, yet a persistent gap between pro-environmental self-identity and actual travel behavior is well documented. Whether environmental concern or perceived usefulness drives intensive EBSS use is empirically unsettled.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--pick); background:rgba(197,64,43,.04);">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">The research gap</div>
+        <p style="font-size:15px; line-height:1.75; max-width:920px;">
+          <strong>No existing study provides clear empirical insight into which personal characteristics make someone more likely to use EBSS frequently — and how this interacts with system type.</strong> POTEBS directly addresses this gap by linking ~1.4&nbsp;million operational trip records to individual survey data across both system types in Basel.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="timeline" class="section">
+    <div class="container">
+      <div class="eyebrow">Project progression</div>
+      <h2>Timeline</h2>
+      <div class="timeline">
+
+        <div class="tl-item tl-phase">
+          <div class="tl-date">Dec 2023</div>
+          <div class="tl-title">Project launch</div>
+          <div class="tl-desc">POTEBS funded by the Swiss Federal Office of Energy (SFOE). Operational trip data from Pick-e-Bike and PubliBike Velospot in the Basel metropolitan area forms the empirical backbone.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">May 2024</div>
+          <div class="tl-title">First conference paper — STRC 2024</div>
+          <div class="tl-desc">Stiebe &amp; von Arx. Comparative analysis of user characteristics in free-floating and station-based e-bike sharing. Swiss Transport Research Conference, Ascona.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Sep 2024</div>
+          <div class="tl-title">European Transport Conference — ETC 2024</div>
+          <div class="tl-desc">Presentation of updated comparative findings at ETC, Antwerp.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Oct 2024</div>
+          <div class="tl-title">Team expansion</div>
+          <div class="tl-desc">Benjamin Weggelaar (University of Basel) joins the research team.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Nov 2024</div>
+          <div class="tl-title">Public outreach — HSLU Newsletter</div>
+          <div class="tl-desc">"E-Bike-Sharing boomt in der Schweiz!" published by Lucerne University of Applied Sciences and Arts.</div>
+        </div>
+
+        <div class="tl-item tl-phase">
+          <div class="tl-date">Jan 2025</div>
+          <div class="tl-title">Advisory Board Meeting 1</div>
+          <div class="tl-desc">First meeting of the project advisory board with representatives from transport authorities, operators, and policy institutions.</div>
+        </div>
+
+        <div class="tl-item tl-phase">
+          <div class="tl-date">Apr 2025</div>
+          <div class="tl-title">User surveys launched — Pick-e-Bike &amp; PubliBike Velospot</div>
+          <div class="tl-desc">Linked online surveys distributed to registered users of both e-bike sharing systems in the Basel area.</div>
+        </div>
+
+        <div class="tl-item tl-phase">
+          <div class="tl-date">May 2025</div>
+          <div class="tl-title">Survey EBSS Non-Users — TNW Area</div>
+          <div class="tl-desc">Survey of non-users within the TNW (Tarifverbund Nordwestschweiz) area to capture mobility behaviour and barriers to e-bike sharing adoption.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Nov 2025</div>
+          <div class="tl-title">mobil.TUM 2025 — Singapore</div>
+          <div class="tl-desc">Stiebe &amp; von Arx. Understanding user behavior in dock-based and free-floating e-bike sharing systems. Nanyang Technological University.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Dec 2025</div>
+          <div class="tl-title">WWZ Economics Lunch Seminar</div>
+          <div class="tl-desc">Stiebe. Pragmatists, Not Idealists: What drives e-bike sharing usage intensity. Faculty of Business and Economics, University of Basel.</div>
+        </div>
+
+        <div class="tl-item tl-phase">
+          <div class="tl-date">Mar 2026</div>
+          <div class="tl-title">Journal submission — Transportation Research Part D</div>
+          <div class="tl-desc">Stiebe, Krysiak, von Arx &amp; Weggelaar. Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity. Submitted to Elsevier TRD, currently under review.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Mar 2026</div>
+          <div class="tl-title">Sustainable Future Research Lunch — University of Basel</div>
+          <div class="tl-desc">Stiebe &amp; Weggelaar. Drivers of e-bike sharing usage intensity: evidence from free-floating and dock-based systems in Basel.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="methods" class="section">
+    <div class="container">
+      <div class="eyebrow">Analytical approach</div>
+      <h2>How the study was conducted</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
+        Three stages connect raw data to inference: attitudinal measurement (EFA), data-driven segmentation (GMM), and predictive modeling (multinomial logit with random forest validation).
+      </p>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 1 — Data integration</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Linking survey and operational records</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Two parallel surveys were distributed to ~32,000 registered users. After quality screening, 1,844 responses were retained; 1,743 were linked at individual level to the full operational trip history — combining stated preferences with revealed behavior.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 2 — Measurement &amp; segmentation</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">EFA factors and GMM intensity clusters</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            EFA reduced 32 Likert items to seven attitudinal constructs — including weather tolerance, environmental self-identity, and multimodal complementarity. GMM clustering then identified three data-driven usage segments (low, medium, high intensity) without imposing arbitrary thresholds.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Stage 3 — Predictive modeling</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Multinomial logit with random forest validation</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Multinomial logit predicted segment membership from demographic, geographic, and attitudinal predictors via backward elimination. Results were validated through 5-fold cross-validation and random forest feature importance rankings, which broadly corroborated the MNL findings.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--pick); background:rgba(197,64,43,.04);">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Key methodological advantage</div>
+        <p style="font-size:15px; line-height:1.75; max-width:920px;">
+          Linking survey responses to trip histories enables triangulation between stated and revealed preferences. The key behavioral predictor — temperature variance across a user's ride history — captures demonstrated weather resilience independently of self-reports (r=0.05 with trip volume), confirming it as a genuine behavioral trait rather than a usage artifact.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="findings" class="section">
+    <div class="container">
+      <div class="eyebrow">Key findings</div>
+      <h2>What the results show</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
+        Behavioral and utilitarian factors consistently outperform attitudinal and demographic predictors of usage intensity (combined MNL: pseudo-R²=0.128, N=1,743).
+      </p>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Usage concentration</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Extreme concentration and near-50% dormancy</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            The top 20% of users generate 80.3% of all trips (Gini=0.77). Three segments emerged: low-intensity (48%, ~one rental every five months), medium-intensity (39%), and power users (13%, riding every 2–3 days).
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">The environmental paradox</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Pro-environmental self-identity <em>reduces</em> power-user likelihood</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Users with stronger environmental self-identity were 32% less likely to be power users (RRR=0.68, p&lt;0.001) — directly contradicting Theory of Planned Behavior predictions. In Basel's sustainable transport context, green-minded users may already travel by foot, bike, or PT.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">What actually drives intensity</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Weather resilience and multimodal integration</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Revealed temperature variance raised power-user likelihood by 40% (RRR=1.40, p&lt;0.001). Multimodal complementarity — integrating EBSS with PT as a reliable fallback — was the strongest attitudinal predictor (RRR=1.64, p&lt;0.001).
+          </p>
+        </div>
+      </div>
+
+      <div class="grid charts" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Two archetypes</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Routine optimizers and flexibility maximizers</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Dock-based <strong>routine optimizers</strong> are urban commuters with exceptional weather resilience (RRR=2.78) and habitual corridor use. Free-floating <strong>flexibility maximizers</strong> are younger multimodal travelers for whom seamless PT integration dominates (RRR=2.14). Neither archetype is distinguished by environmental ideology.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Mode substitution</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">EBSS primarily substitutes public transport, not cars</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            75.5% of users substitute PT at least sometimes; only 34% substitute car trips. 73% of all trips originate or end within 150&thinsp;m of a PT stop — positioning EBSS as an overflow valve for crowded transit rather than a car replacement. Three-quarters of displaced trips already come from sustainable modes.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--gold); background:rgba(209,154,24,.04); margin-bottom:18px;">
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--gold); margin-bottom:8px;">The incubator effect</div>
+        <p style="font-size:15px; line-height:1.75; max-width:920px;">
+          <strong>Private e-bike ownership significantly reduces shared system use (RRR=0.76, p&lt;0.001).</strong> Users who report that EBSS motivated their purchase of a private e-bike suggest these systems function as an <em>incubator</em> — gradually graduating users from shared toward private micromobility. In Basel's transit-rich, low-motorization context, EBSS may partly undermine its own long-term demand by seeding private ownership.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="recommendations" class="section">
+    <div class="container">
+      <div class="eyebrow">Recommendations</div>
+      <h2>What this means in practice</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.8rem;">
+        EBSS is a useful but bounded tool. Policy calibrated to this reality — investing in the conditions that sustain power users rather than chasing broad environmental appeal — will extract considerably more value.
+      </p>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">System design</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Portfolio over exclusivity</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Dock-based and free-floating systems serve complementary functions: dock-based anchors commuter demand; free-floating extends suburban coverage. The free-floating system achieved 2.5× more rentals per bike per day — different efficiency profiles that justify co-existence rather than competition.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Messaging</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Utility, not sustainability</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Sustainability-focused marketing may actively misfire among the power-user segment. Communications should lead with concrete functional benefits — door-to-door speed, weather-independent commuting — rather than environmental framing.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Infrastructure</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Reduce weather barriers</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Weather resilience is the strongest behavioral predictor of intensive use. Winter maintenance of cycling paths, covered parking at transit hubs, and real-time path condition information could meaningfully expand the power-user base.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid findings" style="margin-bottom:18px;">
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Service quality</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Reliability protects the power-user pipeline</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Reliability concerns disproportionately suppressed potential power users. Fleet sizing, demand-responsive rebalancing, real-time availability, and short-term advance booking (e.g., 15-minute windows) could convert occasional riders into regulars.
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Integration</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Connect EBSS into the multimodal ecosystem</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Three integration priorities: <strong>fare integration</strong> (combined EBSS + PT subscriptions), <strong>information integration</strong> (EBSS availability in journey planners), and <strong>physical integration</strong> (stations at key transit hubs).
+          </p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--pick); margin-bottom:8px;">Evaluation</div>
+          <h3 style="margin-bottom:8px; font-size:16px;">Rethink what counts as success</h3>
+          <p class="muted" style="font-size:13.5px; line-height:1.65;">
+            Direct decarbonization is limited — most substituted trips come from sustainable modes. Evaluation frameworks should reflect EBSS's broader role: multimodal glue, a PT overflow valve, and a confidence-builder for car-free lifestyles.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="mapsec" class="section">
+    <div class="container">
+      <div class="eyebrow">Study area</div>
+      <h2>Basel as a testbed — and a demanding one</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.2rem;">
+        Basel is an ideal but demanding testbed: Switzerland's highest PT modal share, a strong cycling culture, and the lowest motorization rate among major Swiss cities mean sustainable travel is already the norm — making EBSS adoption harder to explain by necessity alone.
+      </p>
+      <div class="grid stats" style="margin-bottom:1.5rem;">
+        <div class="card" style="text-align:center;">
+          <div class="stat" style="font-size:32px; color:var(--pick);">32.5%</div>
+          <div class="muted" style="font-size:13px;">PT modal share — highest in Switzerland</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="stat" style="font-size:32px; color:var(--pick);">11.7%</div>
+          <div class="muted" style="font-size:13px;">Cycling modal share</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="stat" style="font-size:32px; color:var(--pick);">319</div>
+          <div class="muted" style="font-size:13px;">Cars per 1,000 inhabitants — lowest among major Swiss cities</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div class="stat" style="font-size:32px; color:var(--pick);">2</div>
+          <div class="muted" style="font-size:13px;">EBSS operating simultaneously since Sep 2021</div>
+        </div>
+      </div>
+      <p class="muted" style="margin-bottom:1rem;">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional layer.</p>
+      <div id="map"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="heatmap" class="section">
+    <div class="container">
+      <div class="eyebrow">Spatial patterns</div>
+      <h2>Where trips begin and end</h2>
+      <p class="muted" style="max-width:860px; margin-bottom:1.2rem;">
+        Each point represents a 200&thinsp;m grid cell. Colour intensity reflects trip count on a log scale, clamped at the 99th percentile to reveal spatial differentiation across the full distribution. Filter by time of day or provider to compare patterns between systems.
+      </p>
+
+      <div class="heat-controls">
+        <div class="heat-row">
+          <div class="heat-controls-group">
+            <span class="heat-controls-label">Show</span>
+            <button class="heat-btn active" data-ds="start">Origins</button>
+            <button class="heat-btn" data-ds="end">Destinations</button>
+          </div>
+          <div class="heat-controls-sep"></div>
+          <div class="heat-controls-group">
+            <span class="heat-controls-label">Provider</span>
+            <button class="provider-btn active" data-provider="combined">Combined</button>
+            <button class="provider-btn" data-provider="peb">Pick-e-Bike</button>
+            <button class="provider-btn" data-provider="pb">PubliBike</button>
+          </div>
+        </div>
+        <div class="heat-row">
+          <div class="heat-controls-group">
+            <span class="heat-controls-label">Time of day</span>
+            <button class="hour-btn active" data-hours="all">All day</button>
+            <button class="hour-btn" data-hours="morning">Morning (07–09)</button>
+            <button class="hour-btn" data-hours="evening">Evening (16–19)</button>
+            <button class="hour-btn" data-hours="midday">Midday (10–15)</button>
+            <button class="hour-btn" data-hours="night">Night (20–06)</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative;">
+        <div id="heatmap-map"></div>
+        <div class="heat-loading" id="heatmap-loading">Loading trip data&hellip;</div>
+      </div>
+      <div class="heat-legend">
+        <span class="heat-legend-label">lower trip density</span>
+        <div class="heat-legend-bar"></div>
+        <span class="heat-legend-label">higher trip density</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Usage concentration</div>
+      <h2>Lorenz curves</h2>
+      <div class="card" style="border-left:3px solid var(--pick); background:rgba(197,64,43,.04); margin-bottom:1.5rem;">
+        <p style="font-size:14.5px; line-height:1.7; max-width:900px;">
+          A Gini coefficient of 0.77 describes extreme inequality — comparable in magnitude to national income distributions in some of the world's most unequal economies, here applied to trip generation. The typical registered user contributes almost nothing to system activity; a tiny minority drives almost everything.
+        </p>
+      </div>
+      <p class="muted" style="margin-bottom:1.25rem;">Each panel shows the cumulative share of trips (or cycling minutes) as a function of the cumulative share of users, for Pick-e-Bike, PubliBike Velospot, and the combined sample. The diagonal represents perfect equality. Hover over the curves for exact values.</p>
+      <div class="lorenz-grid" id="lorenzGrid">
+        <div class="lorenz-panel">
+          <h3>Trip Count — All Users</h3>
+          <div class="lorenz-chart" id="lc-all-trips"></div>
+        </div>
+        <div class="lorenz-panel">
+          <h3>Duration (min) — All Users</h3>
+          <div class="lorenz-chart" id="lc-all-duration"></div>
+        </div>
+        <div class="lorenz-panel">
+          <h3>Trip Count — Survey Respondents</h3>
+          <div class="lorenz-chart" id="lc-survey-trips"></div>
+        </div>
+        <div class="lorenz-panel">
+          <h3>Duration (min) — Survey Respondents</h3>
+          <div class="lorenz-chart" id="lc-survey-duration"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="partners" class="section">
+    <div class="container">
+      <div class="eyebrow">Consortium and funding</div>
+      <h2>Partners</h2>
+      <div class="partner-groups" style="margin-top:1.5rem;">
+        <!-- Funding -->
+        <div>
+          <div class="partner-group-label">Funding</div>
+          <div class="partner-logos">
+            <div class="card" style="min-height:130px; padding:24px 20px;">
+              <a href="https://www.bfe.admin.ch/bfe/en/home.html" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="Swiss Federal Office of Energy (SFOE)" src="ASSETS/BFE.png" style="max-height:72px;" />
+              </a>
+              <div class="partner-role">Swiss Federal Office of Energy (SFOE)</div>
+              <div class="partner-role" style="margin-top:6px;"><a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener" style="color:var(--pick); font-size:11px;">ARAMIS ↗</a></div>
+            </div>
+          </div>
+        </div>
+        <!-- Academic Partners -->
+        <div>
+          <div class="partner-group-label">Academic Partners</div>
+          <div class="partner-logos">
+            <div class="card">
+              <a href="https://www.hslu.ch/de-ch/wirtschaft/institute/itm/mobilitaet/" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="HSLU — Lucerne University of Applied Sciences and Arts" src="ASSETS/HSLU.png" />
+              </a>
+              <div class="partner-role">Lead institution</div>
+            </div>
+            <div class="card">
+              <a href="https://wwz.unibas.ch/de/" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="University of Basel" src="ASSETS/unibasel.png" />
+              </a>
+              <div class="partner-role">Research partner</div>
+            </div>
+          </div>
+        </div>
+        <!-- Implementation Partners -->
+        <div>
+          <div class="partner-group-label">Implementation Partners</div>
+          <div class="partner-logos">
+            <div class="card">
+              <a href="https://www.pickebike.ch/de/" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="Pick-e-Bike" src="ASSETS/pickebike.svg" />
+              </a>
+              <div class="partner-role">Pick-e-Bike</div>
+            </div>
+            <div class="card">
+              <a href="https://www.velospot.info" target="_blank" rel="noopener" class="partner-logo-link">
+                <img alt="PubliBike Velospot" src="ASSETS/publibike.png" style="max-height:64px; max-width:72px;" />
+              </a>
+              <div class="partner-role">PubliBike Velospot</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="team" class="section">
+  <div class="container">
+    <div class="eyebrow">Research team</div>
+    <h2>Team</h2>
+    <div class="team-grid" style="margin-top:1.5rem;">
+      <div class="team-card">
+        <div class="team-name">Michael Stiebe</div>
+        <div class="team-title">Project Manager</div>
+        <div class="team-inst">HSLU — Institute of Tourism and Mobility (ITM)</div>
+        <div class="team-contact">
+          Institute of Tourism and Mobility (ITM)<br>
+          CC Mobility (ITM Mob)<br>
+          Lucerne School of Business<br>
+          Zentralstrasse 9, Room 2. Stock<br>
+          6003 Luzern<br>
+          <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a><br>
+          <a href="https://www.hslu.ch/en/lucerne-university-of-applied-sciences-and-arts/about-us/people-finder/profile/?pid=5565" target="_blank" rel="noopener">HSLU Profile ↗</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-name">Prof. Dr. Widar von Arx</div>
+        <div class="team-title">Co-Project Manager</div>
+        <div class="team-inst">HSLU — Institute of Tourism and Mobility (ITM)</div>
+        <div class="team-contact">
+          Head of the Competence Center for Mobility<br>
+          Professor<br>
+          Institute of Tourism and Mobility (ITM)<br>
+          CC Mobility (ITM Mob)<br>
+          Lucerne School of Business<br>
+          Zentralstrasse 9, Room 2. Stock<br>
+          6003 Luzern<br>
+          <a href="https://www.hslu.ch/en/lucerne-university-of-applied-sciences-and-arts/about-us/people-finder/profile/?pid=1381" target="_blank" rel="noopener">HSLU Profile ↗</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-name">Prof. Dr. Frank Christian Krysiak</div>
+        <div class="team-title">Co-Project Manager</div>
+        <div class="team-inst">University of Basel — Faculty of Business and Economics</div>
+        <div class="team-contact">
+          Environmental Economics<br>
+          Peter Merian-Weg 6<br>
+          4002 Basel<br>
+          Switzerland<br>
+          Tel: +41 61 207 33 60<br>
+          <a href="https://wwz.unibas.ch/de/krysiak/" target="_blank" rel="noopener">University profile ↗</a>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-name">Benjamin Weggelaar</div>
+        <div class="team-title">Research Associate <span style="color:var(--muted);font-weight:400">(since 10/2024)</span></div>
+        <div class="team-inst">University of Basel — Faculty of Business and Economics</div>
+        <div class="team-contact">
+          Environmental Economics<br>
+          Assistent / Doktorand<br>
+          Office 4.47<br>
+          Peter Merian-Weg 6<br>
+          4052 Basel<br>
+          Switzerland<br>
+          Tel. +41 61 207 24 56<br>
+          <a href="mailto:benjamin.weggelaar@unibas.ch">benjamin.weggelaar@unibas.ch</a><br>
+          <a href="https://wwz.unibas.ch/de/personen/benjamin-weggelaar-1/" target="_blank" rel="noopener">University profile ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <div class="divider"></div>
+
+  <section id="advisory" class="section">
+    <div class="container">
+      <div class="eyebrow">Governance</div>
+      <h2>Advisory Board</h2>
+      <p class="muted" style="margin-bottom:1.5rem;">The project is guided by an advisory board of practitioners and researchers from transport, mobility policy, and public finance.</p>
+      <table class="advisory-table" style="margin-top:.5rem;">
+        <thead>
+          <tr>
+            <th>Organisation</th>
+            <th>Sector</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-name">WWZ, University of Basel</td><td>Research &amp; Economics</td></tr>
+          <tr><td class="td-name">Office of Mobility, Canton of Basel-Stadt</td><td>Cantonal Transport Policy</td></tr>
+          <tr><td class="td-name">Basler Verkehrs-Betriebe (BVB)</td><td>Public Transport Operations</td></tr>
+          <tr><td class="td-name">TNW Tarifverbund Nordwestschweiz</td><td>Regional Fare Integration</td></tr>
+          <tr><td class="td-name">SBB Swiss Federal Railways</td><td>National Rail</td></tr>
+          <tr><td class="td-name">Federal Roads Office (ASTRA)</td><td>Federal Infrastructure</td></tr>
+          <tr><td class="td-name">Pro Velo beider Basel</td><td>Active Mobility Advocacy</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="publications" class="section">
+    <div class="container">
+      <div class="eyebrow">Outputs</div>
+      <h2>Publications &amp; Presentations</h2>
+      <ul class="pub-list" style="margin-top:1.25rem;">
+
+        <li>
+          <span class="pub-badge journal">Journal</span>
+          <span class="pub-cite">Stiebe, M., Krysiak, F. C., von Arx, W., &amp; Weggelaar, B. (2026). Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity. <em>Transportation Research Part D: Transport and Environment</em> (Elsevier). Submitted March 2026, under review.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge talk">Talk</span>
+          <span class="pub-cite">Stiebe, M., &amp; Weggelaar, B. (2026). Drivers of E-Bike Sharing Usage Intensity: Evidence from Free-Floating and Dock-Based Systems in Basel. Presentation at <em>Sustainable Future Research Lunch</em>, University of Basel, March 20, 2026.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge talk">Talk</span>
+          <span class="pub-cite">Stiebe, M. (2025). Pragmatists, Not Idealists: What Drives E-Bike Sharing Usage Intensity and Why Car Substitution Remains Elusive. Presentation at the <em>Economics Lunch Seminar</em>, Faculty of Business and Economics (WWZ), University of Basel, December 17, 2025.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2025). Understanding User Behavior in Dock-based and Free-floating E-bike Sharing Systems: A Multi-method Study From the Basel Metropolitan Area. <em>mobil.TUM 2025 – 14th International Scientific Conference on Mobility and Transport</em>, Nanyang Technological University, Singapore, November 24–26, 2025.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems – Empirical Insights from the Basel Metropolitan Area. <em>European Transport Conference ETC 2024</em>, Antwerp, September 17–20, 2024. <a href="https://aetransport.org/past-etc-papers/conference-papers-2024?abstractId=8446&state=b" target="_blank" rel="noopener">aetransport.org ↗</a></span>
+        </li>
+
+        <li>
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems – Insights from the Basel Metropolitan Area. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15–17, 2024. <a href="https://www.strc.ch/2024/Stiebe_vonArx.pdf" target="_blank" rel="noopener">PDF ↗</a></span>
+        </li>
+
+        <li>
+          <span class="pub-badge talk">Talk</span>
+          <span class="pub-cite">von Arx, W., &amp; Stiebe, M. (2024). Obstacles to Economic Sustainability of Free-Floating E-Bike Sharing Systems: A Basel-Based Case Study. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15, 2024.</span>
+        </li>
+
+        <li>
+          <span class="pub-badge press">Press</span>
+          <span class="pub-cite">"E-Bike-Sharing boomt in der Schweiz!" Newsletter article, Lucerne University of Applied Sciences and Arts, November 13, 2024. <a href="https://www.hslu.ch/de-ch/wirtschaft/ueber-uns/news/2024/11/13/ebike-sharing/" target="_blank" rel="noopener">hslu.ch ↗</a></span>
+        </li>
+
+      </ul>
+
+      <div style="margin-top:2.5rem;">
+        <div class="eyebrow" style="margin-bottom:12px;">Related resources</div>
+        <div style="display:flex; flex-direction:column; gap:0;">
+          <a href="https://bikesharemap.com/#13/47.5579/7.5902" target="_blank" rel="noopener" style="display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; border-bottom:1px solid var(--line); text-decoration:none; color:var(--text);">
+            <span style="font-size:13.5px; font-weight:600;">Bike Share Map — Basel <span style="color:var(--pick)">↗</span></span>
+            <span style="font-size:12px; color:var(--muted);">bikesharemap.com</span>
+          </a>
+          <a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener" style="display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; border-bottom:1px solid var(--line); text-decoration:none; color:var(--text);">
+            <span style="font-size:13.5px; font-weight:600;">POTEBS on ARAMIS — SFOE Project Database <span style="color:var(--pick)">↗</span></span>
+            <span style="font-size:12px; color:var(--muted);">aramis.admin.ch</span>
+          </a>
+          <a href="https://www.pickebike.ch/de/" target="_blank" rel="noopener" style="display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; border-bottom:1px solid var(--line); text-decoration:none; color:var(--text);">
+            <span style="font-size:13.5px; font-weight:600;">Pick-e-Bike <span style="color:var(--pick)">↗</span></span>
+            <span style="font-size:12px; color:var(--muted);">pickebike.ch</span>
+          </a>
+          <a href="https://www.velospot.info" target="_blank" rel="noopener" style="display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; border-bottom:1px solid var(--line); text-decoration:none; color:var(--text);">
+            <span style="font-size:13.5px; font-weight:600;">PubliBike Velospot <span style="color:var(--pick)">↗</span></span>
+            <span style="font-size:12px; color:var(--muted);">velospot.info</span>
+          </a>
+          <a href="https://www.bfe.admin.ch/bfe/en/home/research-and-cleantech/research-and-cleantech.html" target="_blank" rel="noopener" style="display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; text-decoration:none; color:var(--text);">
+            <span style="font-size:13.5px; font-weight:600;">SFOE Energy Research &amp; Cleantech <span style="color:var(--pick)">↗</span></span>
+            <span style="font-size:12px; color:var(--muted);">bfe.admin.ch</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">POTE<span>BS</span></div>
+        <p class="footer-text">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</p>
+      </div>
+      <div>
+        <div class="footer-label">Funding &amp; Grant</div>
+        <p class="footer-text">
+          Swiss Federal Office of Energy (SFOE)<br>
+          Grant No. SI/502720-01<br>
+          Project duration: Dec 2023 – Jan 2027<br>
+          <a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener">ARAMIS Project Entry ↗</a>
+        </p>
+      </div>
+      <div>
+        <div class="footer-label">Lead Contact</div>
+        <p class="footer-text">
+          Michael Stiebe<br>
+          HSLU — Institute of Tourism and Mobility<br>
+          <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a>
+        </p>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 POTEBS Research Project · Funded by the Swiss Federal Office of Energy (SFOE) · Grant SI/502720-01</p>
+  </footer>
+
+  <script>
+    // -------------------------------------------------------------------------
+    // Lorenz Charts (ECharts) — loaded from data/lorenz.json
+    // JSON format produced by the local export script:
+    //   panels.<key>.providers.<Combined|FFEBSS|DBEBSS>.{ x[], y[], gini, label, color }
+    // -------------------------------------------------------------------------
+
+    // Map panel DOM ids → JSON keys
+    const PANEL_MAP = [
+      { id: 'lc-all-trips',       key: 'all_users_rentals'    },
+      { id: 'lc-all-duration',    key: 'all_users_minutes'    },
+      { id: 'lc-survey-trips',    key: 'survey_users_rentals' },
+      { id: 'lc-survey-duration', key: 'survey_users_minutes' }
+    ];
+
+    // Display names and brand colours (override the JSON colours for consistency)
+    const PROVIDER_CFG = {
+      Combined: { label: 'Combined',            color: '#264653', width: 2.5 },
+      FFEBSS:   { label: 'Pick-e-Bike',         color: '#c5402b', width: 2   },
+      DBEBSS:   { label: 'PubliBike Velospot',  color: '#2864b4', width: 2   }
+    };
+
+    // Convert separate x/y arrays → [[x,y], ...] pairs for ECharts
+    function zip(xs, ys) {
+      return xs.map((x, i) => [x, ys[i]]);
+    }
+
+    function makeLorenzOption(panel) {
+      const providers = panel.providers;
+      const yLabel = panel.y_axis_label || 'Cumulative %';
+
+      // Gini footer text for tooltip
+      const giniText = Object.entries(PROVIDER_CFG)
+        .map(([k, cfg]) => `${cfg.label}: ${(providers[k]?.gini ?? 0).toFixed(3)}`)
+        .join('   ');
+
+      const series = [
+        // Equality diagonal
+        {
+          name: 'Perfect equality',
+          type: 'line',
+          data: [[0, 0], [100, 100]],
+          symbol: 'none',
+          lineStyle: { color: '#bbb', width: 1.5, type: 'dashed' },
+          emphasis: { disabled: true }
+        },
+        // One series per provider
+        ...Object.entries(PROVIDER_CFG).map(([providerKey, cfg]) => {
+          const d = providers[providerKey];
+          return {
+            name: cfg.label,
+            type: 'line',
+            data: d ? zip(d.x, d.y) : [],
+            symbol: 'none',
+            lineStyle: { color: cfg.color, width: cfg.width },
+            emphasis: { disabled: true }
+          };
+        })
+      ];
+
+      return {
+        backgroundColor: 'transparent',
+        grid: { top: 32, right: 16, bottom: 44, left: 52, containLabel: false },
+        xAxis: {
+          type: 'value', min: 0, max: 100,
+          name: 'Cumulative % of users',
+          nameLocation: 'middle', nameGap: 28,
+          nameTextStyle: { color: '#6f685f', fontSize: 11 },
+          axisLabel: { color: '#6f685f', fontSize: 10, formatter: v => v + '%' },
+          axisLine: { lineStyle: { color: '#e7e1d9' } },
+          splitLine: { lineStyle: { color: '#f0ece6' } }
+        },
+        yAxis: {
+          type: 'value', min: 0, max: 100,
+          name: yLabel,
+          nameLocation: 'middle', nameGap: 40,
+          nameTextStyle: { color: '#6f685f', fontSize: 11 },
+          axisLabel: { color: '#6f685f', fontSize: 10, formatter: v => v + '%' },
+          axisLine: { lineStyle: { color: '#e7e1d9' } },
+          splitLine: { lineStyle: { color: '#f0ece6' } }
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { type: 'cross', label: { show: false } },
+          backgroundColor: 'rgba(255,255,255,0.97)',
+          borderColor: '#e7e1d9', borderWidth: 1,
+          textStyle: { color: '#2b2b2b', fontSize: 12 },
+          formatter(params) {
+            const pop = params[0]?.data[0];
+            let html = `<div style="font-weight:700;margin-bottom:4px">Bottom ${pop?.toFixed(1)}% of users</div>`;
+            params.forEach(p => {
+              if (p.seriesName === 'Perfect equality') return;
+              const cfg = Object.values(PROVIDER_CFG).find(c => c.label === p.seriesName);
+              html += `<div style="display:flex;align-items:center;gap:6px;margin:2px 0">
+                <span style="display:inline-block;width:10px;height:3px;border-radius:2px;background:${cfg?.color}"></span>
+                <span>${p.seriesName}: <b>${p.data[1]?.toFixed(1)}%</b></span>
+              </div>`;
+            });
+            html += `<div style="margin-top:6px;padding-top:5px;border-top:1px solid #e7e1d9;font-size:10.5px;color:#6f685f">Gini — ${giniText}</div>`;
+            return html;
+          }
+        },
+        legend: {
+          data: ['Combined', 'Pick-e-Bike', 'PubliBike Velospot', 'Perfect equality'],
+          top: 4, right: 0,
+          itemWidth: 18, itemHeight: 3,
+          textStyle: { color: '#6f685f', fontSize: 10 }
+        },
+        series
+      };
+    }
+
+    fetch('data/lorenz.json')
+      .then(r => r.json())
+      .then(lorenz => {
+        // Update top-level stats from JSON data
+        const allPanel    = lorenz.panels['all_users_rentals'];
+        const surveyPanel = lorenz.panels['survey_users_rentals'];
+        if (allPanel?.providers?.Combined) {
+          const c = allPanel.providers.Combined;
+          const t = c.n_trips;
+          const el = document.getElementById('stat-trips');
+          if (el) el.textContent = t >= 1e6 ? (t / 1e6).toFixed(1) + 'M' : t.toLocaleString();
+          const gEl = document.getElementById('stat-gini');
+          if (gEl) gEl.textContent = c.gini.toFixed(2);
+        }
+        if (surveyPanel?.providers?.Combined) {
+          const el = document.getElementById('stat-linked');
+          if (el) el.textContent = surveyPanel.providers.Combined.n_users.toLocaleString();
+        }
+
+        // Render each chart
+        PANEL_MAP.forEach(({ id, key }) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const panel = lorenz.panels[key];
+          if (!panel) return;
+          const chart = echarts.init(el, null, { renderer: 'svg' });
+          chart.setOption(makeLorenzOption(panel));
+          window.addEventListener('resize', () => chart.resize());
+        });
+      })
+      .catch(() => {
+        PANEL_MAP.forEach(({ id }) => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = `
+            <div class="lorenz-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-8"/></svg>
+              <span>Lorenz data not yet available.<br>Upload <code>data/lorenz.json</code> to the repository.</span>
+            </div>`;
+        });
+      });
+
+    const map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([47.555, 7.61], 10.9);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      maxZoom: 20
+    }).addTo(map);
+
+    map.createPane('pebPane');
+    map.createPane('pbPane');
+    map.createPane('stationsPane');
+    map.getPane('pebPane').style.zIndex = 410;
+    map.getPane('pbPane').style.zIndex = 420;
+    map.getPane('stationsPane').style.zIndex = 430;
+
+    const pebStyle = {
+      pane: 'pebPane',
+      color: '#b23a26',
+      weight: 1.5,
+      opacity: 0.98,
+      fillColor: '#c5402b',
+      fillOpacity: 0.32
+    };
+
+    const pbStyle = {
+      pane: 'pbPane',
+      color: '#22579d',
+      weight: 1.8,
+      opacity: 1,
+      fillColor: '#2864b4',
+      fillOpacity: 0.42
+    };
+
+    function popupHtml(p) {
+      let systems = [];
+      if (p.PickeBike) systems.push('Pick-e-Bike');
+      if (p.PubliBike) systems.push('PubliBike Velospot');
+      return `
+        <strong>${p.GDENAME || 'Municipality'}</strong><br>
+        ${systems.join(' &amp; ')}<br>
+        ZIP: ${p.PLZ_Liste || 'n/a'}
+      `;
+    }
+
+    function makeLayer(features, style) {
+      return L.geoJSON({ type: 'FeatureCollection', features }, {
+        pane: style.pane,
+        style: style,
+        onEachFeature: (feature, layer) => {
+          layer.bindPopup(popupHtml(feature.properties || {}));
+        }
+      });
+    }
+
+    Promise.all([
+      fetch('data/ebss_communes.geojson').then(r => r.json()),
+      fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
+    ]).then(([communes, pbStations]) => {
+      const features = communes.features || [];
+
+      // All communes served by Pick-e-Bike
+      const pebFeatures = features.filter(f => (f.properties || {}).PickeBike === 1);
+      // All communes served by PubliBike Velospot (Kerngemeinden)
+      const pbFeatures  = features.filter(f => (f.properties || {}).PubliBike === 1);
+
+      const pebLayer = makeLayer(pebFeatures, pebStyle);
+      const pbLayer  = makeLayer(pbFeatures,  pbStyle);
+
+      pebLayer.addTo(map);
+      pbLayer.addTo(map);
+
+      let pbStationLayer = null;
+      if (pbStations) {
+        pbStationLayer = L.geoJSON(pbStations, {
+          pane: 'stationsPane',
+          pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+            radius: 3,
+            color: '#22579d',
+            weight: 0.8,
+            fillColor: '#2864b4',
+            fillOpacity: 0.80
+          }),
+          onEachFeature: (feature, layer) => {
+            const p = feature.properties || {};
+            layer.bindPopup(`
+              <strong>${p['Station: Name'] || 'Station'}</strong><br>
+              ${p['Adresse'] || ''}<br>
+              ${p['PLZ'] || ''} ${p['Ort'] || ''}
+            `);
+          }
+        });
+      }
+
+      const overlays = {
+        'Pick-e-Bike Service Area': pebLayer,
+        'PubliBike Velospot Service Area': pbLayer
+      };
+      if (pbStationLayer) overlays['PubliBike Velospot Stations'] = pbStationLayer;
+      L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+
+      const legend = L.control({ position: 'bottomright' });
+      legend.onAdd = function() {
+        const div = L.DomUtil.create('div', 'legend leaflet-control');
+        div.innerHTML = `
+          <div style="font-weight:700; margin-bottom:6px;">Service Area</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#c5402b"></span>Pick-e-Bike</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike Velospot</div>
+        `;
+        return div;
+      };
+      legend.addTo(map);
+
+      const boundsLayer = L.geoJSON({ type: 'FeatureCollection', features });
+      if (boundsLayer.getBounds && boundsLayer.getBounds().isValid()) {
+        map.fitBounds(boundsLayer.getBounds().pad(0.10), { padding: [24, 24] });
+      }
+    }).catch(err => {
+      console.error(err);
+      document.getElementById('map').innerHTML = '<div style="padding:1rem;color:#6f685f">Map data could not be loaded.</div>';
+    });
+
+    // -------------------------------------------------------------------------
+    // Heatmap — trip origins / destinations with hour-of-day filter
+    // GeoJSON properties: total (int), h (object: hour→count), m (object: month→count)
+    // -------------------------------------------------------------------------
+    (function () {
+      const HOUR_GROUPS = {
+        all:     null,
+        morning: [7, 8, 9],
+        evening: [16, 17, 18, 19],
+        midday:  [10, 11, 12, 13, 14, 15],
+        night:   [20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6]
+      };
+
+      const heatMap = L.map('heatmap-map', { scrollWheelZoom: false, zoomControl: true, minZoom: 9, zoomSnap: 0.5 })
+        .setView([47.548, 7.600], 10.5);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        maxZoom: 20
+      }).addTo(heatMap);
+
+      const HEAT_OPTS = {
+        radius: 14,
+        blur: 7,
+        maxZoom: 18,
+        minOpacity: 0.25,
+        gradient: {
+          0.00: 'rgba(0,0,0,0)',
+          0.15: 'rgba(80,10,90,0.72)',
+          0.35: '#7b1c1c',
+          0.55: '#c5402b',
+          0.72: '#e8840a',
+          0.87: '#f5d060',
+          1.00: '#fffde7'
+        }
+      };
+
+      let datasets = { start: null, end: null };
+      let currentLayer = null;
+      let activeDs       = 'start';
+      let activeHours    = 'all';
+      let activeProvider = 'combined';
+
+      function buildPoints(features, hourKey, provider) {
+        const hours = HOUR_GROUPS[hourKey];
+        const raw = [];
+        for (const f of features) {
+          const [lng, lat] = f.geometry.coordinates;
+          const p = f.properties;
+          let w;
+          if (hours) {
+            w = hours.reduce((s, h) => {
+              const hs = String(h);
+              const fromPeb = (provider !== 'pb')  ? (p.peb ? (p.peb.h[hs] || 0) : 0) : 0;
+              const fromPb  = (provider !== 'peb') ? (p.pb  ? (p.pb.h[hs]  || 0) : 0) : 0;
+              return s + fromPeb + fromPb;
+            }, 0);
+          } else {
+            const fromPeb = (provider !== 'pb')  ? (p.peb ? p.peb.t : 0) : 0;
+            const fromPb  = (provider !== 'peb') ? (p.pb  ? p.pb.t  : 0) : 0;
+            w = fromPeb + fromPb;
+          }
+          if (w > 0) raw.push([lat, lng, w]);
+        }
+        // P99-clamped log normalization: spreads visual variation across the full
+        // gradient instead of compressing everything toward one extreme hotspot
+        const sorted = raw.map(r => r[2]).sort((a, b) => a - b);
+        const p99val = sorted[Math.floor(sorted.length * 0.99)] || sorted[sorted.length - 1];
+        const logRef = Math.log(p99val + 1);
+        return raw.map(([lat, lng, w]) => [lat, lng, Math.min(1.0, Math.log(w + 1) / logRef)]);
+      }
+
+      function render() {
+        if (currentLayer) heatMap.removeLayer(currentLayer);
+        const features = datasets[activeDs];
+        if (!features) return;
+        currentLayer = L.heatLayer(buildPoints(features, activeHours, activeProvider), HEAT_OPTS);
+        currentLayer.addTo(heatMap);
+      }
+
+      const loadingEl = document.getElementById('heatmap-loading');
+      Promise.all([
+        fetch('data/heatmap_start.geojson').then(r => r.json()),
+        fetch('data/heatmap_end.geojson').then(r => r.json())
+      ]).then(([s, e]) => {
+        datasets.start = s.features;
+        datasets.end   = e.features;
+        if (loadingEl) loadingEl.style.display = 'none';
+        render();
+        window.addEventListener('resize', () => heatMap.invalidateSize());
+      }).catch(() => {
+        if (loadingEl) loadingEl.textContent = 'Heatmap data could not be loaded.';
+      });
+
+      document.querySelectorAll('.heat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.heat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeDs = btn.dataset.ds;
+          render();
+        });
+      });
+
+      document.querySelectorAll('.hour-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeHours = btn.dataset.hours;
+          render();
+        });
+      });
+
+      document.querySelectorAll('.provider-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.provider-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeProvider = btn.dataset.provider;
+          render();
+        });
+      });
+    })();
+
+  </script>
+</body>
+</html>
