@@ -6,6 +6,61 @@
   <title>POTEBS — Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</title>
   <meta name="description" content="POTEBS investigates the potential of e-bike-sharing systems for sustainable mobility in different spatial types using linked operational and survey data from the Basel metropolitan area." />
   <meta name="keywords" content="e-bike sharing, EBSS, usage intensity, sustainable mobility, multimodal transport, Basel, free-floating, dock-based, multinomial logit, Gaussian mixture model, power users, weather resilience" />
+  <meta name="author" content="Michael Stiebe, HSLU" />
+  <meta name="theme-color" content="#0a0a0a" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="POTEBS — Potential of E-Bike-Sharing Systems for Sustainable Mobility" />
+  <meta property="og:description" content="SFOE-funded research linking 1.5M trip records to 1,844 survey responses across two e-bike sharing systems in Basel. What separates power users from dormant registrants — and why pragmatism beats ideology." />
+  <meta property="og:image" content="ASSETS/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="POTEBS Research Project" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="POTEBS — Potential of E-Bike-Sharing Systems" />
+  <meta name="twitter:description" content="SFOE-funded research from Basel: 1.5M trip records · 1,844 survey responses · what actually drives intensive e-bike sharing use." />
+  <meta name="twitter:image" content="ASSETS/og-image.png" />
+
+  <!-- Favicon (inline SVG, no extra request) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Crect x='4' y='10' width='24' height='12' fill='%23e5372b'/%3E%3Ctext x='16' y='20' text-anchor='middle' font-family='monospace' font-weight='700' font-size='10' fill='white'%3EBS%3C/text%3E%3C/svg%3E" />
+
+  <!-- Structured data — ResearchProject -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ResearchProject",
+    "name": "POTEBS — Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types",
+    "alternateName": "POTEBS",
+    "description": "Investigating the potential of e-bike-sharing systems for sustainable mobility in different spatial types using linked operational and survey data from the Basel metropolitan area.",
+    "startDate": "2023-12",
+    "endDate": "2027-01",
+    "funder": {
+      "@type": "GovernmentOrganization",
+      "name": "Swiss Federal Office of Energy (SFOE)",
+      "url": "https://www.bfe.admin.ch/bfe/en/home.html",
+      "identifier": "SI/502720-01"
+    },
+    "parentOrganization": {
+      "@type": "EducationalOrganization",
+      "name": "Lucerne University of Applied Sciences and Arts (HSLU)",
+      "url": "https://www.hslu.ch/"
+    },
+    "contributor": [
+      { "@type": "Person", "name": "Michael Stiebe", "email": "michael.stiebe@hslu.ch", "affiliation": "HSLU" },
+      { "@type": "Person", "name": "Widar von Arx", "affiliation": "HSLU" },
+      { "@type": "Person", "name": "Frank Christian Krysiak", "affiliation": "University of Basel" },
+      { "@type": "Person", "name": "Benjamin Weggelaar", "affiliation": "University of Basel" }
+    ],
+    "sameAs": [
+      "https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193"
+    ],
+    "keywords": "e-bike sharing, EBSS, usage intensity, sustainable mobility, multimodal transport, Basel, free-floating, dock-based"
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
@@ -39,6 +94,7 @@
     nav .links{display:flex;gap:0}
     nav .links a{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);padding:10px 14px;border-left:1px solid var(--ink);transition:background .12s,color .12s}
     nav .links a:hover{background:var(--ink);color:var(--bg)}
+    nav .links a.active{background:var(--red);color:#fff;border-left-color:var(--ink)}
 
     /* GENERIC SECTION */
     section{border-bottom:2px solid var(--ink)}
@@ -96,6 +152,58 @@
     .block h3{font-size:17px;font-weight:700;line-height:1.25;letter-spacing:-.01em}
     .block p{font-size:13.5px;line-height:1.6;color:#222}
     .block .idx{font-family:"JetBrains Mono",monospace;font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1;color:var(--red);margin-bottom:-4px}
+
+    /* INLINE DATA VIZ (small block-level visualizations inside findings) */
+    .vis{margin:6px 0 8px;padding:10px 12px;border:1px solid var(--ink);background:var(--bg)}
+    .vis-eff{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:center;font-family:"JetBrains Mono",monospace;font-size:11px;margin:5px 0}
+    .vis-eff:first-of-type{margin-top:0}
+    .vis-eff:last-of-type{margin-bottom:0}
+    .eff-pct{padding:3px 8px;border:1px solid var(--ink);font-weight:700;min-width:62px;text-align:center;letter-spacing:.04em}
+    .eff-pct.neg{background:var(--red);color:#fff;border-color:var(--red)}
+    .eff-pct.pos{background:var(--ink);color:#fff}
+    .eff-rrr{color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-size:10px}
+    .eff-label{color:#222;font-family:"Space Grotesk",sans-serif;font-size:12px;font-weight:500;letter-spacing:-.005em}
+    .vis-seg{display:flex;height:26px;border:1px solid var(--ink);margin:4px 0 8px}
+    .vis-seg .seg{display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:#fff;border-right:1px solid var(--ink)}
+    .vis-seg .seg:last-child{border-right:none}
+    .vis-seg .seg.low{background:#7a756c}
+    .vis-seg .seg.med{background:#0a0a0a}
+    .vis-seg .seg.high{background:var(--red)}
+    .vis-leg{display:flex;gap:14px;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;flex-wrap:wrap}
+    .vis-leg span{display:flex;align-items:center;gap:5px}
+    .vis-leg i{width:10px;height:10px;border:1px solid var(--ink);display:inline-block}
+    .vis-leg i.low{background:#7a756c}
+    .vis-leg i.med{background:#0a0a0a}
+    .vis-leg i.high{background:var(--red)}
+    .vis-bar-row{display:grid;grid-template-columns:54px 1fr 130px;gap:10px;align-items:center;margin:4px 0;font-family:"JetBrains Mono",monospace;font-size:10.5px}
+    .vis-bar-row .pct{font-weight:700;text-align:right}
+    .vis-bar-row .track{position:relative;height:10px;background:var(--bg);border:1px solid var(--ink)}
+    .vis-bar-row .fill{position:absolute;top:0;bottom:0;left:0;background:var(--ink)}
+    .vis-bar-row .fill.publi{background:var(--publi)}
+    .vis-bar-row .fill.pick{background:var(--pick)}
+    .vis-bar-row .lbl{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:10px}
+    .vis-readout{display:flex;align-items:baseline;gap:10px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
+    .vis-readout strong{color:var(--ink);font-size:13px;letter-spacing:0}
+
+    /* METHODS PIPELINE — small connector arrows between stage blocks */
+    .blocks-3.pipeline{position:relative}
+    .blocks-3.pipeline .block{position:relative}
+    .blocks-3.pipeline .block:not(:last-child)::after{content:"→";position:absolute;right:-10px;top:36px;width:20px;height:20px;background:var(--bg);color:var(--red);font-family:"JetBrains Mono",monospace;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;border:1px solid var(--ink);z-index:5}
+    @media (max-width:1000px){.blocks-3.pipeline .block:not(:last-child)::after{display:none}}
+
+    /* TIMELINE YEAR MARKERS */
+    .tl-year{display:grid;grid-template-columns:140px 40px 1fr;gap:0;padding:0;border-bottom:1px solid var(--ink);background:var(--ink);color:var(--bg)}
+    .tl-year .y-label{padding:8px 28px;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;letter-spacing:.14em}
+    .tl-year .y-line{padding:8px 0}
+    .tl-year .y-bar{padding:8px 28px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center}
+    @media (max-width:640px){.tl-year{grid-template-columns:1fr}.tl-year .y-line{display:none}}
+
+    /* BIBTEX COPY BUTTON ON PUBLICATIONS */
+    .pub-list li{position:relative}
+    .cite-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+    .cite-btn{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 9px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;border-radius:0;transition:background .12s,color .12s}
+    .cite-btn:hover{background:var(--ink);color:var(--bg)}
+    .cite-btn.copied{background:var(--red);color:#fff;border-color:var(--red)}
 
     /* HIGHLIGHT BAND (inverted block for emphasis) */
     .highlight{background:var(--ink);color:var(--bg);padding:28px 28px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
@@ -231,6 +339,28 @@
       .blocks-2{grid-template-columns:1fr}
       .block{border-right:none}
     }
+    /* PRINT STYLESHEET — clean A4/letter output for review meetings */
+    @media print{
+      :root{--bg:#ffffff;--paper:#ffffff}
+      body{font-size:10pt;line-height:1.4;background:#fff;color:#000}
+      nav,#map,#heatmap-map,.heat-controls,.heat-legend,.cite-actions,.hero-right,.resources{display:none !important}
+      section{page-break-inside:avoid;border-bottom:1px solid #000}
+      .hero{min-height:auto;border-bottom:1px solid #000}
+      .hero-grid{grid-template-columns:1fr;min-height:auto}
+      .hero-left{padding:24px;border-right:none}
+      .hero h1{font-size:48pt}
+      .hero .sub{font-size:14pt}
+      .sec-head h2{font-size:20pt}
+      .blocks-3,.blocks-2,.team-grid,.partner-logos,.stats-grid{grid-template-columns:1fr 1fr;gap:0}
+      .block,.team-cell,.partner-logo-cell,.stat-cell{break-inside:avoid;border-right:1px solid #000;border-bottom:1px solid #000;min-height:auto}
+      .highlight,.highlight.gold{background:#000 !important;color:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .highlight.gold{background:#c49418 !important;color:#000 !important}
+      a[href^="http"]::after{content:" (" attr(href) ")";font-family:"JetBrains Mono",monospace;font-size:8pt;color:#666}
+      .pub-list li{page-break-inside:avoid}
+      footer{background:#fff;color:#000;border-top:2px solid #000;padding:20px 0}
+      .footer-text,.footer-desc,.footer-copy{color:#000 !important}
+    }
+
     @media (max-width:640px){
       nav .links a:nth-child(n+4){display:none}
       .hero h1{font-size:54px}
@@ -390,11 +520,13 @@
     </div>
     <div class="sec-body">
       <div class="timeline">
+        <div class="tl-year"><div class="y-label">2023</div><div class="y-line"></div><div class="y-bar">Project kick-off</div></div>
         <div class="tl-item tl-phase">
           <div class="tl-date">Dec 2023</div>
           <div class="tl-marker"></div>
           <div><div class="tl-title">Project launch</div><div class="tl-desc">POTEBS funded by the Swiss Federal Office of Energy (SFOE). Operational trip data from Pick-e-Bike and PubliBike Velospot in the Basel metropolitan area forms the empirical backbone.</div></div>
         </div>
+        <div class="tl-year"><div class="y-label">2024</div><div class="y-line"></div><div class="y-bar">First conferences · team expansion · public outreach</div></div>
         <div class="tl-item">
           <div class="tl-date">May 2024</div>
           <div class="tl-marker"></div>
@@ -415,6 +547,7 @@
           <div class="tl-marker"></div>
           <div><div class="tl-title">Public outreach — HSLU Newsletter</div><div class="tl-desc">"E-Bike-Sharing boomt in der Schweiz!" published by Lucerne University of Applied Sciences and Arts.</div></div>
         </div>
+        <div class="tl-year"><div class="y-label">2025</div><div class="y-line"></div><div class="y-bar">Surveys launched · Singapore conference · economics seminar</div></div>
         <div class="tl-item tl-phase">
           <div class="tl-date">Jan 2025</div>
           <div class="tl-marker"></div>
@@ -440,6 +573,7 @@
           <div class="tl-marker"></div>
           <div><div class="tl-title">WWZ Economics Lunch Seminar</div><div class="tl-desc">Stiebe. Pragmatists, Not Idealists: What drives e-bike sharing usage intensity. Faculty of Business and Economics, University of Basel.</div></div>
         </div>
+        <div class="tl-year"><div class="y-label">2026</div><div class="y-line"></div><div class="y-bar">Journal submission · ongoing dissemination</div></div>
         <div class="tl-item tl-phase">
           <div class="tl-date">Mar 2026</div>
           <div class="tl-marker"></div>
@@ -462,7 +596,7 @@
     </div>
     <p class="sec-lede">Three stages connect raw data to inference: attitudinal measurement (EFA), data-driven segmentation (GMM), and predictive modeling (multinomial logit with random forest validation).</p>
     <div class="sec-body">
-      <div class="blocks-3">
+      <div class="blocks-3 pipeline">
         <div class="block">
           <div class="idx">01</div>
           <div class="tag">Stage 1 — Data integration</div>
@@ -502,19 +636,51 @@
           <div class="idx">I.</div>
           <div class="tag">Usage concentration</div>
           <h3>Extreme concentration and near-50% dormancy.</h3>
-          <p>The top 20% of users generate 80.3% of all trips (Gini=0.77). Three segments emerged: low-intensity (48%, ~one rental every five months), medium-intensity (39%), and power users (13%, riding every 2–3 days).</p>
+          <div class="vis">
+            <div class="vis-seg">
+              <div class="seg low" style="flex:48">48% Low</div>
+              <div class="seg med" style="flex:39">39% Medium</div>
+              <div class="seg high" style="flex:13">13% Power</div>
+            </div>
+            <div class="vis-leg">
+              <span><i class="low"></i>≈ 1 rental / 5 months</span>
+              <span><i class="med"></i>monthly riders</span>
+              <span><i class="high"></i>every 2–3 days</span>
+            </div>
+            <div class="vis-readout"><strong>Gini 0.77</strong> · Top 20% generate <strong>80.3%</strong> of trips</div>
+          </div>
+          <p>The top 20% of users generate 80.3% of all trips. Three segments emerged: low-intensity (48%, ~one rental every five months), medium-intensity (39%), and power users (13%, riding every 2–3 days).</p>
         </div>
         <div class="block">
           <div class="idx">II.</div>
           <div class="tag">The environmental paradox</div>
           <h3>Pro-environmental self-identity <em>reduces</em> power-user likelihood.</h3>
-          <p>Users with stronger environmental self-identity were 32% less likely to be power users (RRR=0.68, p&lt;0.001) — directly contradicting Theory of Planned Behavior predictions. In Basel's sustainable transport context, green-minded users may already travel by foot, bike, or PT.</p>
+          <div class="vis">
+            <div class="vis-eff">
+              <span class="eff-pct neg">−32%</span>
+              <span class="eff-rrr">RRR 0.68 · p&lt;0.001</span>
+              <span class="eff-label">Environmental self-identity → power-user likelihood</span>
+            </div>
+          </div>
+          <p>Users with stronger environmental self-identity were 32% less likely to be power users — directly contradicting Theory of Planned Behavior predictions. In Basel's sustainable transport context, green-minded users may already travel by foot, bike, or PT.</p>
         </div>
         <div class="block">
           <div class="idx">III.</div>
           <div class="tag">What actually drives intensity</div>
           <h3>Weather resilience and multimodal integration.</h3>
-          <p>Revealed temperature variance raised power-user likelihood by 40% (RRR=1.40, p&lt;0.001). Multimodal complementarity — integrating EBSS with PT as a reliable fallback — was the strongest attitudinal predictor (RRR=1.64, p&lt;0.001).</p>
+          <div class="vis">
+            <div class="vis-eff">
+              <span class="eff-pct pos">+40%</span>
+              <span class="eff-rrr">RRR 1.40 · p&lt;0.001</span>
+              <span class="eff-label">Revealed temperature variance</span>
+            </div>
+            <div class="vis-eff">
+              <span class="eff-pct pos">+64%</span>
+              <span class="eff-rrr">RRR 1.64 · p&lt;0.001</span>
+              <span class="eff-label">Multimodal complementarity</span>
+            </div>
+          </div>
+          <p>Revealed temperature variance raised power-user likelihood by 40%. Multimodal complementarity — integrating EBSS with PT as a reliable fallback — was the strongest attitudinal predictor.</p>
         </div>
       </div>
       <div class="blocks-2" style="border-top:none;margin-top:-1px">
@@ -522,12 +688,41 @@
           <div class="idx">IV.</div>
           <div class="tag">Two archetypes</div>
           <h3>Routine optimizers and flexibility maximizers.</h3>
-          <p>Dock-based <strong>routine optimizers</strong> are urban commuters with exceptional weather resilience (RRR=2.78) and habitual corridor use. Free-floating <strong>flexibility maximizers</strong> are younger multimodal travelers for whom seamless PT integration dominates (RRR=2.14). Neither archetype is distinguished by environmental ideology.</p>
+          <div class="vis">
+            <div class="vis-eff">
+              <span class="eff-pct pos" style="background:var(--publi);border-color:var(--publi)">+178%</span>
+              <span class="eff-rrr">RRR 2.78</span>
+              <span class="eff-label">Dock-based · weather resilience (PubliBike)</span>
+            </div>
+            <div class="vis-eff">
+              <span class="eff-pct pos" style="background:var(--pick);border-color:var(--pick)">+114%</span>
+              <span class="eff-rrr">RRR 2.14</span>
+              <span class="eff-label">Free-floating · multimodal complementarity (Pick-e-Bike)</span>
+            </div>
+          </div>
+          <p>Dock-based <strong>routine optimizers</strong> are urban commuters with exceptional weather resilience and habitual corridor use. Free-floating <strong>flexibility maximizers</strong> are younger multimodal travelers for whom seamless PT integration dominates. Neither archetype is distinguished by environmental ideology.</p>
         </div>
         <div class="block">
           <div class="idx">V.</div>
           <div class="tag">Mode substitution</div>
           <h3>EBSS primarily substitutes public transport, not cars.</h3>
+          <div class="vis">
+            <div class="vis-bar-row">
+              <span class="pct">75.5%</span>
+              <div class="track"><div class="fill publi" style="width:75.5%"></div></div>
+              <span class="lbl">Public transport</span>
+            </div>
+            <div class="vis-bar-row">
+              <span class="pct">34.0%</span>
+              <div class="track"><div class="fill" style="width:34%"></div></div>
+              <span class="lbl">Car</span>
+            </div>
+            <div class="vis-bar-row">
+              <span class="pct">73.0%</span>
+              <div class="track"><div class="fill pick" style="width:73%"></div></div>
+              <span class="lbl">Within 150 m of PT stop</span>
+            </div>
+          </div>
           <p>75.5% of users substitute PT at least sometimes; only 34% substitute car trips. 73% of all trips originate or end within 150&thinsp;m of a PT stop — positioning EBSS as an overflow valve for crowded transit rather than a car replacement. Three-quarters of displaced trips already come from sustainable modes.</p>
         </div>
       </div>
@@ -858,35 +1053,51 @@
       <ul class="pub-list">
         <li>
           <span class="pub-badge journal">Journal</span>
-          <span class="pub-cite">Stiebe, M., Krysiak, F. C., von Arx, W., &amp; Weggelaar, B. (2026). Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity. <em>Transportation Research Part D: Transport and Environment</em> (Elsevier). Submitted March 2026, under review.</span>
+          <span class="pub-cite">Stiebe, M., Krysiak, F. C., von Arx, W., &amp; Weggelaar, B. (2026). Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity. <em>Transportation Research Part D: Transport and Environment</em> (Elsevier). Submitted March 2026, under review.
+            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2026pragmatism">Copy BibTeX</button></span>
+          </span>
         </li>
         <li>
           <span class="pub-badge talk">Talk</span>
-          <span class="pub-cite">Stiebe, M., &amp; Weggelaar, B. (2026). Drivers of E-Bike Sharing Usage Intensity: Evidence from Free-Floating and Dock-Based Systems in Basel. Presentation at <em>Sustainable Future Research Lunch</em>, University of Basel, March 20, 2026.</span>
+          <span class="pub-cite">Stiebe, M., &amp; Weggelaar, B. (2026). Drivers of E-Bike Sharing Usage Intensity: Evidence from Free-Floating and Dock-Based Systems in Basel. Presentation at <em>Sustainable Future Research Lunch</em>, University of Basel, March 20, 2026.
+            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2026srl">Copy BibTeX</button></span>
+          </span>
         </li>
         <li>
           <span class="pub-badge talk">Talk</span>
-          <span class="pub-cite">Stiebe, M. (2025). Pragmatists, Not Idealists: What Drives E-Bike Sharing Usage Intensity and Why Car Substitution Remains Elusive. Presentation at the <em>Economics Lunch Seminar</em>, Faculty of Business and Economics (WWZ), University of Basel, December 17, 2025.</span>
+          <span class="pub-cite">Stiebe, M. (2025). Pragmatists, Not Idealists: What Drives E-Bike Sharing Usage Intensity and Why Car Substitution Remains Elusive. Presentation at the <em>Economics Lunch Seminar</em>, Faculty of Business and Economics (WWZ), University of Basel, December 17, 2025.
+            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2025wwz">Copy BibTeX</button></span>
+          </span>
         </li>
         <li>
           <span class="pub-badge conf">Conference</span>
-          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2025). Understanding User Behavior in Dock-based and Free-floating E-bike Sharing Systems: A Multi-method Study From the Basel Metropolitan Area. <em>mobil.TUM 2025 — 14th International Scientific Conference on Mobility and Transport</em>, Nanyang Technological University, Singapore, November 24–26, 2025.</span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2025). Understanding User Behavior in Dock-based and Free-floating E-bike Sharing Systems: A Multi-method Study From the Basel Metropolitan Area. <em>mobil.TUM 2025 — 14th International Scientific Conference on Mobility and Transport</em>, Nanyang Technological University, Singapore, November 24–26, 2025.
+            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2025mobiltum">Copy BibTeX</button></span>
+          </span>
         </li>
         <li>
           <span class="pub-badge conf">Conference</span>
-          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems — Empirical Insights from the Basel Metropolitan Area. <em>European Transport Conference ETC 2024</em>, Antwerp, September 17–20, 2024. <a href="https://aetransport.org/past-etc-papers/conference-papers-2024?abstractId=8446&amp;state=b" target="_blank" rel="noopener">aetransport.org ↗</a></span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems — Empirical Insights from the Basel Metropolitan Area. <em>European Transport Conference ETC 2024</em>, Antwerp, September 17–20, 2024. <a href="https://aetransport.org/past-etc-papers/conference-papers-2024?abstractId=8446&amp;state=b" target="_blank" rel="noopener">aetransport.org ↗</a>
+            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2024etc">Copy BibTeX</button></span>
+          </span>
         </li>
         <li>
           <span class="pub-badge conf">Conference</span>
-          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems — Insights from the Basel Metropolitan Area. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15–17, 2024. <a href="https://www.strc.ch/2024/Stiebe_vonArx.pdf" target="_blank" rel="noopener">PDF ↗</a></span>
+          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems — Insights from the Basel Metropolitan Area. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15–17, 2024. <a href="https://www.strc.ch/2024/Stiebe_vonArx.pdf" target="_blank" rel="noopener">PDF ↗</a>
+            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2024strc">Copy BibTeX</button></span>
+          </span>
         </li>
         <li>
           <span class="pub-badge talk">Talk</span>
-          <span class="pub-cite">von Arx, W., &amp; Stiebe, M. (2024). Obstacles to Economic Sustainability of Free-Floating E-Bike Sharing Systems: A Basel-Based Case Study. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15, 2024.</span>
+          <span class="pub-cite">von Arx, W., &amp; Stiebe, M. (2024). Obstacles to Economic Sustainability of Free-Floating E-Bike Sharing Systems: A Basel-Based Case Study. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15, 2024.
+            <span class="cite-actions"><button class="cite-btn" data-bib-id="vonarx2024strc">Copy BibTeX</button></span>
+          </span>
         </li>
         <li>
           <span class="pub-badge press">Press</span>
-          <span class="pub-cite">"E-Bike-Sharing boomt in der Schweiz!" Newsletter article, Lucerne University of Applied Sciences and Arts, November 13, 2024. <a href="https://www.hslu.ch/de-ch/wirtschaft/ueber-uns/news/2024/11/13/ebike-sharing/" target="_blank" rel="noopener">hslu.ch ↗</a></span>
+          <span class="pub-cite">"E-Bike-Sharing boomt in der Schweiz!" Newsletter article, Lucerne University of Applied Sciences and Arts, November 13, 2024. <a href="https://www.hslu.ch/de-ch/wirtschaft/ueber-uns/news/2024/11/13/ebike-sharing/" target="_blank" rel="noopener">hslu.ch ↗</a>
+            <span class="cite-actions"><button class="cite-btn" data-bib-id="hslu2024newsletter">Copy BibTeX</button></span>
+          </span>
         </li>
       </ul>
 
@@ -1262,6 +1473,159 @@
           btn.classList.add('active');
           activeProvider = btn.dataset.provider;
           render();
+        });
+      });
+    })();
+
+    // -------------------------------------------------------------------------
+    // SCROLL-SPY — highlight the active nav link as the user scrolls
+    // -------------------------------------------------------------------------
+    (function () {
+      const links = Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
+      if (!links.length) return;
+      const linkMap = new Map();
+      const sections = [];
+      links.forEach(a => {
+        const id = a.getAttribute('href').slice(1);
+        const sec = document.getElementById(id);
+        if (sec) { linkMap.set(id, a); sections.push(sec); }
+      });
+      if (!sections.length) return;
+
+      const setActive = id => {
+        links.forEach(l => l.classList.remove('active'));
+        const a = linkMap.get(id);
+        if (a) a.classList.add('active');
+      };
+
+      const io = new IntersectionObserver((entries) => {
+        // Pick the entry closest to the top of the viewport that is currently intersecting
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length) setActive(visible[0].target.id);
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+      sections.forEach(s => io.observe(s));
+    })();
+
+    // -------------------------------------------------------------------------
+    // BIBTEX COPY BUTTONS — clipboard API, with visual confirmation
+    // -------------------------------------------------------------------------
+    (function () {
+      const BIB = {
+        'stiebe2026pragmatism':
+`@article{stiebe2026pragmatism,
+  author  = {Stiebe, Michael and Krysiak, Frank C. and von Arx, Widar and Weggelaar, Bram},
+  title   = {Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity},
+  journal = {Transportation Research Part D: Transport and Environment},
+  year    = {2026},
+  note    = {Submitted March 2026, under review}
+}`,
+        'stiebe2026srl':
+`@misc{stiebe2026srl,
+  author       = {Stiebe, Michael and Weggelaar, Bram},
+  title        = {Drivers of E-Bike Sharing Usage Intensity: Evidence from Free-Floating and Dock-Based Systems in Basel},
+  howpublished = {Presentation, Sustainable Future Research Lunch, University of Basel},
+  year         = {2026},
+  month        = mar,
+  day          = {20}
+}`,
+        'stiebe2025wwz':
+`@misc{stiebe2025wwz,
+  author       = {Stiebe, Michael},
+  title        = {Pragmatists, Not Idealists: What Drives E-Bike Sharing Usage Intensity and Why Car Substitution Remains Elusive},
+  howpublished = {Presentation, Economics Lunch Seminar, WWZ, University of Basel},
+  year         = {2025},
+  month        = dec,
+  day          = {17}
+}`,
+        'stiebe2025mobiltum':
+`@inproceedings{stiebe2025mobiltum,
+  author    = {Stiebe, Michael and von Arx, Widar},
+  title     = {Understanding User Behavior in Dock-based and Free-floating E-bike Sharing Systems: A Multi-method Study From the Basel Metropolitan Area},
+  booktitle = {mobil.TUM 2025 — 14th International Scientific Conference on Mobility and Transport},
+  address   = {Nanyang Technological University, Singapore},
+  year      = {2025},
+  month     = nov
+}`,
+        'stiebe2024etc':
+`@inproceedings{stiebe2024etc,
+  author    = {Stiebe, Michael and von Arx, Widar},
+  title     = {Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems — Empirical Insights from the Basel Metropolitan Area},
+  booktitle = {European Transport Conference (ETC) 2024},
+  address   = {Antwerp},
+  year      = {2024},
+  month     = sep,
+  url       = {https://aetransport.org/past-etc-papers/conference-papers-2024?abstractId=8446}
+}`,
+        'stiebe2024strc':
+`@inproceedings{stiebe2024strc,
+  author    = {Stiebe, Michael and von Arx, Widar},
+  title     = {Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems — Insights from the Basel Metropolitan Area},
+  booktitle = {Swiss Transport Research Conference (STRC) 2024},
+  address   = {Ascona},
+  year      = {2024},
+  month     = may,
+  url       = {https://www.strc.ch/2024/Stiebe_vonArx.pdf}
+}`,
+        'vonarx2024strc':
+`@inproceedings{vonarx2024strc,
+  author    = {von Arx, Widar and Stiebe, Michael},
+  title     = {Obstacles to Economic Sustainability of Free-Floating E-Bike Sharing Systems: A Basel-Based Case Study},
+  booktitle = {Swiss Transport Research Conference (STRC) 2024},
+  address   = {Ascona},
+  year      = {2024},
+  month     = may
+}`,
+        'hslu2024newsletter':
+`@misc{hslu2024newsletter,
+  title        = {E-Bike-Sharing boomt in der Schweiz!},
+  howpublished = {Newsletter, Lucerne University of Applied Sciences and Arts},
+  year         = {2024},
+  month        = nov,
+  day          = {13},
+  url          = {https://www.hslu.ch/de-ch/wirtschaft/ueber-uns/news/2024/11/13/ebike-sharing/}
+}`
+      };
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        }
+        // Fallback for non-secure contexts
+        return new Promise((resolve, reject) => {
+          try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            ok ? resolve() : reject();
+          } catch (e) { reject(e); }
+        });
+      }
+
+      document.querySelectorAll('.cite-btn[data-bib-id]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.bibId;
+          const bib = BIB[id];
+          if (!bib) return;
+          copyText(bib).then(() => {
+            const original = btn.textContent;
+            btn.textContent = 'Copied ✓';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = original;
+              btn.classList.remove('copied');
+            }, 1800);
+          }).catch(() => {
+            btn.textContent = 'Copy failed';
+            setTimeout(() => { btn.textContent = 'Copy BibTeX'; }, 1800);
+          });
         });
       });
     })();
