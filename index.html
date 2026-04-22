@@ -205,6 +205,71 @@
     .cite-btn:hover{background:var(--ink);color:var(--bg)}
     .cite-btn.copied{background:var(--red);color:#fff;border-color:var(--red)}
 
+    /* STICKY TOC RAIL ON FINDINGS SECTION */
+    .toc-rail{display:none}
+    @media (min-width:1440px){
+      .toc-rail{
+        display:block;
+        position:fixed;
+        left:24px;
+        top:50%;
+        transform:translateY(-50%);
+        width:200px;
+        padding:14px 14px 12px;
+        background:var(--paper);
+        border:1px solid var(--ink);
+        z-index:60;
+        opacity:0;
+        pointer-events:none;
+        transition:opacity .18s ease-out;
+      }
+      .toc-rail.visible{opacity:1;pointer-events:auto}
+      .toc-rail .toc-head{
+        font-family:"JetBrains Mono",monospace;
+        font-size:10px;
+        font-weight:700;
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        color:var(--red);
+        padding-bottom:8px;
+        margin-bottom:8px;
+        border-bottom:1px solid var(--ink);
+      }
+      .toc-rail .toc-list{list-style:none;margin:0;padding:0;counter-reset:toc}
+      .toc-rail .toc-list li{margin:0;padding:0}
+      .toc-rail .toc-list a{
+        display:flex;
+        align-items:baseline;
+        gap:10px;
+        padding:6px 0;
+        font-family:"Space Grotesk","Inter",sans-serif;
+        font-size:12px;
+        line-height:1.35;
+        color:var(--ink);
+        text-decoration:none;
+        border-left:2px solid transparent;
+        padding-left:8px;
+        margin-left:-8px;
+        transition:background .12s,border-color .12s,color .12s;
+      }
+      .toc-rail .toc-list a:hover{background:var(--bg)}
+      .toc-rail .toc-list .toc-i{
+        font-family:"JetBrains Mono",monospace;
+        font-size:10px;
+        font-weight:700;
+        letter-spacing:.05em;
+        color:var(--muted);
+        min-width:18px;
+      }
+      .toc-rail .toc-list .toc-t{flex:1}
+      .toc-rail .toc-list a.active{
+        border-left-color:var(--red);
+        background:var(--bg);
+      }
+      .toc-rail .toc-list a.active .toc-i{color:var(--red)}
+      .toc-rail .toc-list a.active .toc-t{font-weight:600}
+    }
+
     /* HIGHLIGHT BAND (inverted block for emphasis) */
     .highlight{background:var(--ink);color:var(--bg);padding:28px 28px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
     .highlight .tag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:8px}
@@ -625,6 +690,17 @@
 
   <!-- FINDINGS -->
   <section id="findings">
+    <aside class="toc-rail" aria-label="Findings outline">
+      <div class="toc-head">§ 04 · Findings</div>
+      <ol class="toc-list">
+        <li><a href="#f-1" data-target="f-1"><span class="toc-i">I</span><span class="toc-t">Concentration &amp; dormancy</span></a></li>
+        <li><a href="#f-2" data-target="f-2"><span class="toc-i">II</span><span class="toc-t">Environmental paradox</span></a></li>
+        <li><a href="#f-3" data-target="f-3"><span class="toc-i">III</span><span class="toc-t">Weather &amp; multimodal</span></a></li>
+        <li><a href="#f-4" data-target="f-4"><span class="toc-i">IV</span><span class="toc-t">Two archetypes</span></a></li>
+        <li><a href="#f-5" data-target="f-5"><span class="toc-i">V</span><span class="toc-t">Mode substitution</span></a></li>
+        <li><a href="#f-6" data-target="f-6"><span class="toc-i">+</span><span class="toc-t">Incubator effect</span></a></li>
+      </ol>
+    </aside>
     <div class="sec-head">
       <div class="sec-num">§ 04 · Key findings</div>
       <h2>What the results show.</h2>
@@ -632,7 +708,7 @@
     <p class="sec-lede">Behavioral and utilitarian factors consistently outperform attitudinal and demographic predictors of usage intensity <span class="mono" style="font-size:13px;color:var(--muted)">(combined MNL: pseudo-R²=0.128, N=1,743)</span>.</p>
     <div class="sec-body">
       <div class="blocks-3">
-        <div class="block">
+        <div class="block" id="f-1">
           <div class="idx">I.</div>
           <div class="tag">Usage concentration</div>
           <h3>Extreme concentration and near-50% dormancy.</h3>
@@ -651,7 +727,7 @@
           </div>
           <p>The top 20% of users generate 80.3% of all trips. Three segments emerged: low-intensity (48%, ~one rental every five months), medium-intensity (39%), and power users (13%, riding every 2–3 days).</p>
         </div>
-        <div class="block">
+        <div class="block" id="f-2">
           <div class="idx">II.</div>
           <div class="tag">The environmental paradox</div>
           <h3>Pro-environmental self-identity <em>reduces</em> power-user likelihood.</h3>
@@ -664,7 +740,7 @@
           </div>
           <p>Users with stronger environmental self-identity were 32% less likely to be power users — directly contradicting Theory of Planned Behavior predictions. In Basel's sustainable transport context, green-minded users may already travel by foot, bike, or PT.</p>
         </div>
-        <div class="block">
+        <div class="block" id="f-3">
           <div class="idx">III.</div>
           <div class="tag">What actually drives intensity</div>
           <h3>Weather resilience and multimodal integration.</h3>
@@ -684,7 +760,7 @@
         </div>
       </div>
       <div class="blocks-2" style="border-top:none;margin-top:-1px">
-        <div class="block">
+        <div class="block" id="f-4">
           <div class="idx">IV.</div>
           <div class="tag">Two archetypes</div>
           <h3>Routine optimizers and flexibility maximizers.</h3>
@@ -702,7 +778,7 @@
           </div>
           <p>Dock-based <strong>routine optimizers</strong> are urban commuters with exceptional weather resilience and habitual corridor use. Free-floating <strong>flexibility maximizers</strong> are younger multimodal travelers for whom seamless PT integration dominates. Neither archetype is distinguished by environmental ideology.</p>
         </div>
-        <div class="block">
+        <div class="block" id="f-5">
           <div class="idx">V.</div>
           <div class="tag">Mode substitution</div>
           <h3>EBSS primarily substitutes public transport, not cars.</h3>
@@ -726,7 +802,7 @@
           <p>75.5% of users substitute PT at least sometimes; only 34% substitute car trips. 73% of all trips originate or end within 150&thinsp;m of a PT stop — positioning EBSS as an overflow valve for crowded transit rather than a car replacement. Three-quarters of displaced trips already come from sustainable modes.</p>
         </div>
       </div>
-      <div class="highlight gold" style="margin-top:-1px">
+      <div class="highlight gold" id="f-6" style="margin-top:-1px">
         <div class="tag">The incubator effect</div>
         <p><strong>Private e-bike ownership significantly reduces shared system use (RRR=0.76, p&lt;0.001).</strong> Users who report that EBSS motivated their purchase of a private e-bike suggest these systems function as an <em>incubator</em> — gradually graduating users from shared toward private micromobility. In Basel's transit-rich, low-motorization context, EBSS may partly undermine its own long-term demand by seeding private ownership.</p>
       </div>
@@ -1507,6 +1583,47 @@
       }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
 
       sections.forEach(s => io.observe(s));
+    })();
+
+    // -------------------------------------------------------------------------
+    // FINDINGS TOC RAIL — show while findings section is in view, highlight active
+    // -------------------------------------------------------------------------
+    (function () {
+      const rail = document.querySelector('.toc-rail');
+      const section = document.getElementById('findings');
+      if (!rail || !section) return;
+
+      const links = Array.from(rail.querySelectorAll('a[data-target]'));
+      if (!links.length) return;
+
+      const linkFor = new Map(links.map(a => [a.dataset.target, a]));
+      const targets = links
+        .map(a => document.getElementById(a.dataset.target))
+        .filter(Boolean);
+      if (!targets.length) return;
+
+      // Show / hide the rail based on whether the findings section is in view.
+      const sectionIO = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          rail.classList.toggle('visible', e.isIntersecting);
+        });
+      }, { rootMargin: '-5% 0px -15% 0px', threshold: 0 });
+      sectionIO.observe(section);
+
+      // Highlight the finding currently closest to the viewport center.
+      const setActive = (id) => {
+        links.forEach(l => l.classList.remove('active'));
+        const a = linkFor.get(id);
+        if (a) a.classList.add('active');
+      };
+
+      const findingIO = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length) setActive(visible[0].target.id);
+      }, { rootMargin: '-35% 0px -45% 0px', threshold: 0 });
+      targets.forEach(t => findingIO.observe(t));
     })();
 
     // -------------------------------------------------------------------------
