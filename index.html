@@ -281,6 +281,8 @@
     .team-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
     .team-cell{padding:22px 22px 26px;border-right:1px solid var(--ink);background:var(--paper);display:flex;flex-direction:column;gap:10px;min-height:320px}
     .team-cell:last-child{border-right:none}
+    .team-cell .team-photo{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center top;border:1px solid var(--ink);background:var(--bg);margin-bottom:4px;filter:grayscale(1) contrast(1.05);transition:filter .25s ease-out}
+    .team-cell:hover .team-photo{filter:grayscale(0) contrast(1)}
     .team-cell .team-name{font-weight:700;font-size:16px;letter-spacing:-.01em}
     .team-cell .team-title{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
     .team-cell .team-inst{font-size:12px;color:var(--red);font-weight:600}
@@ -962,6 +964,7 @@
     <div class="sec-body">
       <div class="team-grid">
         <div class="team-cell">
+          <img class="team-photo" src="https://www.hslu.ch/Services/Other/SelbstpflegeDB/ImageService/ImageHandler.ashx/?id=e8f6c0e1-2d10-43f8-91cc-b6ee580b56b7&amp;s=DetailView" alt="Portrait of Michael Stiebe" loading="lazy" referrerpolicy="no-referrer" />
           <div class="team-title">[01] Project Manager</div>
           <div class="team-name">Michael Stiebe</div>
           <div class="team-inst">HSLU — ITM</div>
@@ -976,6 +979,7 @@
           </div>
         </div>
         <div class="team-cell">
+          <img class="team-photo" src="https://www.hslu.ch/Services/Other/SelbstpflegeDB/ImageService/ImageHandler.ashx/?id=62621389-b73f-4eb7-a90b-b00a22816251&amp;s=DetailView" alt="Portrait of Prof. Dr. Widar von Arx" loading="lazy" referrerpolicy="no-referrer" />
           <div class="team-title">[02] Co-Project Manager</div>
           <div class="team-name">Prof. Dr. Widar von Arx</div>
           <div class="team-inst">HSLU — ITM</div>
@@ -991,6 +995,7 @@
           </div>
         </div>
         <div class="team-cell">
+          <img class="team-photo" src="https://wwz.unibas.ch/fileadmin/_processed_/d/8/csm_Krysiak_1000_500_706b261c0f.jpg" alt="Portrait of Prof. Dr. Frank Christian Krysiak" loading="lazy" referrerpolicy="no-referrer" />
           <div class="team-title">[03] Co-Project Manager</div>
           <div class="team-name">Prof. Dr. Frank Christian Krysiak</div>
           <div class="team-inst">Uni Basel — WWZ</div>
@@ -1004,6 +1009,7 @@
           </div>
         </div>
         <div class="team-cell">
+          <img class="team-photo" src="https://avatar.unibas.ch/image/D7D9683B-E465-4FBC-B74C-1179875DFF18/m" alt="Portrait of Benjamin Weggelaar" loading="lazy" referrerpolicy="no-referrer" />
           <div class="team-title">[04] Research Associate · since 10/2024</div>
           <div class="team-name">Benjamin Weggelaar</div>
           <div class="team-inst">Uni Basel — WWZ</div>
