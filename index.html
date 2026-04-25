@@ -1242,20 +1242,12 @@
     fetch('data/lorenz.json')
       .then(r => r.json())
       .then(lorenz => {
-        const allPanel    = lorenz.panels['all_users_rentals'];
-        const surveyPanel = lorenz.panels['survey_users_rentals'];
-        if (allPanel?.providers?.Combined) {
-          const c = allPanel.providers.Combined;
-          const t = c.n_trips;
-          const el = document.getElementById('stat-trips');
-          if (el) el.textContent = t >= 1e6 ? (t / 1e6).toFixed(1) + 'M' : t.toLocaleString();
-          const gEl = document.getElementById('stat-gini');
-          if (gEl) gEl.textContent = c.gini.toFixed(2);
-        }
-        if (surveyPanel?.providers?.Combined) {
-          const el = document.getElementById('stat-linked');
-          if (el) el.textContent = surveyPanel.providers.Combined.n_users.toLocaleString();
-        }
+        // NOTE: the static HTML values for #stat-trips, #stat-gini and #stat-linked
+        // are the canonical figures from the TR-D manuscript (1.4M trips / 1,743
+        // linked cases / Gini 0.77). The lorenz.json snapshot uses a different
+        // cutoff and would otherwise drift the displayed numbers, so we no longer
+        // overwrite those DOM elements here. The Lorenz panels themselves still
+        // render below from the same data file.
         PANEL_MAP.forEach(({ id, key }) => {
           const el = document.getElementById(id);
           if (!el) return;
