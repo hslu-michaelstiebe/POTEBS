@@ -187,6 +187,26 @@
     .vis-readout strong{color:var(--ink);font-size:13px;letter-spacing:0}
     .vis-cap{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;line-height:1.5}
 
+    /* SANKEY (Finding V) */
+    .vis-sankey-wrap{padding:14px 14px 12px}
+    .sankey-chart{width:100%;height:300px;margin:8px 0 18px}
+    @media (max-width:700px){.sankey-chart{height:360px}}
+
+    /* FOREST PLOT (effect-sizes section) */
+    .effects-wrap{padding:24px 28px 36px;max-width:1280px;margin:0 auto}
+    .effects-chart{width:100%;height:520px;border:1px solid var(--ink);background:var(--paper);padding:8px 4px 4px}
+    .effects-legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .effects-legend .lg{display:flex;align-items:center;gap:8px}
+    .effects-legend .sw{width:14px;height:14px;border:1px solid var(--ink)}
+    .effects-legend .sw.behavioral{background:var(--ink)}
+    .effects-legend .sw.attitudinal{background:var(--red)}
+    .effects-legend .sw.mobility{background:var(--publi)}
+    .effects-legend .sw.demographic{background:#7a756c}
+    .effects-readout{margin-top:18px;padding:14px 18px;background:var(--ink);color:var(--bg);font-size:14px;line-height:1.65}
+    .effects-readout strong{color:#fff;font-weight:600}
+    .effects-note{margin-top:10px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);line-height:1.6}
+    @media (max-width:700px){.effects-chart{height:680px}}
+
     /* METHODS PIPELINE — small connector arrows between stage blocks */
     .blocks-3.pipeline{position:relative}
     .blocks-3.pipeline .block{position:relative}
@@ -390,6 +410,7 @@
         <a href="#context">01 Context</a>
         <a href="#methods">02 Methods</a>
         <a href="#findings">03 Findings</a>
+        <a href="#effect-sizes">03.1 Effects</a>
         <a href="#recommendations">04 Recs</a>
         <a href="#heatmap">05 Data</a>
         <a href="#partners">06 Partners</a>
@@ -711,23 +732,9 @@
           <div class="idx">V.</div>
           <div class="tag">Mode substitution</div>
           <h3>EBSS primarily substitutes public transport, not cars.</h3>
-          <div class="vis">
-            <div class="vis-cap">Share of users who substitute the mode at least sometimes (Table 3, n=1,743)</div>
-            <div class="vis-bar-row">
-              <span class="pct">75.5%</span>
-              <div class="track"><div class="fill publi" style="width:75.5%"></div></div>
-              <span class="lbl">Public transport</span>
-            </div>
-            <div class="vis-bar-row">
-              <span class="pct">50.9%</span>
-              <div class="track"><div class="fill" style="width:50.9%;background:#7a756c"></div></div>
-              <span class="lbl">Walking</span>
-            </div>
-            <div class="vis-bar-row">
-              <span class="pct">33.9%</span>
-              <div class="track"><div class="fill pick" style="width:33.9%"></div></div>
-              <span class="lbl">Car <span class="mono" style="font-size:10px;color:var(--muted)">(of users with car access)</span></span>
-            </div>
+          <div class="vis vis-sankey-wrap">
+            <div class="vis-cap">Provider → mode substitution. Flow width = users who substitute the mode at least sometimes (Table 3, n=1,743).</div>
+            <div id="sankey-substitution" class="sankey-chart"></div>
             <div class="vis-readout">Three-quarters of displaced trips come from <strong>already-sustainable modes</strong>.</div>
           </div>
           <p>76% of users substitute PT at least sometimes and 51% substitute walking — versus only 34% who substitute car trips, and that figure is calculated only on the subsample of users who actually own or can access a car. Car substitution is markedly higher in the free-floating system (36% vs 22% for dock-based; V=0.20, p&lt;0.001), reflecting its extension into more car-dependent suburban catchments. The headline implication: direct decarbonization is bounded — EBSS works as a public-transport overflow valve and last-mile bridge rather than a car replacement.</p>
@@ -736,6 +743,30 @@
       <div class="highlight gold" id="f-6" style="margin-top:-1px">
         <div class="tag">The incubator effect</div>
         <p><strong>Private e-bike ownership significantly reduces shared system use (RRR=0.76, p&lt;0.001).</strong> Users who report that EBSS motivated their purchase of a private e-bike suggest these systems function as an <em>incubator</em> — gradually graduating users from shared toward private micromobility. In Basel's transit-rich, low-motorization context, EBSS may partly undermine its own long-term demand by seeding private ownership.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EFFECT SIZES (forest plot) -->
+  <section id="effect-sizes">
+    <div class="sec-head">
+      <div class="sec-num">§ 04.1 · Effect sizes</div>
+      <h2>Behavior beats ideology, in one chart.</h2>
+    </div>
+    <p class="sec-lede">Relative-risk ratios from the combined multinomial logit (high-intensity vs low-intensity, N=1,743). Dots are point estimates, horizontal bars are 95% confidence intervals where standard errors are reported in the manuscript. Behavioral predictors carry; attitudes do not — except in the wrong direction.</p>
+    <div class="sec-body">
+      <div class="effects-wrap">
+        <div id="forest-plot" class="effects-chart"></div>
+        <div class="effects-legend">
+          <span class="lg"><span class="sw behavioral"></span>Revealed behavior</span>
+          <span class="lg"><span class="sw attitudinal"></span>Attitudes &amp; perceptions</span>
+          <span class="lg"><span class="sw mobility"></span>Mobility tools</span>
+          <span class="lg"><span class="sw demographic"></span>Demographics</span>
+        </div>
+        <div class="effects-readout">
+          The strongest power-user predictors are <strong>revealed</strong> — temperature variance across actual rides (RRR&nbsp;1.40) and multimodal complementarity behavior (RRR&nbsp;1.64). Pro-environmental self-identity is significant <em>and negative</em> (RRR&nbsp;0.68): more green-minded users are 32% <strong>less</strong> likely to be among the most frequent riders.
+        </div>
+        <div class="effects-note">RRR = exp(β). Values &gt; 1 raise power-user likelihood; values &lt; 1 reduce it. Reference category: low-intensity users. CIs computed as exp(β ± 1.96·SE) for predictors with SE reported in §3.4 of the manuscript; point-estimate-only rows shown without bars.</div>
       </div>
     </div>
   </section>
@@ -1274,6 +1305,251 @@
             </div>`;
         });
       });
+
+    // -------------------------------------------------------------------------
+    // SANKEY — Mode substitution (Finding V)
+    // Source: Table 3 of the TR-D manuscript. Flow widths are user counts:
+    // share who substitute the mode at least sometimes × provider user base.
+    // Car flows are computed against full provider sample; the * footnote in
+    // Table 3 (subsample with car access) is acknowledged in the caption.
+    // -------------------------------------------------------------------------
+    (function initSankey() {
+      const el = document.getElementById('sankey-substitution');
+      if (!el || typeof echarts === 'undefined') return;
+
+      // From Table 3 of the manuscript
+      const PEB = { name: 'Pick-e-Bike (FFEBSS)', n: 1309, pt: 0.763, walk: 0.490, car: 0.364 };
+      const PB  = { name: 'PubliBike (DBEBSS)',   n: 434,  pt: 0.726, walk: 0.571, car: 0.220 };
+      const v = (p, u) => Math.round(p.n * p[u]);
+
+      const chart = echarts.init(el, null, { renderer: 'svg' });
+
+      const COL = {
+        peb:  '#c5402b',
+        pb:   '#2864b4',
+        pt:   '#2864b4',
+        walk: '#7a756c',
+        car:  '#c5402b'
+      };
+
+      chart.setOption({
+        backgroundColor: 'transparent',
+        tooltip: {
+          trigger: 'item',
+          backgroundColor: '#0a0a0a',
+          borderColor: '#0a0a0a',
+          textStyle: { color: '#f4f2ec', fontFamily: 'JetBrains Mono, monospace', fontSize: 11 },
+          formatter: function (p) {
+            if (p.dataType === 'edge') {
+              return `${p.data.source} → ${p.data.target}<br/><b>${p.data.value.toLocaleString()} users</b>`;
+            }
+            return `<b>${p.name}</b>`;
+          }
+        },
+        series: [{
+          type: 'sankey',
+          left: 4, right: 140, top: 8, bottom: 8,
+          nodeGap: 16,
+          nodeWidth: 12,
+          layoutIterations: 32,
+          emphasis: { focus: 'adjacency' },
+          lineStyle: { color: 'gradient', curveness: 0.5, opacity: 0.6 },
+          label: {
+            fontFamily: 'Space Grotesk, Inter, sans-serif',
+            fontSize: 11,
+            fontWeight: 600,
+            color: '#0a0a0a',
+            overflow: 'none'
+          },
+          data: [
+            { name: PEB.name,             itemStyle: { color: COL.peb,  borderColor: '#0a0a0a' } },
+            { name: PB.name,              itemStyle: { color: COL.pb,   borderColor: '#0a0a0a' } },
+            { name: 'Substitutes PT',     itemStyle: { color: COL.pt,   borderColor: '#0a0a0a' } },
+            { name: 'Substitutes Walking',itemStyle: { color: COL.walk, borderColor: '#0a0a0a' } },
+            { name: 'Substitutes Car*',   itemStyle: { color: COL.car,  borderColor: '#0a0a0a' } }
+          ],
+          links: [
+            { source: PEB.name, target: 'Substitutes PT',      value: v(PEB, 'pt')   },
+            { source: PEB.name, target: 'Substitutes Walking', value: v(PEB, 'walk') },
+            { source: PEB.name, target: 'Substitutes Car*',    value: v(PEB, 'car')  },
+            { source: PB.name,  target: 'Substitutes PT',      value: v(PB,  'pt')   },
+            { source: PB.name,  target: 'Substitutes Walking', value: v(PB,  'walk') },
+            { source: PB.name,  target: 'Substitutes Car*',    value: v(PB,  'car')  }
+          ]
+        }]
+      });
+      window.addEventListener('resize', () => chart.resize());
+    })();
+
+    // -------------------------------------------------------------------------
+    // FOREST PLOT — MNL effect sizes (high-intensity vs low-intensity)
+    // Point estimates and 95% CIs from the manuscript narrative; CIs computed
+    // exp(β ± 1.96·SE) where SEs are reported. Predictors without published SE
+    // appear as point estimates only.
+    // -------------------------------------------------------------------------
+    (function initForestPlot() {
+      const el = document.getElementById('forest-plot');
+      if (!el || typeof echarts === 'undefined') return;
+
+      const COL = {
+        behavioral:  '#0a0a0a',
+        attitudinal: '#e5372b',
+        mobility:    '#2864b4',
+        demographic: '#7a756c'
+      };
+
+      // Each row: { name, group, rrr, ci_lo, ci_hi (null if no SE), p, sig }
+      const rows = [
+        { name: 'Multimodal complementarity (revealed)',  group: 'behavioral',  rrr: 1.64, ci_lo: 1.35, ci_hi: 1.99, sig: '***' },
+        { name: 'Temperature variance (revealed)',         group: 'behavioral',  rrr: 1.40, ci_lo: 1.17, ci_hi: 1.68, sig: '***' },
+        { name: 'Functional superiority over PT (DBEBSS)', group: 'attitudinal', rrr: 1.74, ci_lo: null, ci_hi: null, sig: '*'   },
+        { name: 'Education (standardized)',                group: 'demographic', rrr: 1.23, ci_lo: null, ci_hi: null, sig: '*'   },
+        { name: 'Hedonic motivation',                      group: 'attitudinal', rrr: 1.16, ci_lo: 0.92, ci_hi: 1.45, sig: 'n.s.' },
+        { name: 'Reliability concerns (inhibits)',         group: 'attitudinal', rrr: 0.69, ci_lo: 0.59, ci_hi: 0.81, sig: '***' },
+        { name: 'Environmental self-identity',             group: 'attitudinal', rrr: 0.68, ci_lo: 0.56, ci_hi: 0.83, sig: '***' },
+        { name: 'Urban residence (distance to Basel)',     group: 'demographic', rrr: 0.76, ci_lo: null, ci_hi: null, sig: '**'  },
+        { name: 'Private e-bike ownership',                group: 'mobility',    rrr: 0.76, ci_lo: 0.63, ci_hi: 0.92, sig: '**'  },
+        { name: 'Age (standardized)',                      group: 'demographic', rrr: 0.59, ci_lo: null, ci_hi: null, sig: '***' }
+      ];
+
+      // Order: stronger effects (further from 1) first within each group;
+      // here we manually sort to put positive-then-negative for visual symmetry
+      rows.sort((a, b) => Math.log(b.rrr) - Math.log(a.rrr));
+
+      const yLabels = rows.map(r => r.name);
+      const xMin = 0.4, xMax = 3.2;
+
+      const pointSeries = {
+        name: 'Point estimate',
+        type: 'custom',
+        coordinateSystem: 'cartesian2d',
+        renderItem: function (params, api) {
+          const i = api.value(2);
+          const r = rows[i];
+          const x = api.coord([api.value(0), api.value(1)])[0];
+          const y = api.coord([api.value(0), api.value(1)])[1];
+          const color = COL[r.group];
+          const xLo = r.ci_lo ? api.coord([r.ci_lo, api.value(1)])[0] : null;
+          const xHi = r.ci_hi ? api.coord([r.ci_hi, api.value(1)])[0] : null;
+
+          const children = [];
+          // CI bar
+          if (xLo !== null && xHi !== null) {
+            children.push({
+              type: 'line',
+              shape: { x1: xLo, y1: y, x2: xHi, y2: y },
+              style: { stroke: color, lineWidth: 2 }
+            });
+            children.push({
+              type: 'line',
+              shape: { x1: xLo, y1: y - 4, x2: xLo, y2: y + 4 },
+              style: { stroke: color, lineWidth: 2 }
+            });
+            children.push({
+              type: 'line',
+              shape: { x1: xHi, y1: y - 4, x2: xHi, y2: y + 4 },
+              style: { stroke: color, lineWidth: 2 }
+            });
+          }
+          // Dot
+          children.push({
+            type: 'circle',
+            shape: { cx: x, cy: y, r: r.sig === 'n.s.' ? 4 : 6 },
+            style: {
+              fill: r.sig === 'n.s.' ? '#fff' : color,
+              stroke: color,
+              lineWidth: 2
+            }
+          });
+          // RRR label to the right of the CI (or dot if no CI)
+          const labelX = (xHi !== null ? xHi : x) + 10;
+          children.push({
+            type: 'text',
+            style: {
+              x: labelX,
+              y: y + 4,
+              text: 'RRR ' + r.rrr.toFixed(2) + (r.sig !== 'n.s.' ? ' ' + r.sig : ' n.s.'),
+              fill: r.sig === 'n.s.' ? '#7a756c' : '#0a0a0a',
+              font: '10px JetBrains Mono, monospace'
+            }
+          });
+          return { type: 'group', children: children };
+        },
+        encode: { x: 0, y: 1 },
+        data: rows.map((r, i) => [r.rrr, yLabels[i], i])
+      };
+
+      const chart = echarts.init(el, null, { renderer: 'svg' });
+      chart.setOption({
+        backgroundColor: 'transparent',
+        animation: true,
+        grid: { left: 260, right: 110, top: 24, bottom: 44 },
+        xAxis: {
+          type: 'log',
+          logBase: 2,
+          min: xMin, max: xMax,
+          name: 'Relative risk ratio (log scale)',
+          nameLocation: 'middle',
+          nameGap: 28,
+          nameTextStyle: { fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#5a564e', fontWeight: 700, padding: [10, 0, 0, 0] },
+          axisLine: { lineStyle: { color: '#0a0a0a' } },
+          axisTick: { lineStyle: { color: '#0a0a0a' } },
+          axisLabel: {
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: 10,
+            color: '#5a564e',
+            formatter: v => v >= 1 ? v.toFixed(v === 1 ? 0 : 1) : v.toFixed(2)
+          },
+          splitLine: { show: true, lineStyle: { color: '#e3ddd0', type: 'dashed' } }
+        },
+        yAxis: {
+          type: 'category',
+          data: yLabels,
+          inverse: true,
+          axisLine: { lineStyle: { color: '#0a0a0a' } },
+          axisTick: { show: false },
+          axisLabel: {
+            fontFamily: 'Space Grotesk, Inter, sans-serif',
+            fontSize: 11.5,
+            formatter: function (val) {
+              const r = rows.find(rr => rr.name === val);
+              if (!r) return val;
+              const trimmed = val.length > 44 ? val.slice(0, 42) + '…' : val;
+              // tag with rich-text key matching the group, so axisLabel.rich applies the color
+              return '{' + r.group + '|' + trimmed + '}';
+            },
+            rich: {
+              behavioral:  { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#0a0a0a', fontWeight: 600 },
+              attitudinal: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#e5372b', fontWeight: 600 },
+              mobility:    { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#2864b4', fontWeight: 600 },
+              demographic: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#7a756c', fontWeight: 500 }
+            }
+          }
+        },
+        // Reference line at RRR = 1
+        series: [
+          {
+            type: 'line',
+            data: [],
+            markLine: {
+              symbol: 'none',
+              silent: true,
+              lineStyle: { color: '#0a0a0a', width: 1.5, type: 'solid' },
+              label: {
+                formatter: 'No effect (RRR = 1)',
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: 9,
+                color: '#5a564e',
+                position: 'end'
+              },
+              data: [{ xAxis: 1 }]
+            }
+          },
+          pointSeries
+        ]
+      });
+      window.addEventListener('resize', () => chart.resize());
+    })();
 
     // -------------------------------------------------------------------------
     // Service-area map — CARTO Voyager tiles (neutral, fits the aesthetic)
