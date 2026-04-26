@@ -317,6 +317,61 @@
     .advisory-table tr:last-child td{border-bottom:none}
     .advisory-table .td-name{font-weight:600}
 
+    /* SURVEY INSTRUMENT — sample-items list inside each part block */
+    .survey-items{list-style:none;margin:14px 0 0;padding:12px 12px 8px;border-top:1px dashed var(--ink);background:var(--bg)}
+    .survey-items li{display:grid;grid-template-columns:18px 1fr auto;gap:8px;padding:6px 0;border-bottom:1px dotted #c8c2b3;font-size:12px;line-height:1.5}
+    .survey-items li:last-child{border-bottom:none}
+    .survey-items .ic{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;color:var(--red);text-align:center;line-height:1.5}
+    .survey-items em{font-style:normal;color:#222}
+    .survey-items .scale{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);white-space:nowrap;align-self:end}
+
+    /* EFA factor table */
+    .efa-table{max-width:1080px;margin:0 auto}
+    .efa-table .td-name{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--red)}
+    .efa-table .muted-small{color:var(--muted);font-size:11.5px;font-weight:400;display:block;margin-top:3px}
+    .efa-table .caveat{display:inline-block;margin-left:6px;padding:1px 6px;background:var(--gold);color:var(--ink);font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+
+    /* FOLDABLE SECTIONS — JS wraps each section body, sec-head becomes toggle */
+    .sec-foldable .sec-head{cursor:pointer;position:relative;transition:background .12s}
+    .sec-foldable .sec-head:hover{background:rgba(0,0,0,.025)}
+    .sec-foldable .sec-head h2{padding-right:60px}
+    .sec-toggle{
+      position:absolute;
+      right:28px;
+      top:50%;
+      transform:translateY(-50%);
+      width:34px;height:34px;
+      border:1px solid var(--ink);
+      background:var(--paper);
+      color:var(--ink);
+      font-family:"JetBrains Mono",monospace;
+      font-size:22px;
+      font-weight:400;
+      line-height:1;
+      cursor:pointer;
+      border-radius:0;
+      display:flex;align-items:center;justify-content:center;
+      padding:0;
+      transition:background .12s,color .12s;
+    }
+    .sec-foldable .sec-head:hover .sec-toggle{background:var(--ink);color:var(--bg)}
+    .sec-foldable.sec-closed .sec-head{border-bottom:none}
+    .sec-foldable.sec-closed .sec-head:hover{background:var(--ink);color:var(--bg)}
+    .sec-foldable.sec-closed .sec-head:hover .sec-num{color:#fff}
+    .sec-foldable.sec-closed .sec-head:hover .sec-toggle{background:var(--bg);color:var(--ink)}
+    .sec-fold-content{animation:foldOpen .22s ease-out}
+    @keyframes foldOpen{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Expand/collapse all link in the nav */
+    nav .links a.fold-all{color:var(--red);font-weight:700;border-left:1px solid var(--ink)}
+    nav .links a.fold-all:hover{background:var(--red);color:#fff}
+
+    @media print{
+      .sec-toggle{display:none !important}
+      .sec-foldable .sec-head{cursor:default !important}
+      .sec-fold-content{display:block !important}
+    }
+
     /* PUBLICATIONS */
     .pub-list{list-style:none;padding:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
     .pub-list li{padding:18px 24px;border-bottom:1px solid var(--ink);display:grid;grid-template-columns:110px 1fr;gap:20px;align-items:baseline;background:var(--paper)}
@@ -409,6 +464,7 @@
       <div class="links">
         <a href="#context">01 Context</a>
         <a href="#methods">02 Methods</a>
+        <a href="#survey">02.1 Survey</a>
         <a href="#findings">03 Findings</a>
         <a href="#effect-sizes">03.1 Effects</a>
         <a href="#recommendations">04 Recs</a>
@@ -646,6 +702,131 @@
         <div class="tag">Key methodological advantage</div>
         <p>Linking survey responses to trip histories enables triangulation between stated and revealed preferences. The key behavioral predictor — <strong>temperature variance across a user's ride history</strong> — captures demonstrated weather resilience independently of self-reports (r=0.05 with trip volume), confirming it as a genuine behavioral trait rather than a usage artifact.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- SURVEY INSTRUMENT -->
+  <section id="survey">
+    <div class="sec-head">
+      <div class="sec-num">§ 03.1 · Survey instrument</div>
+      <h2>How we asked, what we asked.</h2>
+    </div>
+    <p class="sec-lede">Two parallel surveys (FFEBSS / DBEBSS), structurally identical, fielded in April 2025 in German, French, and English via Qualtrics. Six sections, ~80 items, with thirty-two Likert-scaled items reduced to seven latent attitudinal factors via exploratory factor analysis. Full instrument in Appendix&nbsp;A3 of the manuscript.</p>
+
+    <div class="stats-grid" style="margin-top:28px">
+      <div class="stat-cell">
+        <div class="tag">[01] Field period</div>
+        <div class="num red">Apr&nbsp;2025</div>
+        <div class="lbl">Fielded after the operators distributed email invitations</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">[02] Invitations</div>
+        <div class="num red">~32k</div>
+        <div class="lbl">~25,000 FFEBSS · ~7,000 DBEBSS users contacted</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">[03] Responses</div>
+        <div class="num red">2,001</div>
+        <div class="lbl">Total · 1,844 retained after quality screening</div>
+      </div>
+      <div class="stat-cell">
+        <div class="tag">[04] Incentive</div>
+        <div class="num red">CHF&nbsp;10</div>
+        <div class="lbl">Voucher (Pick-e-Bike or Galaxus/Digitec)</div>
+      </div>
+    </div>
+
+    <div class="sec-body">
+      <div class="sec-num" style="padding:32px 28px 12px;color:var(--red)">§ 03.1.1 · Six-part structure</div>
+      <div class="blocks-3">
+        <div class="block">
+          <div class="idx">A.</div>
+          <div class="tag">Part 1 · Mobility context &amp; EBSS use</div>
+          <h3>How users move, and where EBSS fits.</h3>
+          <p>Driver's licences, PT subscriptions (GA, Half-fare, U-Abo, …), vehicle ownership, main mode by trip purpose, shared-mobility usage frequency, EBSS-PT integration patterns, mode substitution, weather likelihood, price sensitivity.</p>
+          <ul class="survey-items">
+            <li><span class="ic">Q</span><em>"I use e-bike sharing… for complete trips A→B / with public transport / with car / with walking / as a fallback."</em><span class="scale">5-pt freq</span></li>
+            <li><span class="ic">Q</span><em>"How often do you use e-bike sharing as a substitute for: car / private bicycle / PT / walking…"</em><span class="scale">5-pt freq</span></li>
+            <li><span class="ic">Q</span><em>"How likely would you use EBSS under: high temp / low temp / light rain / heavy rain / wind / darkness?"</em><span class="scale">5-pt likelihood</span></li>
+          </ul>
+        </div>
+        <div class="block">
+          <div class="idx">B.</div>
+          <div class="tag">Part 2 · Environment, policy &amp; TPB</div>
+          <h3>Beliefs, attitudes, policy preferences.</h3>
+          <p>Theory-of-Planned-Behaviour-style items on environmental responsibility, EBSS as sustainable transport, hedonic evaluation, social support; plus policy preferences on infrastructure investment, subsidies, PT-app integration, private financing.</p>
+          <ul class="survey-items">
+            <li><span class="ic">Q</span><em>"I have a personal responsibility to reduce my environmental impact."</em><span class="scale">Likert 1–5</span></li>
+            <li><span class="ic">Q</span><em>"E-bike sharing is a good way to alleviate pollution in the city."</em><span class="scale">Likert 1–5</span></li>
+            <li><span class="ic">Q</span><em>"The public sector should monetarily subsidise EBSS at the same level as public transport."</em><span class="scale">Likert 1–5</span></li>
+          </ul>
+        </div>
+        <div class="block">
+          <div class="idx">C.</div>
+          <div class="tag">Part 3 · Barriers &amp; investment</div>
+          <h3>What gets in the way; what comes next.</h3>
+          <p>Perceived barriers — availability variance, price, convenience compared to private (e-)bike — plus geographic coverage feedback (open text) and intent to purchase a private e-bike within twelve months.</p>
+          <ul class="survey-items">
+            <li><span class="ic">Q</span><em>"E-bike sharing availability varies too much."</em><span class="scale">Likert 1–5</span></li>
+            <li><span class="ic">Q</span><em>"Did/does EBSS use inspire you to buy your own e-bike?"</em><span class="scale">Yes / No</span></li>
+            <li><span class="ic">Q</span><em>"Does the current Pick-e-Bike service area cover your needs? If no, which regions?"</em><span class="scale">Yes/No + open</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="blocks-3" style="border-top:none;margin-top:-1px">
+        <div class="block">
+          <div class="idx">D.</div>
+          <div class="tag">Part 4 · Sociodemographics</div>
+          <h3>Standard background variables.</h3>
+          <p>Year of birth, gender, country → postal code → tenure in Basel, education, employment status (workload + home-office share), nearest PT stop at work/education, household composition, income.</p>
+          <ul class="survey-items">
+            <li><span class="ic">Q</span><em>Age, gender, postal code, education, employment</em><span class="scale">closed/numeric</span></li>
+            <li><span class="ic">Q</span><em>"Distance from your home / workplace to nearest PT stop"</em><span class="scale">categorical</span></li>
+            <li><span class="ic">Q</span><em>Net household income (10 brackets)</em><span class="scale">closed</span></li>
+          </ul>
+        </div>
+        <div class="block">
+          <div class="idx">E.</div>
+          <div class="tag">Part 5 · Consent &amp; reward</div>
+          <h3>Data linkage and follow-up.</h3>
+          <p>Explicit consent for anonymous linkage of survey responses to operational rental records, voucher choice, optional follow-up interview consent, optional comments on the survey itself.</p>
+          <ul class="survey-items">
+            <li><span class="ic">Q</span><em>"Do you consent to anonymous data linking (link your survey responses to rental records)?"</em><span class="scale">Yes / No</span></li>
+            <li><span class="ic">Q</span><em>"Which survey reward would you like via e-mail?"</em><span class="scale">2 vouchers</span></li>
+            <li><span class="ic">Q</span><em>"Do you allow us to contact you for a short follow-up interview/focus group?"</em><span class="scale">Yes / No</span></li>
+          </ul>
+        </div>
+        <div class="block">
+          <div class="idx">F.</div>
+          <div class="tag">Part 6 · Quality controls</div>
+          <h3>Filters before linkage.</h3>
+          <p>Three response-quality filters were applied before retaining cases: a minimum-completion-time threshold (5 minutes), straight-line detection across Likert blocks, and a reCAPTCHA score floor. Net retention: 1,844 of 2,001 (92.2%).</p>
+          <ul class="survey-items">
+            <li><span class="ic">×</span><em>Speeders &lt; 5 min completion time</em><span class="scale">excluded</span></li>
+            <li><span class="ic">×</span><em>Zero-variance Likert response patterns</em><span class="scale">excluded</span></li>
+            <li><span class="ic">×</span><em>Low reCAPTCHA score</em><span class="scale">excluded</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sec-num" style="padding:36px 28px 12px;color:var(--red)">§ 03.1.2 · From 32 Likert items to 7 latent factors</div>
+      <p style="padding:0 28px 16px;font-size:14px;line-height:1.65;color:#222;max-width:880px;margin:0 auto;text-align:center">An exploratory factor analysis (principal axis factoring, promax rotation κ=4) reduced the 32 attitudinal Likert items to seven interpretable latent constructs. Suitability confirmed by KMO=0.820 and a significant Bartlett's test (p&lt;0.001). Eigenvalue cutoff 1.10 + reliability analysis retained the seven factors below.</p>
+
+      <table class="advisory-table efa-table">
+        <thead>
+          <tr><th style="width:60px">Factor</th><th>Construct</th><th style="width:96px;text-align:right">Items</th><th style="width:96px;text-align:right">Cronbach α</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-name">F1</td><td>Weather-Independent Usage Propensity <span class="muted-small">— stated willingness to ride in adverse conditions</span></td><td style="text-align:right">6</td><td style="text-align:right">0.813</td></tr>
+          <tr><td class="td-name">F2</td><td>Public Sector Intervention Attitudes <span class="muted-small">— support for subsidies, infrastructure, policy integration</span></td><td style="text-align:right">5</td><td style="text-align:right">0.532</td></tr>
+          <tr><td class="td-name">F3</td><td>Hedonic Motivation &amp; Social Support <span class="muted-small">— enjoyment, comfort, social endorsement</span></td><td style="text-align:right">4</td><td style="text-align:right">0.665</td></tr>
+          <tr><td class="td-name">F4</td><td>Perceived Functional Superiority over PT <span class="muted-small">— faster, more convenient than transit</span></td><td style="text-align:right">5</td><td style="text-align:right">0.728</td></tr>
+          <tr><td class="td-name">F5</td><td>Multimodal Complementarity Behavior <span class="muted-small">— combining EBSS with PT, walking, fallback use</span></td><td style="text-align:right">4</td><td style="text-align:right">0.598</td></tr>
+          <tr><td class="td-name">F6</td><td>Service Reliability &amp; Affordability Concerns <span class="muted-small">— cost and availability barriers</span> <span class="caveat">⚠ marginal reliability</span></td><td style="text-align:right">4</td><td style="text-align:right">0.401</td></tr>
+          <tr><td class="td-name">F7</td><td>Environmental Self-Identity <span class="muted-small">— environmental responsibility, EBSS sustainability beliefs</span></td><td style="text-align:right">2</td><td style="text-align:right">0.633</td></tr>
+        </tbody>
+      </table>
+      <p style="padding:14px 28px 0;font-size:12px;line-height:1.6;color:var(--muted);max-width:880px;margin:0 auto;text-align:center;font-family:'JetBrains Mono',monospace;letter-spacing:.04em">Standardized factor scores (M=0, SD=1) computed via the regression method and merged into the analytical dataset. Factor 6 results interpreted with caution.</p>
     </div>
   </section>
 
@@ -1576,6 +1757,8 @@
     // Service-area map — CARTO Voyager tiles (neutral, fits the aesthetic)
     // -------------------------------------------------------------------------
     const map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([47.555, 7.61], 10.9);
+    window.addEventListener('resize', () => map.invalidateSize());
+    window.__poteMap = map; // exposed for the section-fold resize hook
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
       maxZoom: 20
@@ -1676,6 +1859,7 @@
 
       const heatMap = L.map('heatmap-map', { scrollWheelZoom: false, zoomControl: true, minZoom: 9, zoomSnap: 0.5 })
         .setView([47.548, 7.600], 10.5);
+      window.__poteHeatMap = heatMap; // exposed for the section-fold resize hook
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO', maxZoom: 20
@@ -1926,6 +2110,141 @@
             btn.textContent = 'Copy failed';
             setTimeout(() => { btn.textContent = 'Copy BibTeX'; }, 1800);
           });
+        });
+      });
+    })();
+
+    // -------------------------------------------------------------------------
+    // FOLDABLE SECTIONS — wrap each section body, make .sec-head a toggle.
+    // Smart defaults: headline content stays open; technical / reference
+    // sections start collapsed. Resize handler re-fires on open so any maps
+    // and ECharts inside redraw at the right size.
+    // -------------------------------------------------------------------------
+    (function () {
+      const OPEN_BY_DEFAULT = new Set([
+        'findings',        // §04 Key findings
+        'effect-sizes',    // §04.1 Effect sizes
+        'recommendations', // §05 Recommendations
+        'mapsec',          // §06 Study area
+        'partners',        // §09 Partners
+        'team',            // §10 Team
+        'publications'     // §12 Publications
+      ]);
+
+      const sections = document.querySelectorAll('section[id]');
+      const folders = [];
+
+      sections.forEach(section => {
+        const sh = section.querySelector(':scope > .sec-head');
+        if (!sh) return;
+
+        // Collect everything after .sec-head as the foldable body
+        const bodyNodes = [];
+        let n = sh.nextElementSibling;
+        while (n) { bodyNodes.push(n); n = n.nextElementSibling; }
+        if (!bodyNodes.length) return;
+
+        const wrap = document.createElement('div');
+        wrap.className = 'sec-fold-content';
+        bodyNodes.forEach(el => wrap.appendChild(el));
+        section.appendChild(wrap);
+
+        const isOpen = OPEN_BY_DEFAULT.has(section.id);
+        if (!isOpen) wrap.style.display = 'none';
+        section.classList.add('sec-foldable');
+        if (!isOpen) section.classList.add('sec-closed');
+
+        const btn = document.createElement('button');
+        btn.className = 'sec-toggle';
+        btn.type = 'button';
+        btn.setAttribute('aria-expanded', String(isOpen));
+        btn.setAttribute('aria-controls', section.id + '-content');
+        btn.setAttribute('aria-label', 'Toggle section');
+        btn.textContent = isOpen ? '−' : '+';
+        wrap.id = section.id + '-content';
+        sh.appendChild(btn);
+
+        const setOpen = (open) => {
+          if (open) {
+            wrap.style.display = '';
+            section.classList.remove('sec-closed');
+            // Replay the animation by removing+adding the class
+            wrap.classList.remove('sec-fold-content');
+            void wrap.offsetWidth;
+            wrap.classList.add('sec-fold-content');
+            // Trigger chart/map resize next frame
+            setTimeout(() => {
+              window.dispatchEvent(new Event('resize'));
+              if (window.__poteMap) window.__poteMap.invalidateSize();
+              if (window.__poteHeatMap) window.__poteHeatMap.invalidateSize();
+            }, 60);
+          } else {
+            wrap.style.display = 'none';
+            section.classList.add('sec-closed');
+          }
+          btn.textContent = open ? '−' : '+';
+          btn.setAttribute('aria-expanded', String(open));
+        };
+
+        const toggle = () => setOpen(wrap.style.display === 'none');
+
+        sh.addEventListener('click', (e) => {
+          // Don't toggle when clicking links or other buttons inside the heading
+          if (e.target.closest('a')) return;
+          if (e.target === btn || btn.contains(e.target)) {
+            e.preventDefault(); e.stopPropagation();
+          }
+          toggle();
+        });
+
+        // Allow keyboard activation on the heading
+        sh.tabIndex = 0;
+        sh.setAttribute('role', 'button');
+        sh.setAttribute('aria-expanded', String(isOpen));
+        sh.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggle();
+            sh.setAttribute('aria-expanded', String(wrap.style.display !== 'none'));
+          }
+        });
+
+        folders.push({ section, wrap, setOpen });
+      });
+
+      // Expand-all / Collapse-all link in the nav
+      const navLinks = document.querySelector('nav .links');
+      if (navLinks && folders.length) {
+        const allBtn = document.createElement('a');
+        allBtn.href = '#';
+        allBtn.className = 'fold-all';
+        allBtn.dataset.state = 'mixed';
+        allBtn.textContent = 'EXPAND ALL';
+        allBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const anyClosed = folders.some(f => f.wrap.style.display === 'none');
+          folders.forEach(f => f.setOpen(anyClosed));
+          allBtn.textContent = anyClosed ? 'COLLAPSE ALL' : 'EXPAND ALL';
+        });
+        navLinks.appendChild(allBtn);
+      }
+
+      // If the URL points at a section anchor, force-open it and scroll
+      const openHash = () => {
+        const id = window.location.hash.slice(1);
+        if (!id) return;
+        const f = folders.find(x => x.section.id === id);
+        if (f && f.wrap.style.display === 'none') f.setOpen(true);
+      };
+      window.addEventListener('hashchange', openHash);
+      openHash();
+
+      // When a nav link to a hidden section is clicked, open the section first
+      document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+        a.addEventListener('click', () => {
+          const id = a.getAttribute('href').slice(1);
+          const f = folders.find(x => x.section.id === id);
+          if (f && f.wrap.style.display === 'none') f.setOpen(true);
         });
       });
     })();
