@@ -68,12 +68,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
   <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
   <link rel="stylesheet" href="styles.css" />
+  <script src="nav.js" defer></script>
 </head>
 <body>
   <nav>
     <div class="row">
       <a class="brand" href="#top" aria-label="POTEBS — Potential of Electric Bike Sharing">POT<em title="Electric">E</em><span class="bs">BS</span></a>
-      <div class="links">
+      <button class="nav-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="links" id="nav-links">
         <a href="#context">01 Context</a>
         <a href="methods.html">02 Methods ↗</a>
         <a href="#findings">03 Findings</a>

@@ -28,6 +28,13 @@
     nav .links a:hover{background:var(--ink);color:var(--bg)}
     nav .links a.active{background:var(--red);color:#fff;border-left-color:var(--ink)}
 
+    /* Hamburger toggle (mobile only) */
+    .nav-burger{display:none;width:36px;height:36px;border:1px solid var(--ink);background:var(--paper);cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:0;border-radius:0}
+    .nav-burger span{display:block;width:18px;height:2px;background:var(--ink);transition:transform .2s,opacity .2s}
+    nav.nav-open .nav-burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    nav.nav-open .nav-burger span:nth-child(2){opacity:0}
+    nav.nav-open .nav-burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
     /* GENERIC SECTION */
     section{border-bottom:2px solid var(--ink)}
     .wrap{max-width:1280px;margin:0 auto;padding:0 28px}
@@ -243,8 +250,8 @@
     .team-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
     .team-cell{padding:22px 22px 26px;border-right:1px solid var(--ink);background:var(--paper);display:flex;flex-direction:column;gap:10px;min-height:320px}
     .team-cell:last-child{border-right:none}
-    .team-cell .team-photo{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center top;border:1px solid var(--ink);background:var(--bg);margin-bottom:4px;filter:grayscale(1) contrast(1.05);transition:filter .25s ease-out}
-    .team-cell:hover .team-photo{filter:grayscale(0) contrast(1)}
+    .team-cell .team-photo{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center top;border:1px solid var(--ink);background:var(--bg);margin-bottom:4px;transition:transform .25s ease-out}
+    .team-cell:hover .team-photo{transform:scale(1.015)}
     .team-cell .team-name{font-weight:700;font-size:16px;letter-spacing:-.01em}
     .team-cell .team-title{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
     .team-cell .team-inst{font-size:12px;color:var(--red);font-weight:600}
@@ -409,8 +416,18 @@
       .footer-text,.footer-desc,.footer-copy{color:#000 !important}
     }
 
+    /* Mobile nav: hamburger replaces inline links below 900px */
+    @media (max-width:900px){
+      .nav-burger{display:flex}
+      nav .row{position:relative}
+      nav .links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--paper);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);box-shadow:0 12px 24px rgba(0,0,0,.08);z-index:1000}
+      nav.nav-open .links{display:flex}
+      nav .links a{border-left:none;border-bottom:1px solid var(--ink);padding:14px 22px;font-size:13px;letter-spacing:.06em}
+      nav .links a:last-child{border-bottom:none}
+      nav .links a.fold-all{border-left:none;border-top:1px solid var(--ink)}
+    }
+
     @media (max-width:640px){
-      nav .links a:nth-child(n+4){display:none}
       .hero h1{font-size:54px}
       .hero .sub{font-size:18px}
       .sec-head{grid-template-columns:1fr;gap:12px}
