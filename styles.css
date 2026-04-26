@@ -175,6 +175,15 @@
     .tl-item .tl-marker{text-align:center}
     .tl-item .tl-marker::before{content:"";display:inline-block;width:10px;height:10px;background:var(--paper);border:2px solid var(--ink)}
     .tl-item.tl-phase .tl-marker::before{background:var(--red);border-color:var(--red)}
+    .tl-item.tl-planned .tl-marker::before{background:var(--bg);border-color:var(--muted);border-style:dashed}
+    .tl-item.tl-planned.tl-phase .tl-marker::before{background:var(--gold);border-color:var(--gold);border-style:solid}
+    .tl-item.tl-planned.tl-phase .tl-title::after{background:rgba(196,148,24,.25);color:var(--ink)}
+    .tl-item.tl-planned .tl-date{color:var(--muted);font-style:italic}
+    .tl-item.tl-planned .tl-title{color:var(--muted);font-weight:500}
+    .tl-item.tl-planned .tl-title::after{content:" · planned";font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:rgba(196,148,24,.15);padding:2px 6px;margin-left:8px;font-style:normal;font-weight:700}
+    .tl-item.tl-planned .tl-desc{color:#666}
+    .tl-year.tl-year-future .y-label{color:var(--muted)}
+    .tl-year.tl-year-future .y-bar{color:rgba(255,255,255,.4);font-style:italic}
     .tl-item .tl-title{font-weight:600;font-size:15px;margin-bottom:3px;letter-spacing:-.01em}
     .tl-item .tl-desc{font-size:13px;line-height:1.55;color:#333}
 
