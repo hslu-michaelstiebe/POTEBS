@@ -522,7 +522,7 @@
       </div>
     </div>
     <div class="sec-body">
-      <p style="font-size:14px;line-height:1.6;color:#222;margin-bottom:16px">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional layer.</p>
+      <p style="font-size:14px;line-height:1.6;color:#222;margin-bottom:16px">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional layer. Communes outlined in <strong style="color:#8a6810">dashed gold</strong> are part of the Pick-e-Bike pilot expansion launching <strong>01.06.2026</strong> for six months (Lausen, Itingen, Sissach, Gelterkinden — one station each).</p>
       <div id="map"></div>
     </div>
   </section>
@@ -1265,14 +1265,21 @@
     map.getPane('pbPane').style.zIndex = 420;
     map.getPane('stationsPane').style.zIndex = 430;
 
-    const pebStyle = { pane: 'pebPane', color: '#b23a26', weight: 1.5, opacity: 0.98, fillColor: '#c5402b', fillOpacity: 0.32 };
-    const pbStyle  = { pane: 'pbPane',  color: '#22579d', weight: 1.8, opacity: 1,    fillColor: '#2864b4', fillOpacity: 0.42 };
+    const pebStyle     = { pane: 'pebPane', color: '#b23a26', weight: 1.5, opacity: 0.98, fillColor: '#c5402b', fillOpacity: 0.32 };
+    const pebPlannedStyle = { pane: 'pebPane', color: '#c49418', weight: 2,   opacity: 0.95, fillColor: '#c49418', fillOpacity: 0.22, dashArray: '6,4' };
+    const pbStyle      = { pane: 'pbPane',  color: '#22579d', weight: 1.8, opacity: 1,    fillColor: '#2864b4', fillOpacity: 0.42 };
 
     function popupHtml(p) {
       let systems = [];
       if (p.PickeBike) systems.push('Pick-e-Bike');
       if (p.PubliBike) systems.push('PubliBike Velospot');
-      return `<strong>${p.GDENAME || 'Municipality'}</strong><br>${systems.join(' &amp; ')}<br>ZIP: ${p.PLZ_Liste || 'n/a'}`;
+      let planned = '';
+      if (p.PickeBike_Planned) {
+        planned = `<br><span style="color:#c49418;font-weight:700">⚠ Pick-e-Bike pilot from ${p.PickeBike_Planned_From || '2026-06-01'}</span>`;
+        if (p.PickeBike_Planned_Note) planned += `<br><small>${p.PickeBike_Planned_Note}</small>`;
+      }
+      const systemsLine = systems.length ? systems.join(' &amp; ') : (p.PickeBike_Planned ? '<em>not yet active</em>' : '—');
+      return `<strong>${p.GDENAME || 'Municipality'}</strong><br>${systemsLine}${planned}<br>ZIP: ${p.PLZ_Liste || 'n/a'}`;
     }
 
     function makeLayer(features, style) {
@@ -1287,12 +1294,15 @@
       fetch('data/publibike_stations.geojson').then(r => r.json()).catch(() => null)
     ]).then(([communes, pbStations]) => {
       const features = communes.features || [];
-      const pebFeatures = features.filter(f => (f.properties || {}).PickeBike === 1);
-      const pbFeatures  = features.filter(f => (f.properties || {}).PubliBike === 1);
+      const pebFeatures        = features.filter(f => (f.properties || {}).PickeBike === 1);
+      const pebPlannedFeatures = features.filter(f => (f.properties || {}).PickeBike_Planned === 1);
+      const pbFeatures         = features.filter(f => (f.properties || {}).PubliBike === 1);
 
-      const pebLayer = makeLayer(pebFeatures, pebStyle);
-      const pbLayer  = makeLayer(pbFeatures,  pbStyle);
+      const pebLayer        = makeLayer(pebFeatures,        pebStyle);
+      const pebPlannedLayer = makeLayer(pebPlannedFeatures, pebPlannedStyle);
+      const pbLayer         = makeLayer(pbFeatures,         pbStyle);
       pebLayer.addTo(map);
+      pebPlannedLayer.addTo(map);
       pbLayer.addTo(map);
 
       let pbStationLayer = null;
@@ -1311,6 +1321,7 @@
 
       const overlays = {
         'Pick-e-Bike Service Area': pebLayer,
+        'Pick-e-Bike Planned (06/2026 pilot)': pebPlannedLayer,
         'PubliBike Velospot Service Area': pbLayer
       };
       if (pbStationLayer) overlays['PubliBike Velospot Stations'] = pbStationLayer;
@@ -1322,6 +1333,7 @@
         div.innerHTML = `
           <div style="font-weight:700;margin-bottom:6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase">Service Area</div>
           <div class="legend-row"><span class="legend-swatch" style="background:#c5402b"></span>Pick-e-Bike</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#c49418;border:1px dashed #8a6810"></span>Pick-e-Bike pilot · 06/2026</div>
           <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike</div>`;
         return div;
       };
