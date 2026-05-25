@@ -536,7 +536,7 @@
       <div class="sec-num">§ 07 · Route dynamics</div>
       <h2>A week of e-bike movement.</h2>
     </div>
-    <p class="sec-lede">OSRM-routed Pick-e-Bike trips reveal the temporal rhythm behind the aggregate patterns: short inner-city hops, commuter pulses, and longer cross-suburban movements passing through the same street network.</p>
+    <p class="sec-lede">OSRM-routed Pick-e-Bike and PubliBike Velospot trips reveal the temporal rhythm behind the aggregate patterns: short inner-city hops, commuter pulses, and longer cross-suburban movements passing through the same street network.</p>
     <div class="sec-body">
       <div class="route-controls" aria-label="Route animation controls">
         <div class="route-row">
@@ -544,6 +544,13 @@
             <span class="route-controls-label">Mode</span>
             <button class="route-mode-btn active" type="button" data-mode="week">Real week</button>
             <button class="route-mode-btn" type="button" data-mode="day">Typical day</button>
+          </div>
+          <div class="route-controls-sep"></div>
+          <div class="route-controls-group">
+            <span class="route-controls-label">Operator</span>
+            <button class="route-provider-btn active" type="button" data-provider="all">Both</button>
+            <button class="route-provider-btn" type="button" data-provider="peb">Pick-e-Bike</button>
+            <button class="route-provider-btn" type="button" data-provider="pb">PubliBike</button>
           </div>
           <div class="route-controls-sep"></div>
           <div class="route-controls-group route-speed-group">
@@ -558,14 +565,15 @@
         <div id="route-map" role="img" aria-label="Animated map of routed e-bike trips in Basel"></div>
         <div class="route-start-overlay" id="route-start-overlay">
           <button class="route-start-btn" id="route-start" type="button">Start animation</button>
-          <div class="route-status" id="route-status">1,500 OSRM-routed trips · Basel week 35/2024</div>
+          <div class="route-status" id="route-status">3,000 OSRM-routed trips · Basel week 35/2024</div>
         </div>
         <div class="route-clock" id="route-clock">Mo 00:00</div>
       </div>
       <div class="route-caption">
-        <span>Sample: Pick-e-Bike trips from ISO week 35/2024</span>
+        <span class="route-swatch route-swatch-peb">Pick-e-Bike sample: 1,500 trips</span>
+        <span class="route-swatch route-swatch-pb">PubliBike Velospot sample: 1,500 trips</span>
         <span>Path geometry: local OSRM bicycle routing</span>
-        <span>Color: time of day</span>
+        <span>Period: ISO week 35/2024</span>
       </div>
     </div>
   </section>

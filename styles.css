@@ -212,9 +212,12 @@
     .route-controls-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
     .route-controls-sep{width:1px;height:24px;background:var(--ink);margin:0 6px}
     .route-controls-label,.route-speed-label{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:var(--muted);white-space:nowrap;margin-right:4px}
-    .route-mode-btn,.route-play-btn,.route-start-btn{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:6px 12px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;border-radius:0;transition:background .12s,color .12s,border-color .12s}
+    .route-mode-btn,.route-provider-btn,.route-play-btn,.route-start-btn{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:6px 12px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;border-radius:0;transition:background .12s,color .12s,border-color .12s}
     .route-mode-btn.active,.route-play-btn:not(:disabled){background:var(--ink);color:var(--bg)}
-    .route-mode-btn:hover:not(.active),.route-start-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
+    .route-provider-btn[data-provider="all"].active{background:var(--ink);color:var(--bg)}
+    .route-provider-btn[data-provider="peb"].active{background:var(--pick);color:#fff;border-color:var(--pick)}
+    .route-provider-btn[data-provider="pb"].active{background:var(--publi);color:#fff;border-color:var(--publi)}
+    .route-mode-btn:hover:not(.active),.route-provider-btn:hover:not(.active),.route-start-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
     .route-play-btn:disabled,.route-start-btn:disabled{cursor:wait;opacity:.65}
     .route-speed-group{flex:1}
     .route-speed-group input[type=range]{flex:1;min-width:180px;accent-color:var(--red)}
@@ -231,7 +234,9 @@
     .route-clock{position:absolute;left:14px;top:14px;z-index:5;background:rgba(10,10,10,.78);color:#fff;border:1px solid rgba(255,255,255,.22);padding:8px 10px;font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;letter-spacing:.06em;font-variant-numeric:tabular-nums;pointer-events:none}
     .route-caption{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px;padding:10px 14px;border:1px solid var(--ink);background:var(--paper);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
     .route-caption span{display:flex;align-items:center;gap:8px}
-    .route-caption span::before{content:"";width:8px;height:8px;background:var(--red);border:1px solid var(--ink);flex:0 0 8px}
+    .route-caption span::before{content:"";width:8px;height:8px;background:var(--ink);border:1px solid var(--ink);flex:0 0 8px}
+    .route-caption .route-swatch-peb::before{background:var(--pick)}
+    .route-caption .route-swatch-pb::before{background:var(--publi)}
 
     /* HEAT CONTROLS */
     .heat-controls{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;padding:14px 16px;border:1px solid var(--ink);background:var(--paper)}
