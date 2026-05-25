@@ -60,6 +60,8 @@
     .hero-meta div span{display:block;color:var(--muted);margin-bottom:4px}
     .hero-meta div strong{font-weight:700;font-size:12px}
     .hero-right{padding:56px 36px;display:flex;flex-direction:column;justify-content:space-between;background:var(--ink);color:var(--bg)}
+    .hero-motion{display:block;width:100%;aspect-ratio:720/520;margin:-12px 0 34px;overflow:hidden}
+    .hero-motion img{display:block;width:100%;height:100%;object-fit:contain;opacity:.96}
     .hero-right .label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
     .hero-right h2{font-weight:500;font-size:28px;line-height:1.22;letter-spacing:-.01em;color:#fff}
     .hero-right p{margin-top:18px;font-size:14px;line-height:1.6;color:rgba(255,255,255,.78)}
