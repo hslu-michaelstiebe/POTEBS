@@ -69,6 +69,7 @@
   <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
   <link rel="stylesheet" href="styles.css" />
   <script src="nav.js" defer></script>
+  <script src="route-animation.js" defer></script>
 </head>
 <body>
   <nav>
@@ -83,9 +84,11 @@
         <a href="#findings">03 Findings</a>
         <a href="#effect-sizes">03.1 Effects</a>
         <a href="#recommendations">04 Recs</a>
-        <a href="#heatmap">05 Data</a>
-        <a href="#partners">06 Partners</a>
-        <a href="#publications">07 Pubs</a>
+        <a href="#mapsec">06 Area</a>
+        <a href="#routes">07 Routes</a>
+        <a href="#heatmap">08 Data</a>
+        <a href="#partners">10 Partners</a>
+        <a href="#publications">13 Pubs</a>
       </div>
     </div>
   </nav>
@@ -527,10 +530,50 @@
     </div>
   </section>
 
+  <!-- ROUTE ANIMATION -->
+  <section id="routes">
+    <div class="sec-head">
+      <div class="sec-num">§ 07 · Route dynamics</div>
+      <h2>A week of e-bike movement.</h2>
+    </div>
+    <p class="sec-lede">OSRM-routed Pick-e-Bike trips reveal the temporal rhythm behind the aggregate patterns: short inner-city hops, commuter pulses, and longer cross-suburban movements passing through the same street network.</p>
+    <div class="sec-body">
+      <div class="route-controls" aria-label="Route animation controls">
+        <div class="route-row">
+          <div class="route-controls-group">
+            <span class="route-controls-label">Mode</span>
+            <button class="route-mode-btn active" type="button" data-mode="week">Real week</button>
+            <button class="route-mode-btn" type="button" data-mode="day">Typical day</button>
+          </div>
+          <div class="route-controls-sep"></div>
+          <div class="route-controls-group route-speed-group">
+            <button class="route-play-btn" id="route-play" type="button" disabled>Play</button>
+            <label class="route-speed-label" for="route-speed">Speed</label>
+            <input id="route-speed" type="range" min="200" max="6000" step="100" value="2000" disabled />
+            <span class="route-speed-readout" id="route-speed-readout">33 min/s</span>
+          </div>
+        </div>
+      </div>
+      <div class="route-shell" id="route-animation">
+        <div id="route-map" role="img" aria-label="Animated map of routed e-bike trips in Basel"></div>
+        <div class="route-start-overlay" id="route-start-overlay">
+          <button class="route-start-btn" id="route-start" type="button">Start animation</button>
+          <div class="route-status" id="route-status">1,500 OSRM-routed trips · Basel week 35/2024</div>
+        </div>
+        <div class="route-clock" id="route-clock">Mo 00:00</div>
+      </div>
+      <div class="route-caption">
+        <span>Sample: Pick-e-Bike trips from ISO week 35/2024</span>
+        <span>Path geometry: local OSRM bicycle routing</span>
+        <span>Color: time of day</span>
+      </div>
+    </div>
+  </section>
+
   <!-- HEATMAP -->
   <section id="heatmap">
     <div class="sec-head">
-      <div class="sec-num">§ 07 · Spatial patterns</div>
+      <div class="sec-num">§ 08 · Spatial patterns</div>
       <h2>Where trips begin and end.</h2>
     </div>
     <p class="sec-lede">Each point represents a 200&thinsp;m grid cell. Colour intensity reflects trip count on a log scale, clamped at the 99th percentile to reveal spatial differentiation across the full distribution. Filter by time of day or provider to compare patterns between systems.</p>
@@ -576,7 +619,7 @@
   <!-- LORENZ -->
   <section>
     <div class="sec-head">
-      <div class="sec-num">§ 08 · Usage concentration</div>
+      <div class="sec-num">§ 09 · Usage concentration</div>
       <h2>Lorenz curves.</h2>
     </div>
     <div class="sec-body">
@@ -613,7 +656,7 @@
   <!-- PARTNERS -->
   <section id="partners">
     <div class="sec-head">
-      <div class="sec-num">§ 09 · Consortium and funding</div>
+      <div class="sec-num">§ 10 · Consortium and funding</div>
       <h2>Partners.</h2>
     </div>
     <div class="sec-body">
@@ -681,7 +724,7 @@
   <!-- TEAM -->
   <section id="team">
     <div class="sec-head">
-      <div class="sec-num">§ 10 · Research team</div>
+      <div class="sec-num">§ 11 · Research team</div>
       <h2>Team.</h2>
     </div>
     <div class="sec-body">
@@ -755,7 +798,7 @@
   <!-- ADVISORY -->
   <section id="advisory">
     <div class="sec-head">
-      <div class="sec-num">§ 11 · Governance</div>
+      <div class="sec-num">§ 12 · Governance</div>
       <h2>Advisory Board.</h2>
     </div>
     <p class="sec-lede">The project is guided by an advisory board of practitioners and researchers from transport, mobility policy, and public finance.</p>
@@ -780,7 +823,7 @@
   <!-- PUBLICATIONS -->
   <section id="publications">
     <div class="sec-head">
-      <div class="sec-num">§ 12 · Outputs</div>
+      <div class="sec-num">§ 13 · Outputs</div>
       <h2>Publications &amp; Presentations.</h2>
     </div>
     <div class="sec-body">
@@ -836,7 +879,7 @@
       </ul>
 
       <div style="margin-top:48px">
-        <div class="sec-num" style="margin-bottom:14px;color:var(--red)">§ 12.1 · Related resources</div>
+        <div class="sec-num" style="margin-bottom:14px;color:var(--red)">§ 13.1 · Related resources</div>
         <div class="resources">
           <a href="https://u-two.ch" target="_blank" rel="noopener"><span class="res-name">U-Two — FHNW Field Test on Tariff Integration of Shared Two-Wheelers <span class="arrow">↗</span></span><span class="res-host">u-two.ch</span></a>
           <a href="https://bikesharemap.com/#13/47.5579/7.5902" target="_blank" rel="noopener"><span class="res-name">Bike Share Map — Basel <span class="arrow">↗</span></span><span class="res-host">bikesharemap.com</span></a>
@@ -1630,6 +1673,7 @@
         'effect-sizes',    // §04.1 Effect sizes
         'recommendations', // §05 Recommendations
         'mapsec',          // §06 Study area
+        'routes',          // §07 Route dynamics
         'partners',        // §09 Partners
         'team',            // §10 Team
         'publications'     // §12 Publications
@@ -1681,6 +1725,7 @@
               window.dispatchEvent(new Event('resize'));
               if (window.__poteMap) window.__poteMap.invalidateSize();
               if (window.__poteHeatMap) window.__poteHeatMap.invalidateSize();
+              if (window.__poteRouteMap) window.__poteRouteMap.resize();
             }, 60);
           } else {
             wrap.style.display = 'none';
