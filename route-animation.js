@@ -17,6 +17,7 @@
   if (!root) return;
 
   const DATA_URL = 'data/trips_animation_w35.json';
+  const MOBILE_DATA_URL = 'data/trips_animation_w35_mobile.json';
   const MAPLIBRE_CSS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';
   const MAPLIBRE_JS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
   const DECK_JS = 'https://unpkg.com/deck.gl@9.0.27/dist.min.js';
@@ -35,6 +36,7 @@
   const modeBtns = Array.from(document.querySelectorAll('.route-mode-btn'));
   const providerBtns = Array.from(document.querySelectorAll('.route-provider-btn'));
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lightDevice = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
 
   let map = null;
   let deckOverlay = null;
@@ -47,6 +49,10 @@
   let playing = false;
   let initialized = false;
   let frameId = null;
+
+  if (lightDevice) {
+    setStatus('Mobile light mode: 600 routed trips · tap Play to animate');
+  }
 
   function loadCss(href) {
     if (document.querySelector(`link[href="${href}"]`)) return Promise.resolve();
@@ -84,8 +90,17 @@
   }
 
   function setPlayState(nextPlaying) {
+    if (playing === nextPlaying) return;
     playing = nextPlaying;
     if (playBtn) playBtn.textContent = playing ? 'Pause' : 'Play';
+    if (frameId) {
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    }
+    if (playing) {
+      lastTs = performance.now();
+      frameId = requestAnimationFrame(tick);
+    }
   }
 
   function formatClock(sec) {
@@ -124,10 +139,10 @@
         getTimestamps: d => mode === 'week' ? d.t : d.td,
         getColor: providerColor,
         opacity: 0.9,
-        widthMinPixels: window.innerWidth < 700 ? 1.8 : 2.4,
+        widthMinPixels: lightDevice ? 1.4 : 2.4,
         jointRounded: true,
         capRounded: true,
-        trailLength: mode === 'week' ? 1500 : 1200,
+        trailLength: lightDevice ? 900 : (mode === 'week' ? 1500 : 1200),
         currentTime,
         shadowEnabled: false,
         updateTriggers: {
@@ -149,9 +164,9 @@
     if (playing) {
       const period = mode === 'week' ? WEEK_S : DAY_S;
       currentTime = (currentTime + dt * speed) % period;
+      renderLayers();
+      frameId = requestAnimationFrame(tick);
     }
-    renderLayers();
-    frameId = requestAnimationFrame(tick);
   }
 
   async function ensureLibraries() {
@@ -169,7 +184,7 @@
     try {
       const [_, response] = await Promise.all([
         ensureLibraries(),
-        fetch(DATA_URL)
+        fetch(lightDevice ? MOBILE_DATA_URL : DATA_URL)
       ]);
       if (!response.ok) throw new Error(`Route data failed: ${response.status}`);
       trips = await response.json();
@@ -178,27 +193,28 @@
         container: mapEl,
         style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
         center: [7.589, 47.555],
-        zoom: window.innerWidth < 700 ? 11.1 : 12.45,
-        pitch: window.innerWidth < 700 ? 25 : 44,
-        bearing: -7,
-        antialias: true,
+        zoom: lightDevice ? 11.0 : 12.45,
+        pitch: lightDevice ? 0 : 44,
+        bearing: lightDevice ? 0 : -7,
+        antialias: !lightDevice,
         attributionControl: true
       });
 
       deckOverlay = new deck.MapboxOverlay({ layers: [], interleaved: false });
       map.addControl(deckOverlay);
-      map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+      if (!lightDevice) {
+        map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+      }
       window.__poteRouteMap = map;
 
       map.on('load', () => {
         if (startOverlay) startOverlay.classList.add('is-hidden');
         if (playBtn) playBtn.disabled = false;
         if (speedInput) speedInput.disabled = false;
-        setStatus(`${trips.length.toLocaleString('en-US')} routed trips loaded`);
-        setPlayState(!prefersReduced);
+        setStatus(`${trips.length.toLocaleString('en-US')} routed trips loaded${lightDevice ? ' · mobile light mode' : ''}`);
         lastTs = performance.now();
         renderLayers();
-        frameId = requestAnimationFrame(tick);
+        setPlayState(!prefersReduced && !lightDevice);
       });
     } catch (err) {
       console.error(err);
