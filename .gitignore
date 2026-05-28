@@ -1,0 +1,18 @@
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.tmp
+
+# Local preview/build output
+dist/
+build/
+output/
+.cache/
+
+# Large local exports should stay outside the static website repo unless
+# intentionally prepared as web-ready assets in ASSETS/ or data/.
+*.parquet
+*.feather
+*.arrow
