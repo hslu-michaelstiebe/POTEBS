@@ -4,6 +4,8 @@ Thumbs.db
 desktop.ini
 *.swp
 *.tmp
+__pycache__/
+*.pyc
 
 # Local preview/build output
 dist/

@@ -2,6 +2,8 @@
   const img = document.querySelector('.hero-motion img[data-animated-src]');
   if (!img) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(max-width: 640px)').matches) return;
+  if (navigator.connection && navigator.connection.saveData) return;
   const loadAnimatedHero = () => {
     img.src = img.dataset.animatedSrc;
   };

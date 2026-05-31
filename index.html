@@ -62,11 +62,10 @@
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://basemaps.cartocdn.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
-  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
   <link rel="stylesheet" href="styles.css" />
   <script src="nav.js" defer></script>
   <script src="route-animation.js" defer></script>
@@ -932,6 +931,104 @@
 
   <script>
     // -------------------------------------------------------------------------
+    // Deferred vendor loading
+    // -------------------------------------------------------------------------
+    const VENDOR = {
+      leafletCss: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css',
+      leafletJs: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js',
+      leafletHeatJs: 'https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js',
+      echartsJs: 'https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js'
+    };
+
+    const deferredLoads = new Map();
+
+    function loadCssOnce(href) {
+      if (document.querySelector(`link[href="${href}"]`)) return Promise.resolve();
+      if (deferredLoads.has(href)) return deferredLoads.get(href);
+      const promise = new Promise((resolve, reject) => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.onload = resolve;
+        link.onerror = reject;
+        document.head.appendChild(link);
+      });
+      deferredLoads.set(href, promise);
+      return promise;
+    }
+
+    function loadScriptOnce(src, isReady) {
+      if (isReady()) return Promise.resolve();
+      if (deferredLoads.has(src)) return deferredLoads.get(src);
+      const existing = document.querySelector(`script[src="${src}"]`);
+      if (existing) {
+        const promise = new Promise((resolve, reject) => {
+          const started = performance.now();
+          const check = () => {
+            if (isReady()) resolve();
+            else if (performance.now() - started > 12000) reject(new Error(`Timed out loading ${src}`));
+            else window.setTimeout(check, 40);
+          };
+          check();
+        });
+        deferredLoads.set(src, promise);
+        return promise;
+      }
+      const promise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+      deferredLoads.set(src, promise.then(() => {
+        if (!isReady()) throw new Error(`Vendor did not initialize: ${src}`);
+      }));
+      return deferredLoads.get(src);
+    }
+
+    function ensureEcharts() {
+      return loadScriptOnce(VENDOR.echartsJs, () => Boolean(window.echarts));
+    }
+
+    async function ensureLeaflet() {
+      await Promise.all([
+        loadCssOnce(VENDOR.leafletCss),
+        loadScriptOnce(VENDOR.leafletJs, () => Boolean(window.L))
+      ]);
+    }
+
+    async function ensureLeafletHeat() {
+      await ensureLeaflet();
+      await loadScriptOnce(VENDOR.leafletHeatJs, () => Boolean(window.L && window.L.heatLayer));
+    }
+
+    function runWhenVisible(target, init, options = {}) {
+      if (!target) return;
+      let started = false;
+      const run = () => {
+        if (started) return;
+        started = true;
+        Promise.resolve(init()).catch(err => console.error(err));
+      };
+      if (!('IntersectionObserver' in window)) {
+        window.setTimeout(run, options.fallbackDelay || 800);
+        return;
+      }
+      const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          observer.disconnect();
+          run();
+        }
+      }, {
+        rootMargin: options.rootMargin || '220px 0px',
+        threshold: options.threshold || 0.01
+      });
+      observer.observe(target);
+    }
+
+    // -------------------------------------------------------------------------
     // Lorenz Charts (ECharts) — loaded from data/lorenz.json
     // -------------------------------------------------------------------------
     const PANEL_MAP = [
@@ -1023,9 +1120,10 @@
       };
     }
 
-    fetch('data/lorenz.json')
-      .then(r => r.json())
-      .then(lorenz => {
+    runWhenVisible(document.getElementById('lorenzGrid'), async function initLorenzCharts() {
+      try {
+        await ensureEcharts();
+        const lorenz = await fetch('data/lorenz.json').then(r => r.json());
         // NOTE: the static HTML values for #stat-trips, #stat-gini and #stat-linked
         // are the canonical figures from the TR-D manuscript (1.4M trips / 1,743
         // linked cases / Gini 0.77). The lorenz.json snapshot uses a different
@@ -1041,8 +1139,8 @@
           chart.setOption(makeLorenzOption(panel));
           window.addEventListener('resize', () => chart.resize());
         });
-      })
-      .catch(() => {
+      } catch (err) {
+        console.error(err);
         PANEL_MAP.forEach(({ id }) => {
           const el = document.getElementById(id);
           if (el) el.innerHTML = `
@@ -1051,7 +1149,8 @@
               <span>Lorenz data not yet available.<br>Upload <code>data/lorenz.json</code> to the repository.</span>
             </div>`;
         });
-      });
+      }
+    });
 
     // -------------------------------------------------------------------------
     // SANKEY — Mode substitution (Finding V)
@@ -1060,9 +1159,10 @@
     // Car flows are computed against full provider sample; the * footnote in
     // Table 3 (subsample with car access) is acknowledged in the caption.
     // -------------------------------------------------------------------------
-    (function initSankey() {
+    runWhenVisible(document.getElementById('sankey-substitution'), async function initSankey() {
       const el = document.getElementById('sankey-substitution');
-      if (!el || typeof echarts === 'undefined') return;
+      if (!el) return;
+      await ensureEcharts();
 
       // From Table 3 of the manuscript
       const PEB = { name: 'Pick-e-Bike (FFEBSS)', n: 1309, pt: 0.763, walk: 0.490, car: 0.364 };
@@ -1126,7 +1226,7 @@
         }]
       });
       window.addEventListener('resize', () => chart.resize());
-    })();
+    });
 
     // -------------------------------------------------------------------------
     // FOREST PLOT — MNL effect sizes (high-intensity vs low-intensity)
@@ -1134,9 +1234,10 @@
     // exp(β ± 1.96·SE) where SEs are reported. Predictors without published SE
     // appear as point estimates only.
     // -------------------------------------------------------------------------
-    (function initForestPlot() {
+    runWhenVisible(document.getElementById('forest-plot'), async function initForestPlot() {
       const el = document.getElementById('forest-plot');
-      if (!el || typeof echarts === 'undefined') return;
+      if (!el) return;
+      await ensureEcharts();
 
       const COL = {
         behavioral:  '#0a0a0a',
@@ -1296,12 +1397,15 @@
         ]
       });
       window.addEventListener('resize', () => chart.resize());
-    })();
+    });
 
     // -------------------------------------------------------------------------
     // Service-area map — CARTO Voyager tiles (neutral, fits the aesthetic)
     // -------------------------------------------------------------------------
-    const map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([47.555, 7.61], 10.9);
+    runWhenVisible(document.getElementById('map'), async function initServiceMap() {
+      await ensureLeaflet();
+
+      const map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([47.555, 7.61], 10.9);
     window.addEventListener('resize', () => map.invalidateSize());
     window.__poteMap = map; // exposed for the section-fold resize hook
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
@@ -1401,11 +1505,14 @@
       console.error(err);
       document.getElementById('map').innerHTML = '<div style="padding:1rem;color:#5a564e;font-family:JetBrains Mono,monospace;font-size:12px">Map data could not be loaded.</div>';
     });
+    });
 
     // -------------------------------------------------------------------------
     // Heatmap — trip origins / destinations with hour-of-day filter
     // -------------------------------------------------------------------------
-    (function () {
+    runWhenVisible(document.getElementById('heatmap-map'), async function initHeatmap() {
+      await ensureLeafletHeat();
+
       const HOUR_GROUPS = {
         all:     null,
         morning: [7, 8, 9],
@@ -1516,7 +1623,7 @@
           render();
         });
       });
-    })();
+    });
 
     // -------------------------------------------------------------------------
     // SCROLL-SPY — highlight the active nav link as the user scrolls
