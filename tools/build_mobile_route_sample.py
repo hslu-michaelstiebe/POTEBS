@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a lightweight mobile route-animation sample from the desktop JSON."""
+"""Build a lightweight route-animation sample from a larger route JSON."""
 
 from __future__ import annotations
 
@@ -48,17 +48,17 @@ def main() -> None:
     output_path = root / args.output
 
     trips = json.loads(input_path.read_text(encoding="utf-8"))
-    mobile = [
+    sample = [
         simplify_trip(trip, args.max_points, args.precision)
         for trip in balanced_sample(trips, args.per_provider)
     ]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
-        json.dumps(mobile, separators=(",", ":")),
+        json.dumps(sample, separators=(",", ":")),
         encoding="utf-8",
     )
 
-    print(f"Wrote {len(mobile):,} trips to {output_path}")
+    print(f"Wrote {len(sample):,} trips to {output_path}")
 
 
 if __name__ == "__main__":

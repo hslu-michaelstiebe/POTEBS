@@ -51,9 +51,10 @@
   let playing = false;
   let initialized = false;
   let frameId = null;
+  const startLabel = startBtn ? startBtn.textContent : 'Start animation';
 
   if (lightDevice) {
-    setStatus('Mobile light mode: 600 routed trips · tap Play to animate');
+    setStatus('Mobile light mode: tap once to load and play 600 routed trips');
   }
 
   function loadCss(href) {
@@ -181,6 +182,7 @@
     if (initialized) return;
     initialized = true;
     if (startBtn) startBtn.disabled = true;
+    if (startBtn) startBtn.textContent = 'Loading...';
     setStatus('Loading route animation...');
 
     try {
@@ -213,15 +215,17 @@
         if (startOverlay) startOverlay.classList.add('is-hidden');
         if (playBtn) playBtn.disabled = false;
         if (speedInput) speedInput.disabled = false;
-        setStatus(`${trips.length.toLocaleString('en-US')} routed trips loaded${lightDevice ? ' · mobile light mode' : ''}`);
         lastTs = performance.now();
         renderLayers();
-        setPlayState(!prefersReduced && !lightDevice);
+        const shouldAutoPlay = !prefersReduced;
+        setPlayState(shouldAutoPlay);
+        setStatus(`${trips.length.toLocaleString('en-US')} routed trips ${shouldAutoPlay ? 'playing' : 'loaded · press Play to animate'}${lightDevice ? ' · mobile light mode' : ''}`);
       });
     } catch (err) {
       console.error(err);
       initialized = false;
       if (startBtn) startBtn.disabled = false;
+      if (startBtn) startBtn.textContent = startLabel;
       setStatus('Route animation could not be loaded.');
     }
   }

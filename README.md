@@ -10,6 +10,7 @@ The project is funded by the Swiss Federal Office of Energy (SFOE), grant `SI/50
 - `methods.html` - methods and survey instrument page
 - `styles.css` - shared visual styling
 - `nav.js` - mobile navigation and navigation helpers
+- `site.js` - lazy-loaded charts, maps, foldable sections, and citations
 - `route-animation.js` - lazy-loaded route animation logic
 - `ASSETS/` - logos, Open Graph images, and lightweight hero route-loop media
 - `data/` - static GeoJSON/JSON datasets used by the website
@@ -18,13 +19,14 @@ The project is funded by the Swiss Federal Office of Energy (SFOE), grant `SI/50
 
 The route section uses two files:
 
-- `data/trips_animation_w35.json` - desktop sample, 3,000 routed trips
+- `data/trips_animation_w35.json` - desktop sample, 1,800 simplified routed trips
 - `data/trips_animation_w35_mobile.json` - mobile sample, 600 simplified routed trips
 
-The mobile sample can be rebuilt from the desktop sample:
+Route samples can be rebuilt from a larger source file:
 
 ```powershell
-python tools/build_mobile_route_sample.py
+python tools/build_mobile_route_sample.py --input path\to\full_routes.json --output data\trips_animation_w35.json --per-provider 900 --max-points 60 --precision 5
+python tools/build_mobile_route_sample.py --input path\to\full_routes.json --output data\trips_animation_w35_mobile.json --per-provider 300 --max-points 35 --precision 6
 ```
 
 The hero animation is pre-rendered:
