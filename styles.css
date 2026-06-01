@@ -285,7 +285,10 @@
     .team-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
     .team-cell{padding:22px 22px 26px;border-right:1px solid var(--ink);background:var(--paper);display:flex;flex-direction:column;gap:10px;min-height:320px}
     .team-cell:last-child{border-right:none}
-    .team-cell .team-photo{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center top;border:1px solid var(--ink);background:var(--bg);margin-bottom:4px;transition:transform .25s ease-out}
+    .team-cell .team-photo{display:block;width:100%;height:clamp(220px,17vw,300px);object-fit:cover;object-position:center 18%;border:1px solid var(--ink);background:var(--bg);margin-bottom:4px;transition:transform .25s ease-out}
+    .team-cell:nth-child(1) .team-photo,.team-cell:nth-child(2) .team-photo{object-position:center 12%}
+    .team-cell:nth-child(3) .team-photo{object-position:center 18%}
+    .team-cell:nth-child(4) .team-photo{object-position:center 16%}
     .team-cell:hover .team-photo{transform:scale(1.015)}
     .team-cell .team-name{font-weight:700;font-size:16px;letter-spacing:-.01em}
     .team-cell .team-title{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
@@ -469,6 +472,7 @@
       .sec-head h2{font-size:30px}
       .stats-grid,.blocks-3,.team-grid,.lorenz-grid,.partner-logos{grid-template-columns:1fr}
       .stat-cell,.block,.team-cell,.lorenz-panel,.partner-logo-cell{border-right:none;border-bottom:1px solid var(--ink)}
+      .team-cell .team-photo{height:260px}
       .tl-item{grid-template-columns:1fr;gap:6px}
       .tl-item .tl-marker{display:none}
       .pub-list li{grid-template-columns:1fr;gap:8px}
