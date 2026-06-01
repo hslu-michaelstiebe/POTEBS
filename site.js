@@ -854,15 +854,16 @@
     // -------------------------------------------------------------------------
     (function () {
       const OPEN_BY_DEFAULT = new Set([
-        'methods-link',    // §03 Methods linkout (always show — it IS the link)
-        'findings',        // §04 Key findings
-        'effect-sizes',    // §04.1 Effect sizes
-        'recommendations', // §05 Recommendations
-        'mapsec',          // §06 Study area
-        'routes',          // §07 Route dynamics
-        'partners',        // §09 Partners
-        'team',            // §10 Team
-        'publications'     // §12 Publications
+        'overview',
+        'methods-link',
+        'findings',
+        'effect-sizes',
+        'recommendations',
+        'mapsec',
+        'routes',
+        'partners',
+        'team',
+        'publications'
       ]);
 
       const sections = document.querySelectorAll('section[id]');
@@ -954,12 +955,12 @@
         allBtn.href = '#';
         allBtn.className = 'fold-all';
         allBtn.dataset.state = 'mixed';
-        allBtn.textContent = 'EXPAND ALL';
+        allBtn.textContent = 'SHOW ALL';
         allBtn.addEventListener('click', (e) => {
           e.preventDefault();
           const anyClosed = folders.some(f => f.wrap.style.display === 'none');
           folders.forEach(f => f.setOpen(anyClosed));
-          allBtn.textContent = anyClosed ? 'COLLAPSE ALL' : 'EXPAND ALL';
+          allBtn.textContent = anyClosed ? 'HIDE DETAIL' : 'SHOW ALL';
         });
         navLinks.appendChild(allBtn);
       }

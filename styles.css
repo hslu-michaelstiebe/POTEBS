@@ -24,7 +24,7 @@
     nav .brand em{font-style:normal;background:var(--red);color:#fff;padding:1px 5px;margin:0 1px;display:inline-block;line-height:1.05}
     nav .brand span.bs{color:var(--red);font-style:normal}
     nav .links{display:flex;gap:0}
-    nav .links a{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);padding:10px 14px;border-left:1px solid var(--ink);transition:background .12s,color .12s}
+    nav .links a{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);padding:10px 12px;border-left:1px solid var(--ink);transition:background .12s,color .12s}
     nav .links a:hover{background:var(--ink);color:var(--bg)}
     nav .links a.active{background:var(--red);color:#fff;border-left-color:var(--ink)}
 
@@ -44,6 +44,15 @@
     /* Lede sits under the heading, centered with a comfortable measure */
     .sec-lede{padding:24px 28px 0;max-width:880px;margin:0 auto;font-size:16px;line-height:1.65;color:#222;text-align:center}
     .sec-body{padding:32px 28px 60px;max-width:1280px;margin:0 auto}
+    .story-paths{max-width:1280px;margin:0 auto;padding:0 28px 28px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink)}
+    .story-paths a{display:flex;flex-direction:column;gap:7px;padding:18px 20px;min-height:132px;border-right:1px solid var(--ink);background:var(--paper);transition:background .12s,color .12s}
+    .story-paths a:last-child{border-right:none}
+    .story-paths a:hover{background:var(--ink);color:var(--bg)}
+    .story-paths .story-kicker{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);font-weight:700}
+    .story-paths a:hover .story-kicker{color:#fff}
+    .story-paths strong{font-size:17px;line-height:1.2}
+    .story-paths span:last-child{font-size:13px;line-height:1.45;color:var(--muted)}
+    .story-paths a:hover span:last-child{color:rgba(255,255,255,.78)}
 
     /* HERO */
     .hero{border-bottom:2px solid var(--ink);background:var(--bg)}
@@ -426,6 +435,8 @@
       .hero-left{border-right:none;border-bottom:2px solid var(--ink)}
       .hero h1{font-size:72px}
       .hero-meta{grid-template-columns:1fr 1fr}
+      .story-paths{grid-template-columns:1fr 1fr}
+      .story-paths a:nth-child(2n){border-right:none}
       .stats-grid,.blocks-3,.team-grid{grid-template-columns:1fr 1fr}
       .stat-cell,.block,.team-cell{border-bottom:1px solid var(--ink)}
       .stat-cell:nth-child(2n),.block:nth-child(2n),.team-cell:nth-child(2n){border-right:none}
@@ -470,6 +481,9 @@
       .hero .sub{font-size:18px}
       .sec-head{grid-template-columns:1fr;gap:12px}
       .sec-head h2{font-size:30px}
+      .story-paths{grid-template-columns:1fr;padding:0 28px 28px}
+      .story-paths a{border-right:none;border-bottom:1px solid var(--ink);min-height:auto}
+      .story-paths a:last-child{border-bottom:none}
       .stats-grid,.blocks-3,.team-grid,.lorenz-grid,.partner-logos{grid-template-columns:1fr}
       .stat-cell,.block,.team-cell,.lorenz-panel,.partner-logo-cell{border-right:none;border-bottom:1px solid var(--ink)}
       .team-cell .team-photo{height:260px}

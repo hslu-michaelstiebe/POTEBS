@@ -78,16 +78,15 @@
         <span></span><span></span><span></span>
       </button>
       <div class="links" id="nav-links">
-        <a href="#context">01 Context</a>
-        <a href="methods.html">02 Methods ↗</a>
-        <a href="#findings">03 Findings</a>
-        <a href="#effect-sizes">03.1 Effects</a>
-        <a href="#recommendations">04 Recs</a>
-        <a href="#mapsec">06 Area</a>
-        <a href="#routes">07 Routes</a>
-        <a href="#heatmap">08 Data</a>
-        <a href="#partners">10 Partners</a>
-        <a href="#publications">13 Pubs</a>
+        <a href="#overview">Overview</a>
+        <a href="#findings">Findings</a>
+        <a href="#effect-sizes">Evidence</a>
+        <a href="#mapsec">Maps</a>
+        <a href="#routes">Routes</a>
+        <a href="#heatmap">Data</a>
+        <a href="methods.html">Methods ↗</a>
+        <a href="#team">Team</a>
+        <a href="#publications">Outputs</a>
       </div>
     </div>
   </nav>
@@ -125,9 +124,9 @@
   </section>
 
   <!-- AT A GLANCE -->
-  <section>
+  <section id="overview">
     <div class="sec-head">
-      <div class="sec-num">§ 00 · At a glance</div>
+      <div class="sec-num">Overview</div>
       <h2>Scale meets depth.</h2>
     </div>
     <div class="stats-grid">
@@ -152,12 +151,34 @@
         <div class="lbl">Gini coefficient of usage concentration</div>
       </div>
     </div>
+    <div class="story-paths" aria-label="Suggested reading paths">
+      <a href="#findings">
+        <span class="story-kicker">Start</span>
+        <strong>Main findings</strong>
+        <span>Read the argument in five claims.</span>
+      </a>
+      <a href="#effect-sizes">
+        <span class="story-kicker">Evidence</span>
+        <strong>What explains intensity</strong>
+        <span>Compare behavioral, attitudinal, and demographic predictors.</span>
+      </a>
+      <a href="#mapsec">
+        <span class="story-kicker">Spatial</span>
+        <strong>Maps and route dynamics</strong>
+        <span>Explore service areas, trip geography, and routed movement.</span>
+      </a>
+      <a href="methods.html">
+        <span class="story-kicker">Reference</span>
+        <strong>Methods and survey</strong>
+        <span>Open the technical methods page.</span>
+      </a>
+    </div>
   </section>
 
   <!-- RESEARCH QUESTIONS -->
   <section id="objectives">
     <div class="sec-head">
-      <div class="sec-num">§ 00.1 · Research questions</div>
+      <div class="sec-num">Questions</div>
       <h2>What this project asks.</h2>
     </div>
     <div class="sec-body">
@@ -173,7 +194,7 @@
   <!-- CONTEXT -->
   <section id="context">
     <div class="sec-head">
-      <div class="sec-num">§ 01 · Research background</div>
+      <div class="sec-num">Background</div>
       <h2>What prior research tells us.</h2>
     </div>
     <p class="sec-lede">EBSS is widely discussed as a lever for sustainable urban mobility — yet a critical question remains open: <em>which</em> users ride intensively, and why?</p>
@@ -217,7 +238,7 @@
   <!-- TIMELINE -->
   <section id="timeline">
     <div class="sec-head">
-      <div class="sec-num">§ 02 · Project progression</div>
+      <div class="sec-num">Timeline</div>
       <h2>Timeline.</h2>
     </div>
     <div class="sec-body">
@@ -304,7 +325,7 @@
   <!-- METHODS + SURVEY INSTRUMENT — relocated to methods.html for the full technical deep-dive -->
   <section id="methods-link">
     <div class="sec-head">
-      <div class="sec-num">§ 03 · Analytical approach</div>
+      <div class="sec-num">Methods</div>
       <h2>How the study was conducted.</h2>
     </div>
     <p class="sec-lede">Three-stage pipeline — data integration, latent attitudinal measurement, predictive modeling — applied to the linked survey + operational dataset. The full methodology and survey instrument live on a dedicated page.</p>
@@ -329,7 +350,7 @@
   <!-- FINDINGS -->
   <section id="findings">
     <div class="sec-head">
-      <div class="sec-num">§ 04 · Key findings</div>
+      <div class="sec-num">Findings</div>
       <h2>What the results show.</h2>
     </div>
     <p class="sec-lede">Behavioral and utilitarian factors consistently outperform attitudinal and demographic predictors of usage intensity <span class="mono" style="font-size:13px;color:var(--muted)">(combined MNL: pseudo-R²=0.128, N=1,743)</span>.</p>
@@ -427,7 +448,7 @@
   <!-- EFFECT SIZES (forest plot) -->
   <section id="effect-sizes">
     <div class="sec-head">
-      <div class="sec-num">§ 04.1 · Effect sizes</div>
+      <div class="sec-num">Evidence</div>
       <h2>Behavior beats ideology, in one chart.</h2>
     </div>
     <p class="sec-lede">Relative-risk ratios from the combined multinomial logit (high-intensity vs low-intensity, N=1,743). Dots are point estimates, horizontal bars are 95% confidence intervals where standard errors are reported in the manuscript. Behavioral predictors carry; attitudes do not — except in the wrong direction.</p>
@@ -451,7 +472,7 @@
   <!-- RECOMMENDATIONS -->
   <section id="recommendations">
     <div class="sec-head">
-      <div class="sec-num">§ 05 · Recommendations</div>
+      <div class="sec-num">Recommendations</div>
       <h2>What this means in practice.</h2>
     </div>
     <p class="sec-lede">EBSS is a useful but bounded tool. Policy calibrated to this reality — investing in the conditions that sustain power users rather than chasing broad environmental appeal — will extract considerably more value.</p>
@@ -500,7 +521,7 @@
   <!-- STUDY AREA / MAP -->
   <section id="mapsec">
     <div class="sec-head">
-      <div class="sec-num">§ 06 · Study area</div>
+      <div class="sec-num">Maps</div>
       <h2>Basel as a testbed — and a demanding one.</h2>
     </div>
     <p class="sec-lede">Basel is an ideal but demanding testbed: Switzerland's highest PT modal share, a strong cycling culture, and the lowest motorization rate among major Swiss cities mean sustainable travel is already the norm — making EBSS adoption harder to explain by necessity alone.</p>
@@ -535,7 +556,7 @@
   <!-- ROUTE ANIMATION -->
   <section id="routes">
     <div class="sec-head">
-      <div class="sec-num">§ 07 · Route dynamics</div>
+      <div class="sec-num">Routes</div>
       <h2>A week of e-bike movement.</h2>
     </div>
     <p class="sec-lede">OSRM-routed Pick-e-Bike and PubliBike Velospot trips reveal the temporal rhythm behind the aggregate patterns: short inner-city hops, commuter pulses, and longer cross-suburban movements passing through the same street network.</p>
@@ -583,7 +604,7 @@
   <!-- HEATMAP -->
   <section id="heatmap">
     <div class="sec-head">
-      <div class="sec-num">§ 08 · Spatial patterns</div>
+      <div class="sec-num">Trip Geography</div>
       <h2>Where trips begin and end.</h2>
     </div>
     <p class="sec-lede">Each point represents a 200&thinsp;m grid cell. Colour intensity reflects trip count on a log scale, clamped at the 99th percentile to reveal spatial differentiation across the full distribution. Filter by time of day or provider to compare patterns between systems.</p>
@@ -629,7 +650,7 @@
   <!-- LORENZ -->
   <section>
     <div class="sec-head">
-      <div class="sec-num">§ 09 · Usage concentration</div>
+      <div class="sec-num">Usage Concentration</div>
       <h2>Lorenz curves.</h2>
     </div>
     <div class="sec-body">
@@ -666,7 +687,7 @@
   <!-- PARTNERS -->
   <section id="partners">
     <div class="sec-head">
-      <div class="sec-num">§ 10 · Consortium and funding</div>
+      <div class="sec-num">Partners</div>
       <h2>Partners.</h2>
     </div>
     <div class="sec-body">
@@ -734,7 +755,7 @@
   <!-- TEAM -->
   <section id="team">
     <div class="sec-head">
-      <div class="sec-num">§ 11 · Research team</div>
+      <div class="sec-num">Team</div>
       <h2>Team.</h2>
     </div>
     <div class="sec-body">
@@ -808,7 +829,7 @@
   <!-- ADVISORY -->
   <section id="advisory">
     <div class="sec-head">
-      <div class="sec-num">§ 12 · Governance</div>
+      <div class="sec-num">Governance</div>
       <h2>Advisory Board.</h2>
     </div>
     <p class="sec-lede">The project is guided by an advisory board of practitioners and researchers from transport, mobility policy, and public finance.</p>
@@ -833,7 +854,7 @@
   <!-- PUBLICATIONS -->
   <section id="publications">
     <div class="sec-head">
-      <div class="sec-num">§ 13 · Outputs</div>
+      <div class="sec-num">Outputs</div>
       <h2>Publications &amp; Presentations.</h2>
     </div>
     <div class="sec-body">
@@ -889,7 +910,7 @@
       </ul>
 
       <div style="margin-top:48px">
-        <div class="sec-num" style="margin-bottom:14px;color:var(--red)">§ 13.1 · Related resources</div>
+        <div class="sec-num" style="margin-bottom:14px;color:var(--red)">Related resources</div>
         <div class="resources">
           <a href="https://u-two.ch" target="_blank" rel="noopener"><span class="res-name">U-Two — FHNW Field Test on Tariff Integration of Shared Two-Wheelers <span class="arrow">↗</span></span><span class="res-host">u-two.ch</span></a>
           <a href="https://bikesharemap.com/#13/47.5579/7.5902" target="_blank" rel="noopener"><span class="res-name">Bike Share Map — Basel <span class="arrow">↗</span></span><span class="res-host">bikesharemap.com</span></a>
