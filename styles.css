@@ -519,3 +519,15 @@
       .explore-tab{border-right:1px solid var(--ink);border-bottom:none}
       .explore-tab:last-child{border-bottom:1px solid var(--ink)}
     }
+
+
+    /* Contributors strip under the team grid */
+    .contrib{margin-top:28px;border:1px solid var(--ink);background:var(--paper)}
+    .contrib-head{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:700;padding:14px 20px;border-bottom:1px solid var(--ink)}
+    .contrib-grid{display:grid;grid-template-columns:1fr 1fr}
+    .contrib-cell{padding:18px 20px;border-right:1px solid var(--ink)}
+    .contrib-cell:last-child{border-right:none}
+    .contrib-name{font-weight:700;font-size:15px;letter-spacing:-.01em}
+    .contrib-inst{font-size:12px;color:var(--red);font-weight:600;margin-top:2px}
+    .contrib-cell p{margin-top:8px;font-size:13px;line-height:1.6;color:#333}
+    @media (max-width:700px){.contrib-grid{grid-template-columns:1fr}.contrib-cell{border-right:none;border-bottom:1px solid var(--ink)}.contrib-cell:last-child{border-bottom:none}}
