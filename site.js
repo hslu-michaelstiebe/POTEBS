@@ -233,8 +233,8 @@
       await ensureEcharts();
 
       // From Table 3 of the manuscript
-      const PEB = { name: 'Pick-e-Bike (FFEBSS)', n: 1309, pt: 0.763, walk: 0.490, car: 0.364 };
-      const PB  = { name: 'PubliBike (DBEBSS)',   n: 434,  pt: 0.726, walk: 0.571, car: 0.220 };
+      const PEB = { name: 'Pick-e-Bike (FFEBSS)', n: 1382, pt: 0.763, walk: 0.490, car: 0.364 };
+      const PB  = { name: 'PubliBike (DBEBSS)',   n: 462,  pt: 0.726, walk: 0.571, car: 0.220 };
       const v = (p, u) => Math.round(p.n * p[u]);
 
       const chart = echarts.init(el, null, { renderer: 'svg' });
@@ -297,7 +297,7 @@
     });
 
     // -------------------------------------------------------------------------
-    // FOREST PLOT — MNL effect sizes (high-intensity vs low-intensity)
+    // FOREST PLOT — ordered-logit odds ratios (published Table 8)
     // Point estimates and 95% CIs from the manuscript narrative; CIs computed
     // exp(β ± 1.96·SE) where SEs are reported. Predictors without published SE
     // appear as point estimates only.
@@ -308,24 +308,31 @@
       await ensureEcharts();
 
       const COL = {
-        behavioral:  '#0a0a0a',
         attitudinal: '#e5372b',
         mobility:    '#2864b4',
-        demographic: '#7a756c'
+        demographic: '#7a756c',
+        geography:   '#c49418'
       };
 
-      // Each row: { name, group, rrr, ci_lo, ci_hi (null if no SE), p, sig }
+      // Proportional-odds ordered logit, N = 1,743, McFadden pseudo-R2 = 0.104.
+      // Odds ratios and 95% CIs exactly as published in Table 8 of
+      // Stiebe et al. (2026), Transportation Research Part D 161, 105621.
       const rows = [
-        { name: 'Multimodal complementarity (revealed)',  group: 'behavioral',  rrr: 1.64, ci_lo: 1.35, ci_hi: 1.99, sig: '***' },
-        { name: 'Temperature variance (revealed)',         group: 'behavioral',  rrr: 1.40, ci_lo: 1.17, ci_hi: 1.68, sig: '***' },
-        { name: 'Functional superiority over PT (DBEBSS)', group: 'attitudinal', rrr: 1.74, ci_lo: null, ci_hi: null, sig: '*'   },
-        { name: 'Education (standardized)',                group: 'demographic', rrr: 1.23, ci_lo: null, ci_hi: null, sig: '*'   },
-        { name: 'Hedonic motivation',                      group: 'attitudinal', rrr: 1.16, ci_lo: 0.92, ci_hi: 1.45, sig: 'n.s.' },
-        { name: 'Reliability concerns (inhibits)',         group: 'attitudinal', rrr: 0.69, ci_lo: 0.59, ci_hi: 0.81, sig: '***' },
-        { name: 'Environmental self-identity',             group: 'attitudinal', rrr: 0.68, ci_lo: 0.56, ci_hi: 0.83, sig: '***' },
-        { name: 'Urban residence (distance to Basel)',     group: 'demographic', rrr: 0.76, ci_lo: null, ci_hi: null, sig: '**'  },
-        { name: 'Private e-bike ownership',                group: 'mobility',    rrr: 0.76, ci_lo: 0.63, ci_hi: 0.92, sig: '**'  },
-        { name: 'Age (standardized)',                      group: 'demographic', rrr: 0.59, ci_lo: null, ci_hi: null, sig: '***' }
+        { name: 'Multimodal complementarity (F5)',        group: 'attitudinal', rrr: 1.53, ci_lo: 1.33, ci_hi: 1.78, sig: '***'  },
+        { name: 'Urban residence',                        group: 'geography',   rrr: 1.49, ci_lo: 1.06, ci_hi: 2.11, sig: '*'    },
+        { name: 'Half-fare travelcard',                   group: 'mobility',    rrr: 1.41, ci_lo: 1.15, ci_hi: 1.72, sig: '***'  },
+        { name: 'Hedonic motivation & social support (F3)', group: 'attitudinal', rrr: 1.24, ci_lo: 1.07, ci_hi: 1.43, sig: '**' },
+        { name: 'Public-sector intervention attitudes (F2)', group: 'attitudinal', rrr: 1.21, ci_lo: 1.04, ci_hi: 1.41, sig: '*' },
+        { name: 'Education level (std.)',                 group: 'demographic', rrr: 1.14, ci_lo: 1.03, ci_hi: 1.26, sig: '**'   },
+        { name: 'Income (std.)',                          group: 'demographic', rrr: 1.13, ci_lo: 1.02, ci_hi: 1.26, sig: '*'    },
+        { name: 'Major-center residence',                 group: 'geography',   rrr: 0.93, ci_lo: 0.72, ci_hi: 1.19, sig: 'n.s.' },
+        { name: 'Environmental self-identity (F7)',       group: 'attitudinal', rrr: 0.82, ci_lo: 0.71, ci_hi: 0.95, sig: '**'   },
+        { name: 'Car ownership',                          group: 'mobility',    rrr: 0.79, ci_lo: 0.63, ci_hi: 0.98, sig: '*'    },
+        { name: 'Private e-bike ownership',               group: 'mobility',    rrr: 0.73, ci_lo: 0.59, ci_hi: 0.91, sig: '**'   },
+        { name: 'Distance to Basel SBB (std.)',           group: 'geography',   rrr: 0.72, ci_lo: 0.62, ci_hi: 0.83, sig: '***'  },
+        { name: 'Age (std.)',                             group: 'demographic', rrr: 0.71, ci_lo: 0.63, ci_hi: 0.79, sig: '***'  },
+        { name: 'Lives \u2265 5 km from Basel',            group: 'geography',   rrr: 0.63, ci_lo: 0.48, ci_hi: 0.82, sig: '***' },
+        { name: 'Service reliability & cost concerns (F6)', group: 'attitudinal', rrr: 0.61, ci_lo: 0.52, ci_hi: 0.71, sig: '***' }
       ];
 
       // Order: stronger effects (further from 1) first within each group;
@@ -333,7 +340,7 @@
       rows.sort((a, b) => Math.log(b.rrr) - Math.log(a.rrr));
 
       const yLabels = rows.map(r => r.name);
-      const xMin = 0.4, xMax = 3.2;
+      const xMin = 0.45, xMax = 2.6;
 
       const pointSeries = {
         name: 'Point estimate',
@@ -377,14 +384,14 @@
               lineWidth: 2
             }
           });
-          // RRR label to the right of the CI (or dot if no CI)
+          // OR label to the right of the CI (or dot if no CI)
           const labelX = (xHi !== null ? xHi : x) + 10;
           children.push({
             type: 'text',
             style: {
               x: labelX,
               y: y + 4,
-              text: 'RRR ' + r.rrr.toFixed(2) + (r.sig !== 'n.s.' ? ' ' + r.sig : ' n.s.'),
+              text: 'OR ' + r.rrr.toFixed(2) + (r.sig !== 'n.s.' ? ' ' + r.sig : ' n.s.'),
               fill: r.sig === 'n.s.' ? '#7a756c' : '#0a0a0a',
               font: '10px JetBrains Mono, monospace'
             }
@@ -399,12 +406,12 @@
       chart.setOption({
         backgroundColor: 'transparent',
         animation: true,
-        grid: { left: 260, right: 110, top: 24, bottom: 70 },
+        grid: { left: 292, right: 104, top: 20, bottom: 66 },
         xAxis: {
           type: 'log',
           logBase: 2,
           min: xMin, max: xMax,
-          name: 'Relative risk ratio (log scale)',
+          name: 'Odds ratio (log scale, 95% CI)',
           nameLocation: 'middle',
           nameGap: 38,
           nameTextStyle: { fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#5a564e', fontWeight: 700 },
@@ -430,19 +437,19 @@
             formatter: function (val) {
               const r = rows.find(rr => rr.name === val);
               if (!r) return val;
-              const trimmed = val.length > 44 ? val.slice(0, 42) + '…' : val;
+              const trimmed = val.length > 46 ? val.slice(0, 44) + '…' : val;
               // tag with rich-text key matching the group, so axisLabel.rich applies the color
               return '{' + r.group + '|' + trimmed + '}';
             },
             rich: {
-              behavioral:  { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#0a0a0a', fontWeight: 600 },
               attitudinal: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#e5372b', fontWeight: 600 },
               mobility:    { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#2864b4', fontWeight: 600 },
-              demographic: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#7a756c', fontWeight: 500 }
+              demographic: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#7a756c', fontWeight: 500 },
+              geography:   { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#8a6810', fontWeight: 600 }
             }
           }
         },
-        // Reference line at RRR = 1
+        // Reference line at OR = 1
         series: [
           {
             type: 'line',
@@ -452,7 +459,7 @@
               silent: true,
               lineStyle: { color: '#0a0a0a', width: 1.5, type: 'solid' },
               label: {
-                formatter: 'No effect (RRR = 1)',
+                formatter: 'No effect (OR = 1)',
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: 9,
                 color: '#5a564e',
@@ -473,9 +480,10 @@
     runWhenVisible(document.getElementById('map'), async function initServiceMap() {
       await ensureLeaflet();
 
-      const map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([47.555, 7.61], 10.9);
+      const map = L.map('map', { scrollWheelZoom: false, zoomControl: true, trackResize: false }).setView([47.555, 7.61], 10.9);
+    window.addEventListener('resize', () => { if (map.getContainer().offsetWidth) map.invalidateSize(); });
     window.addEventListener('resize', () => map.invalidateSize());
-    window.__poteMap = map; // exposed for the section-fold resize hook
+    window.__poteMap = map; // exposed for the explore-tab resize hook
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
       maxZoom: 20
@@ -589,9 +597,13 @@
         night:   [20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6]
       };
 
-      const heatMap = L.map('heatmap-map', { scrollWheelZoom: false, zoomControl: true, minZoom: 9, zoomSnap: 0.5 })
+      const heatMap = L.map('heatmap-map', { scrollWheelZoom: false, zoomControl: true, minZoom: 9, zoomSnap: 0.5, trackResize: false })
         .setView([47.548, 7.600], 10.5);
-      window.__poteHeatMap = heatMap; // exposed for the section-fold resize hook
+      window.addEventListener('resize', () => {
+        // Skip while the panel is hidden: a zero-width heat canvas throws on redraw
+        if (heatMap.getContainer().offsetWidth) heatMap.invalidateSize();
+      });
+      window.__poteHeatMap = heatMap; // exposed for the explore-tab resize hook
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO', maxZoom: 20
@@ -660,7 +672,10 @@
         datasets.end   = e.features;
         if (loadingEl) loadingEl.style.display = 'none';
         render();
-        window.addEventListener('resize', () => heatMap.invalidateSize());
+        // Guarded: a zero-width heat canvas (hidden tab) throws on redraw
+        window.addEventListener('resize', () => {
+          if (heatMap.getContainer().offsetWidth) heatMap.invalidateSize();
+        });
       }).catch(() => {
         if (loadingEl) loadingEl.textContent = 'Heatmap data could not be loaded.';
       });
@@ -732,11 +747,24 @@
       const BIB = {
         'stiebe2026pragmatism':
 `@article{stiebe2026pragmatism,
-  author  = {Stiebe, Michael and Krysiak, Frank C. and von Arx, Widar and Weggelaar, Bram},
-  title   = {Pragmatism, Not Ideology: Drivers of E-Bike Sharing Usage Intensity},
+  author  = {Stiebe, Michael and Krysiak, Frank Christian and von Arx, Widar and Weggelaar, Benjamin},
+  title   = {Pragmatism, not ideology: Drivers of e-bike sharing usage intensity},
   journal = {Transportation Research Part D: Transport and Environment},
+  volume  = {161},
+  pages   = {105621},
   year    = {2026},
-  note    = {Submitted March 2026, under review}
+  issn    = {1361-9209},
+  doi     = {10.1016/j.trd.2026.105621},
+  url     = {https://doi.org/10.1016/j.trd.2026.105621},
+  note    = {Open access, CC BY 4.0}
+}`,
+        'stiebe2026jum':
+`@article{stiebe2026jum,
+  author  = {Stiebe, Michael and von Arx, Widar and Sager-M\\"{u}ller, Sibylle},
+  title   = {Contrasting usage and spatial profiles of free-floating {S}-{P}edelec and dock-based pedelec sharing in {B}asel: A longitudinal system-level comparison},
+  journal = {Journal of Urban Mobility},
+  year    = {2026},
+  note    = {Accepted, in production}
 }`,
         'stiebe2026srl':
 `@misc{stiebe2026srl,
@@ -846,141 +874,75 @@
       });
     })();
 
+    // Section folding was removed in the 2026 refresh: the page reads straight
+    // through now, and hidden sections cost more attention than they saved.
+
     // -------------------------------------------------------------------------
-    // FOLDABLE SECTIONS — wrap each section body, make .sec-head a toggle.
-    // Smart defaults: headline content stays open; technical / reference
-    // sections start collapsed. Resize handler re-fires on open so any maps
-    // and ECharts inside redraw at the right size.
+    // EXPLORE TABS — four data views share one viewport slot. Panels stay in the
+    // DOM but are hidden, so each map/chart initialises only when its tab is
+    // first opened, and gets a resize nudge afterwards so it lays out correctly.
     // -------------------------------------------------------------------------
     (function () {
-      const OPEN_BY_DEFAULT = new Set([
-        'overview',
-        'methods-link',
-        'findings',
-        'effect-sizes',
-        'recommendations',
-        'mapsec',
-        'routes',
-        'partners',
-        'team',
-        'publications'
-      ]);
+      const bar = document.querySelector('.explore-tabbar');
+      if (!bar) return;
+      const tabs = Array.from(bar.querySelectorAll('.explore-tab'));
+      const panels = Array.from(document.querySelectorAll('.explore-panel'));
+      if (!tabs.length || !panels.length) return;
 
-      const sections = document.querySelectorAll('section[id]');
-      const folders = [];
-
-      sections.forEach(section => {
-        const sh = section.querySelector(':scope > .sec-head');
-        if (!sh) return;
-
-        // Collect everything after .sec-head as the foldable body
-        const bodyNodes = [];
-        let n = sh.nextElementSibling;
-        while (n) { bodyNodes.push(n); n = n.nextElementSibling; }
-        if (!bodyNodes.length) return;
-
-        const wrap = document.createElement('div');
-        wrap.className = 'sec-fold-content';
-        bodyNodes.forEach(el => wrap.appendChild(el));
-        section.appendChild(wrap);
-
-        const isOpen = OPEN_BY_DEFAULT.has(section.id);
-        if (!isOpen) wrap.style.display = 'none';
-        section.classList.add('sec-foldable');
-        if (!isOpen) section.classList.add('sec-closed');
-
-        const btn = document.createElement('button');
-        btn.className = 'sec-toggle';
-        btn.type = 'button';
-        btn.setAttribute('aria-expanded', String(isOpen));
-        btn.setAttribute('aria-controls', section.id + '-content');
-        btn.setAttribute('aria-label', 'Toggle section');
-        btn.textContent = isOpen ? '−' : '+';
-        wrap.id = section.id + '-content';
-        sh.appendChild(btn);
-
-        const setOpen = (open) => {
-          if (open) {
-            wrap.style.display = '';
-            section.classList.remove('sec-closed');
-            // Replay the animation by removing+adding the class
-            wrap.classList.remove('sec-fold-content');
-            void wrap.offsetWidth;
-            wrap.classList.add('sec-fold-content');
-            // Trigger chart/map resize next frame
-            setTimeout(() => {
-              window.dispatchEvent(new Event('resize'));
-              if (window.__poteMap) window.__poteMap.invalidateSize();
-              if (window.__poteHeatMap) window.__poteHeatMap.invalidateSize();
-              if (window.__poteRouteMap) window.__poteRouteMap.resize();
-            }, 60);
-          } else {
-            wrap.style.display = 'none';
-            section.classList.add('sec-closed');
-          }
-          btn.textContent = open ? '−' : '+';
-          btn.setAttribute('aria-expanded', String(open));
+      // Only ever re-measure the map that is actually on screen: telling a hidden
+      // Leaflet/heat layer to redraw at zero width throws inside the canvas.
+      const MAPS = {
+        mapsec:  () => window.__poteMap,
+        heatmap: () => window.__poteHeatMap,
+        routes:  () => window.__poteRouteMap
+      };
+      const nudge = (id) => {
+        const run = () => {
+          window.dispatchEvent(new Event('resize'));
+          const get = MAPS[id];
+          const m = get && get();
+          if (!m) return;
+          const box = m.getContainer ? m.getContainer() : null;
+          if (box && !box.offsetWidth) return;
+          if (m.invalidateSize) m.invalidateSize();
+          else if (m.resize) m.resize();
         };
+        requestAnimationFrame(run);
+        setTimeout(run, 140);
+      };
 
-        const toggle = () => setOpen(wrap.style.display === 'none');
-
-        sh.addEventListener('click', (e) => {
-          // Don't toggle when clicking links or other buttons inside the heading
-          if (e.target.closest('a')) return;
-          if (e.target === btn || btn.contains(e.target)) {
-            e.preventDefault(); e.stopPropagation();
-          }
-          toggle();
+      const show = (id, focus) => {
+        panels.forEach(p => { p.hidden = (p.id !== id); });
+        tabs.forEach(t => {
+          const on = t.dataset.panel === id;
+          t.classList.toggle('active', on);
+          t.setAttribute('aria-selected', String(on));
+          if (on && focus) t.focus();
         });
+        nudge(id);
+      };
 
-        // Allow keyboard activation on the heading
-        sh.tabIndex = 0;
-        sh.setAttribute('role', 'button');
-        sh.setAttribute('aria-expanded', String(isOpen));
-        sh.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggle();
-            sh.setAttribute('aria-expanded', String(wrap.style.display !== 'none'));
-          }
+      tabs.forEach((t, i) => {
+        t.addEventListener('click', () => show(t.dataset.panel, false));
+        t.addEventListener('keydown', e => {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          e.preventDefault();
+          const next = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+          show(tabs[next].dataset.panel, true);
         });
-
-        folders.push({ section, wrap, setOpen });
       });
 
-      // Expand-all / Collapse-all link in the nav
-      const navLinks = document.querySelector('nav .links');
-      if (navLinks && folders.length) {
-        const allBtn = document.createElement('a');
-        allBtn.href = '#';
-        allBtn.className = 'fold-all';
-        allBtn.dataset.state = 'mixed';
-        allBtn.textContent = 'SHOW ALL';
-        allBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const anyClosed = folders.some(f => f.wrap.style.display === 'none');
-          folders.forEach(f => f.setOpen(anyClosed));
-          allBtn.textContent = anyClosed ? 'HIDE DETAIL' : 'SHOW ALL';
-        });
-        navLinks.appendChild(allBtn);
-      }
-
-      // If the URL points at a section anchor, force-open it and scroll
-      const openHash = () => {
+      // Deep links such as #routes or #heatmap open the matching tab
+      const openFromHash = () => {
         const id = window.location.hash.slice(1);
         if (!id) return;
-        const f = folders.find(x => x.section.id === id);
-        if (f && f.wrap.style.display === 'none') f.setOpen(true);
+        if (panels.some(p => p.id === id)) {
+          show(id, false);
+          const sec = document.getElementById('explore');
+          if (sec) sec.scrollIntoView();
+        }
       };
-      window.addEventListener('hashchange', openHash);
-      openHash();
-
-      // When a nav link to a hidden section is clicked, open the section first
-      document.querySelectorAll('nav a[href^="#"]').forEach(a => {
-        a.addEventListener('click', () => {
-          const id = a.getAttribute('href').slice(1);
-          const f = folders.find(x => x.section.id === id);
-          if (f && f.wrap.style.display === 'none') f.setOpen(true);
-        });
-      });
+      window.addEventListener('hashchange', openFromHash);
+      openFromHash();
     })();
+

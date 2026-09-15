@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>POTEBS — Methods &amp; Survey Instrument</title>
-  <meta name="description" content="Technical methodology of the POTEBS research project: data integration, exploratory factor analysis, Gaussian mixture model segmentation, multinomial logit modeling, and the full survey instrument." />
+  <meta name="description" content="Technical methodology of the POTEBS research project: data integration, exploratory factor analysis, Gaussian mixture model segmentation, ordered logit modeling, and the full survey instrument." />
   <meta name="author" content="Michael Stiebe, HSLU" />
   <meta name="theme-color" content="#0a0a0a" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="article" />
   <meta property="og:title" content="POTEBS — Methods &amp; Survey Instrument" />
-  <meta property="og:description" content="Technical methodology behind POTEBS: linked survey + operational records, EFA, GMM, MNL, and the full instrument structure." />
+  <meta property="og:description" content="Technical methodology behind POTEBS: linked survey + operational records, EFA, GMM, ordered logit, and the full instrument structure." />
   <meta property="og:image" content="ASSETS/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -19,7 +19,7 @@
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="POTEBS — Methods &amp; Survey Instrument" />
-  <meta name="twitter:description" content="Technical methodology behind POTEBS: linked survey + operational records, EFA, GMM, MNL, and the full instrument structure." />
+  <meta name="twitter:description" content="Technical methodology behind POTEBS: linked survey + operational records, EFA, GMM, ordered logit, and the full instrument structure." />
   <meta name="twitter:image" content="ASSETS/og-image.png" />
 
   <!-- Favicon -->
@@ -38,13 +38,11 @@
         <span></span><span></span><span></span>
       </button>
       <div class="links" id="nav-links">
-        <a href="index.html#overview">Overview</a>
         <a href="index.html#findings">Findings</a>
         <a href="index.html#effect-sizes">Evidence</a>
-        <a href="index.html#mapsec">Maps</a>
-        <a href="index.html#routes">Routes</a>
-        <a href="index.html#heatmap">Data</a>
-        <a href="index.html#team">Team</a>
+        <a href="index.html#explore">Explore</a>
+        <a href="index.html#recommendations">Implications</a>
+        <a href="index.html#project">Project</a>
         <a href="index.html#publications">Outputs</a>
       </div>
     </div>
@@ -61,17 +59,17 @@
           <p class="lede" style="margin-top:18px">Below: the design of the survey instrument, the statistical machinery, the seven latent attitudinal factors, and the quality controls.</p>
         </div>
         <div class="hero-meta">
-          <div><span>Pipeline</span><strong>EFA → GMM → MNL</strong></div>
+          <div><span>Pipeline</span><strong>EFA → GMM → Ordered logit</strong></div>
           <div><span>Linked N</span><strong>1,743</strong></div>
-          <div><span>Validation</span><strong>5-fold CV + RF</strong></div>
-          <div><span>Pseudo-R²</span><strong>0.128</strong></div>
+          <div><span>Validation</span><strong>5-fold cross-validation</strong></div>
+          <div><span>Pseudo-R²</span><strong>0.104</strong></div>
         </div>
       </div>
       <div class="hero-right">
         <div>
           <div class="label">Methodological note</div>
           <h2>The linkage matters as much as the model.</h2>
-          <p>Pairing each survey respondent with their actual ride history lets temperature variance, multimodal fallback patterns, and revealed weather behaviour stand in for self-reports — and outperform them as predictors of intensive use.</p>
+          <p>Pairing each survey respondent with their actual ride history turns usage intensity from a self-report into an observed quantity — and lets stated attitudes be tested against what people demonstrably did.</p>
         </div>
         <div class="attribution">— POTEBS · methodology page</div>
       </div>
@@ -84,7 +82,7 @@
       <div class="sec-num">Methods</div>
       <h2>How the study was conducted.</h2>
     </div>
-    <p class="sec-lede">Three stages connect raw data to inference: attitudinal measurement (EFA), data-driven segmentation (GMM), and predictive modeling (multinomial logit with random forest validation).</p>
+    <p class="sec-lede">Three stages connect raw data to inference: attitudinal measurement (EFA), data-driven segmentation (GMM), and predictive modeling (a proportional-odds ordered logit, cross-validated).</p>
     <div class="sec-body">
       <div class="blocks-3 pipeline">
         <div class="block">
@@ -102,13 +100,13 @@
         <div class="block">
           <div class="idx">03</div>
           <div class="tag">Stage 3 — Predictive modeling</div>
-          <h3>Multinomial logit with random forest validation.</h3>
-          <p>Multinomial logit predicted segment membership from demographic, geographic, and attitudinal predictors via backward elimination. Results were validated through 5-fold cross-validation and random forest feature importance rankings, which broadly corroborated the MNL findings.</p>
+          <h3>Proportional-odds ordered logit.</h3>
+          <p>Because the three intensity segments are ordered (low &lt; medium &lt; high), segment membership is modelled with a proportional-odds ordered logit rather than a multinomial specification, reported as odds ratios. Model performance was assessed via McFadden's pseudo-R² (0.104), AIC, and 5-fold cross-validated accuracy and macro-F1. A Brant test and a multinomial-logit comparison are reported in the published appendix; departures from proportional odds are concentrated in control variables, not in the attitudinal drivers.</p>
         </div>
       </div>
       <div class="highlight" style="margin-top:-1px">
         <div class="tag">Key methodological advantage</div>
-        <p>Linking survey responses to trip histories enables triangulation between stated and revealed preferences. The key behavioral predictor — <strong>temperature variance across a user's ride history</strong> — captures demonstrated weather resilience independently of self-reports (r=0.05 with trip volume), confirming it as a genuine behavioral trait rather than a usage artifact.</p>
+        <p>Linking survey responses to trip histories enables triangulation between stated and revealed preferences: the dependent variable is observed usage, not recalled usage. One measure did not survive that scrutiny. <strong>Temperature variance across a user's ride history</strong> was initially read as revealed weather resilience, but an exposure-invariant sensitivity analysis showed it mainly reflects sustained, year-round active membership. It is therefore reported descriptively and in the appendix, and is not entered as a predictor in the published intensity model.</p>
       </div>
     </div>
   </section>
@@ -243,7 +241,7 @@
     <div class="sec-body">
       <div class="highlight" style="margin-top:0">
         <div class="tag">Continue reading</div>
-        <p>This page covers methodology and instrument design only. For findings, effect sizes, recommendations and the interactive data explorer, head back to the <a href="index.html" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">project overview</a> — or jump straight into the <a href="index.html#findings" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">key findings</a>, the <a href="index.html#effect-sizes" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">forest plot of effect sizes</a>, or the <a href="index.html#heatmap" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">spatial heatmap</a>.</p>
+        <p>This page covers methodology and instrument design only. For findings, effect sizes, recommendations and the interactive data explorer, head back to the <a href="index.html" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">project overview</a> — or jump straight into the <a href="index.html#findings" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">key findings</a>, the <a href="index.html#effect-sizes" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">forest plot of effect sizes</a>, or the <a href="index.html#explore" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">interactive maps</a>. The full methodology as peer-reviewed is in the open-access article: <a href="https://doi.org/10.1016/j.trd.2026.105621" target="_blank" rel="noopener" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">Stiebe et&nbsp;al. (2026), Transportation Research Part D 161, 105621 ↗</a>.</p>
       </div>
     </div>
   </section>

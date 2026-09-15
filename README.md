@@ -4,13 +4,15 @@ Static project website for **POTEBS - Investigating the Potential of E-Bike-Shar
 
 The project is funded by the Swiss Federal Office of Energy (SFOE), grant `SI/502720-01`, and runs from December 2023 to January 2027.
 
+Figures on the site follow the published article: Stiebe, M., Krysiak, F. C., von Arx, W., & Weggelaar, B. (2026). Pragmatism, not ideology: drivers of e-bike sharing usage intensity. *Transportation Research Part D* 161, 105621. <https://doi.org/10.1016/j.trd.2026.105621> (CC BY 4.0). Any change to a reported number belongs in that source first.
+
 ## Structure
 
 - `index.html` - main project overview and interactive data page
 - `methods.html` - methods and survey instrument page
 - `styles.css` - shared visual styling
 - `nav.js` - mobile navigation and navigation helpers
-- `site.js` - lazy-loaded charts, maps, foldable sections, and citations
+- `site.js` - lazy-loaded charts, maps, scroll-spy, and citations
 - `route-animation.js` - lazy-loaded route animation logic
 - `ASSETS/` - logos, Open Graph images, and lightweight hero route-loop media
 - `data/` - static GeoJSON/JSON datasets used by the website
