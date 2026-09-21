@@ -761,10 +761,14 @@
         'stiebe2026jum':
 `@article{stiebe2026jum,
   author  = {Stiebe, Michael and von Arx, Widar and Sager-M\\"{u}ller, Sibylle},
-  title   = {Contrasting usage and spatial profiles of free-floating {S}-{P}edelec and dock-based pedelec sharing in {B}asel: A longitudinal system-level comparison},
+  title   = {Contrasting usage and spatial profiles of free-floating {S}-pedelec and dock-based pedelec sharing in {B}asel: A longitudinal system-level comparison},
   journal = {Journal of Urban Mobility},
+  volume  = {10},
+  pages   = {100288},
   year    = {2026},
-  note    = {Accepted, in production}
+  doi     = {10.1016/j.urbmob.2026.100288},
+  url     = {https://doi.org/10.1016/j.urbmob.2026.100288},
+  note    = {Open access}
 }`,
         'stiebe2026srl':
 `@misc{stiebe2026srl,

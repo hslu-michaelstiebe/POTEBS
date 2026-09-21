@@ -520,3 +520,7 @@
       .explore-tab:last-child{border-bottom:1px solid var(--ink)}
     }
 
+
+    /* Second paper row in the published band */
+    .paper-band-second{border-top:1px solid rgba(255,255,255,.18)}
+    .paper-band-second .paper-band-title{font-size:20px}
