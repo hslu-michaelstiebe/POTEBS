@@ -20,9 +20,9 @@
 
   const DATA_URL = 'data/trips_animation_w35.json';
   const MOBILE_DATA_URL = 'data/trips_animation_w35_mobile.json';
-  const MAPLIBRE_CSS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';
-  const MAPLIBRE_JS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
-  const DECK_JS = 'https://unpkg.com/deck.gl@9.0.27/dist.min.js';
+  const MAPLIBRE_CSS = 'vendor/maplibre/maplibre-gl.css';
+  const MAPLIBRE_JS = 'vendor/maplibre/maplibre-gl.js';
+  const DECK_JS = 'vendor/deck.gl.min.js';
   const WEEK_S = 7 * 24 * 3600;
   const DAY_S = 24 * 3600;
   const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
@@ -195,7 +195,7 @@
 
       map = new maplibregl.Map({
         container: mapEl,
-        style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+        style: 'https://tiles.openfreemap.org/styles/dark',
         center: [7.589, 47.555],
         zoom: lightDevice ? 11.0 : 12.45,
         pitch: lightDevice ? 0 : 44,

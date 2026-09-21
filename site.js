@@ -1,11 +1,25 @@
 // -------------------------------------------------------------------------
     // Deferred vendor loading
     // -------------------------------------------------------------------------
+    // All libraries are served from this repository (vendor/), so the page does not
+    // depend on third-party CDNs. The only external requests are the map tiles.
     const VENDOR = {
-      leafletCss: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css',
-      leafletJs: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js',
-      leafletHeatJs: 'https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js',
-      echartsJs: 'https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js'
+      leafletCss: 'vendor/leaflet/leaflet.min.css',
+      leafletJs: 'vendor/leaflet/leaflet.min.js',
+      leafletHeatJs: 'vendor/leaflet/leaflet-heat.js',
+      echartsJs: 'vendor/echarts.min.js',
+      maplibreCss: 'vendor/maplibre/maplibre-gl.css',
+      maplibreJs: 'vendor/maplibre/maplibre-gl.js',
+      maplibreLeafletJs: 'vendor/maplibre/leaflet-maplibre-gl.js'
+    };
+
+    // Basemaps: OpenFreeMap (OpenStreetMap data, OpenMapTiles schema). Free, no API key,
+    // no registration, no request limits. Positron and Dark are the same cartographic
+    // styles the site previously used via CARTO, which now requires a key.
+    const BASEMAP = {
+      light: 'https://tiles.openfreemap.org/styles/positron',
+      dark: 'https://tiles.openfreemap.org/styles/dark',
+      attribution: '&copy; <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
     };
 
     const deferredLoads = new Map();
@@ -75,6 +89,32 @@
     async function ensureLeafletHeat() {
       await ensureLeaflet();
       await loadScriptOnce(VENDOR.leafletHeatJs, () => Boolean(window.L && window.L.heatLayer));
+    }
+
+    // MapLibre renders the vector basemap inside Leaflet (maplibre-gl-leaflet)
+    async function ensureMaplibreLeaflet() {
+      await ensureLeaflet();
+      await Promise.all([
+        loadCssOnce(VENDOR.maplibreCss),
+        loadScriptOnce(VENDOR.maplibreJs, () => Boolean(window.maplibregl))
+      ]);
+      await loadScriptOnce(VENDOR.maplibreLeafletJs, () => Boolean(window.L && window.L.maplibreGL));
+    }
+
+    const styleCache = new Map();
+    function fetchStyle(url) {
+      if (!styleCache.has(url)) {
+        styleCache.set(url, fetch(url).then(r => {
+          if (!r.ok) throw new Error(`Basemap style failed: ${r.status}`);
+          return r.json();
+        }));
+      }
+      return styleCache.get(url);
+    }
+    // Split one style into a base part and a labels-only part, so place names
+    // can sit above the service-area polygons (as the old raster labels did).
+    function styleSubset(style, keep) {
+      return Object.assign({}, style, { layers: style.layers.filter(keep) });
     }
 
     function runWhenVisible(target, init, options = {}) {
@@ -480,22 +520,22 @@
     });
 
     // -------------------------------------------------------------------------
-    // Service-area map — CARTO Voyager tiles (neutral, fits the aesthetic)
+    // Service-area map — OpenFreeMap Positron (neutral, fits the aesthetic)
     // -------------------------------------------------------------------------
     runWhenVisible(document.getElementById('map'), async function initServiceMap() {
-      await ensureLeaflet();
+      await ensureMaplibreLeaflet();
 
       const map = L.map('map', { scrollWheelZoom: false, zoomControl: true, trackResize: false }).setView([47.555, 7.61], 10.9);
     window.addEventListener('resize', () => { if (map.getContainer().offsetWidth) map.invalidateSize(); });
-    window.addEventListener('resize', () => map.invalidateSize());
     window.__poteMap = map; // exposed for the explore-tab resize hook
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-      maxZoom: 20
-    }).addTo(map);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
-      maxZoom: 20, pane: 'shadowPane'
-    }).addTo(map);
+
+    map.createPane('labelsPane');
+    map.getPane('labelsPane').style.zIndex = 500;
+    map.getPane('labelsPane').style.pointerEvents = 'none';
+    fetchStyle(BASEMAP.light).then(style => {
+      L.maplibreGL({ style: styleSubset(style, l => l.type !== 'symbol'), attribution: BASEMAP.attribution }).addTo(map);
+      L.maplibreGL({ style: styleSubset(style, l => l.type === 'symbol'), pane: 'labelsPane' }).addTo(map);
+    }).catch(err => console.error(err));
 
     map.createPane('pebPane');
     map.createPane('pbPane');
@@ -580,7 +620,19 @@
 
       const boundsLayer = L.geoJSON({ type: 'FeatureCollection', features });
       if (boundsLayer.getBounds && boundsLayer.getBounds().isValid()) {
-        map.fitBounds(boundsLayer.getBounds().pad(0.10), { padding: [24, 24] });
+        // If the data arrives while another explore tab is open, the map has no
+        // size yet and fitBounds would compute NaN. Fit once the tab is shown.
+        const bounds = boundsLayer.getBounds().pad(0.10);
+        const fitIfVisible = () => {
+          if (!map.getContainer().offsetWidth) return false;
+          map.invalidateSize();
+          map.fitBounds(bounds, { padding: [24, 24] });
+          return true;
+        };
+        if (!fitIfVisible()) {
+          const retry = () => { if (fitIfVisible()) window.removeEventListener('resize', retry); };
+          window.addEventListener('resize', retry);
+        }
       }
     }).catch(err => {
       console.error(err);
@@ -593,6 +645,7 @@
     // -------------------------------------------------------------------------
     runWhenVisible(document.getElementById('heatmap-map'), async function initHeatmap() {
       await ensureLeafletHeat();
+      await ensureMaplibreLeaflet();
 
       const HOUR_GROUPS = {
         all:     null,
@@ -610,9 +663,7 @@
       });
       window.__poteHeatMap = heatMap; // exposed for the explore-tab resize hook
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO', maxZoom: 20
-      }).addTo(heatMap);
+      L.maplibreGL({ style: BASEMAP.dark, attribution: BASEMAP.attribution }).addTo(heatMap);
 
       const HEAT_OPTS = {
         radius: 14, blur: 7, maxZoom: 18, minOpacity: 0.25,
@@ -719,30 +770,51 @@
     (function () {
       const links = Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
       if (!links.length) return;
+      const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+      // Every section is tracked. One without its own nav entry (e.g. timeline,
+      // partners, team) lights up the nearest nav entry above it in the page.
       const linkMap = new Map();
       const sections = [];
-      links.forEach(a => {
-        const id = a.getAttribute('href').slice(1);
-        const sec = document.getElementById(id);
-        if (sec) { linkMap.set(id, a); sections.push(sec); }
+      let current = null;
+      document.querySelectorAll('section[id], .group-band[id]').forEach(sec => {
+        if (byId.has(sec.id)) current = byId.get(sec.id);
+        linkMap.set(sec.id, current); // null above the first entry: nothing lit
+        sections.push(sec);
       });
       if (!sections.length) return;
 
+      links.forEach(l => l.classList.remove('active'));
+      let lit = null;
       const setActive = id => {
-        links.forEach(l => l.classList.remove('active'));
-        const a = linkMap.get(id);
+        const a = id ? linkMap.get(id) : null;
+        if (a === lit) return;
+        if (lit) lit.classList.remove('active');
         if (a) a.classList.add('active');
+        lit = a;
       };
 
-      const io = new IntersectionObserver((entries) => {
-        // Pick the entry closest to the top of the viewport that is currently intersecting
-        const visible = entries
-          .filter(e => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible.length) setActive(visible[0].target.id);
-      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-
-      sections.forEach(s => io.observe(s));
+      // The active section is the last one whose top has passed a probe line
+      // at 40% of the viewport height. Computed from layout on every scroll
+      // frame, so it stays correct after anchor jumps and smooth scrolling.
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const probe = window.innerHeight * 0.4;
+        let hit = null;
+        for (const sec of sections) {
+          if (sec.getBoundingClientRect().top <= probe) hit = sec; else break;
+        }
+        const doc = document.documentElement;
+        if (hit && window.scrollY + window.innerHeight >= doc.scrollHeight - 2) {
+          hit = sections[sections.length - 1];
+        }
+        setActive(hit ? hit.id : null);
+      };
+      const schedule = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+      window.addEventListener('scroll', schedule, { passive: true });
+      window.addEventListener('resize', schedule);
+      window.addEventListener('load', schedule);
+      update();
     })();
 
     // -------------------------------------------------------------------------

@@ -12,10 +12,11 @@ Figures on the site follow the published article: Stiebe, M., Krysiak, F. C., vo
 - `methods.html` - methods and survey instrument page
 - `styles.css` - shared visual styling
 - `nav.js` - mobile navigation and navigation helpers
-- `site.js` - lazy-loaded charts, maps, scroll-spy, and citations
+- `site.js` - lazy-loaded charts, maps, explore tabs, scroll-spy, and citations
 - `route-animation.js` - lazy-loaded route animation logic
 - `ASSETS/` - logos, Open Graph images, and lightweight hero route-loop media
 - `data/` - static GeoJSON/JSON datasets used by the website
+- `vendor/` - self-hosted libraries (Leaflet, leaflet.heat, MapLibre GL, maplibre-gl-leaflet, deck.gl, ECharts) and fonts (Space Grotesk, JetBrains Mono); the only external requests are basemap tiles from OpenFreeMap (no API key)
 
 ## Route Animation Data
 
