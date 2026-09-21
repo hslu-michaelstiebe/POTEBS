@@ -10,6 +10,11 @@
 
     const deferredLoads = new Map();
 
+    // Chart text scales with the same breakpoints as the page type (styles.css),
+    // so labels stay legible on large, high-resolution monitors.
+    const CHART_SCALE = window.innerWidth >= 3000 ? 1.75 : window.innerWidth >= 2200 ? 1.3 : window.innerWidth >= 1680 ? 1.12 : 1;
+    const fs = n => Math.round(n * CHART_SCALE * 10) / 10;
+
     function loadCssOnce(href) {
       if (document.querySelector(`link[href="${href}"]`)) return Promise.resolve();
       if (deferredLoads.has(href)) return deferredLoads.get(href);
@@ -121,7 +126,7 @@
         .map(([k, cfg]) => `${cfg.label}: ${(providers[k]?.gini ?? 0).toFixed(3)}`)
         .join('   ');
 
-      const axisFont = { fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#5a564e' };
+      const axisFont = { fontFamily: 'JetBrains Mono, monospace', fontSize: fs(10), color: '#5a564e' };
       const axisLine = { lineStyle: { color: '#0a0a0a' } };
       const splitLine = { lineStyle: { color: '#d8d3c6' } };
 
@@ -162,7 +167,7 @@
           axisPointer: { type: 'cross', label: { show: false } },
           backgroundColor: '#ffffff',
           borderColor: '#0a0a0a', borderWidth: 1,
-          textStyle: { color: '#0a0a0a', fontSize: 12, fontFamily: 'Space Grotesk, sans-serif' },
+          textStyle: { color: '#0a0a0a', fontSize: fs(12), fontFamily: 'Space Grotesk, sans-serif' },
           formatter(params) {
             const pop = params[0]?.data[0];
             let html = `<div style="font-weight:700;margin-bottom:4px;font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em">Bottom ${pop?.toFixed(1)}% of users</div>`;
@@ -182,7 +187,7 @@
           data: ['Combined', 'Pick-e-Bike', 'PubliBike Velospot', 'Perfect equality'],
           top: 4, right: 0,
           itemWidth: 18, itemHeight: 3,
-          textStyle: { color: '#5a564e', fontSize: 10, fontFamily: 'JetBrains Mono, monospace' }
+          textStyle: { color: '#5a564e', fontSize: fs(10), fontFamily: 'JetBrains Mono, monospace' }
         },
         series
       };
@@ -253,7 +258,7 @@
           trigger: 'item',
           backgroundColor: '#0a0a0a',
           borderColor: '#0a0a0a',
-          textStyle: { color: '#f4f2ec', fontFamily: 'JetBrains Mono, monospace', fontSize: 11 },
+          textStyle: { color: '#f4f2ec', fontFamily: 'JetBrains Mono, monospace', fontSize: fs(11) },
           formatter: function (p) {
             if (p.dataType === 'edge') {
               return `${p.data.source} → ${p.data.target}<br/><b>${p.data.value.toLocaleString()} users</b>`;
@@ -271,7 +276,7 @@
           lineStyle: { color: 'gradient', curveness: 0.5, opacity: 0.6 },
           label: {
             fontFamily: 'Space Grotesk, Inter, sans-serif',
-            fontSize: 11,
+            fontSize: fs(11),
             fontWeight: 600,
             color: '#0a0a0a',
             overflow: 'none'
@@ -393,7 +398,7 @@
               y: y + 4,
               text: 'OR ' + r.rrr.toFixed(2) + (r.sig !== 'n.s.' ? ' ' + r.sig : ' n.s.'),
               fill: r.sig === 'n.s.' ? '#7a756c' : '#0a0a0a',
-              font: '10px JetBrains Mono, monospace'
+              font: fs(10) + 'px JetBrains Mono, monospace'
             }
           });
           return { type: 'group', children: children };
@@ -406,7 +411,7 @@
       chart.setOption({
         backgroundColor: 'transparent',
         animation: true,
-        grid: { left: 292, right: 104, top: 20, bottom: 66 },
+        grid: { left: Math.round(292 * CHART_SCALE), right: Math.round(104 * CHART_SCALE), top: 20, bottom: Math.round(66 * CHART_SCALE) },
         xAxis: {
           type: 'log',
           logBase: 2,
@@ -414,12 +419,12 @@
           name: 'Odds ratio (log scale, 95% CI)',
           nameLocation: 'middle',
           nameGap: 38,
-          nameTextStyle: { fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: '#5a564e', fontWeight: 700 },
+          nameTextStyle: { fontFamily: 'JetBrains Mono, monospace', fontSize: fs(10), color: '#5a564e', fontWeight: 700 },
           axisLine: { lineStyle: { color: '#0a0a0a' } },
           axisTick: { lineStyle: { color: '#0a0a0a' } },
           axisLabel: {
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: 10,
+            fontSize: fs(10),
             color: '#5a564e',
             formatter: v => v >= 1 ? v.toFixed(v === 1 ? 0 : 1) : v.toFixed(2)
           },
@@ -433,7 +438,7 @@
           axisTick: { show: false },
           axisLabel: {
             fontFamily: 'Space Grotesk, Inter, sans-serif',
-            fontSize: 11.5,
+            fontSize: fs(11.5),
             formatter: function (val) {
               const r = rows.find(rr => rr.name === val);
               if (!r) return val;
@@ -442,10 +447,10 @@
               return '{' + r.group + '|' + trimmed + '}';
             },
             rich: {
-              attitudinal: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#e5372b', fontWeight: 600 },
-              mobility:    { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#2864b4', fontWeight: 600 },
-              demographic: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#7a756c', fontWeight: 500 },
-              geography:   { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: 11.5, color: '#8a6810', fontWeight: 600 }
+              attitudinal: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: fs(11.5), color: '#e5372b', fontWeight: 600 },
+              mobility:    { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: fs(11.5), color: '#2864b4', fontWeight: 600 },
+              demographic: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: fs(11.5), color: '#7a756c', fontWeight: 500 },
+              geography:   { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: fs(11.5), color: '#8a6810', fontWeight: 600 }
             }
           }
         },
@@ -461,7 +466,7 @@
               label: {
                 formatter: 'No effect (OR = 1)',
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: 9,
+                fontSize: fs(9),
                 color: '#5a564e',
                 position: 'start'
               },
