@@ -26,7 +26,7 @@
 
     // Chart text scales with the same breakpoints as the page type (styles.css),
     // so labels stay legible on large, high-resolution monitors.
-    const CHART_SCALE = window.innerWidth >= 3000 ? 1.75 : window.innerWidth >= 2200 ? 1.3 : window.innerWidth >= 1680 ? 1.12 : 1;
+    const CHART_SCALE = window.innerWidth >= 3000 ? 1.5 : window.innerWidth >= 2200 ? 1.25 : window.innerWidth >= 1680 ? 1.0625 : 1;
     const fs = n => Math.round(n * CHART_SCALE * 10) / 10;
 
     function loadCssOnce(href) {
@@ -152,7 +152,7 @@
     ];
 
     const PROVIDER_CFG = {
-      Combined: { label: 'Combined',            color: '#0a0a0a', width: 2.5 },
+      Combined: { label: 'Combined',            color: '#1c1c1c', width: 2.5 },
       FFEBSS:   { label: 'Pick-e-Bike',         color: '#c5402b', width: 2   },
       DBEBSS:   { label: 'PubliBike Velospot',  color: '#2864b4', width: 2   }
     };
@@ -166,9 +166,9 @@
         .map(([k, cfg]) => `${cfg.label}: ${(providers[k]?.gini ?? 0).toFixed(3)}`)
         .join('   ');
 
-      const axisFont = { fontFamily: 'JetBrains Mono, monospace', fontSize: fs(10), color: '#5a564e' };
-      const axisLine = { lineStyle: { color: '#0a0a0a' } };
-      const splitLine = { lineStyle: { color: '#d8d3c6' } };
+      const axisFont = { fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif', fontSize: fs(12), color: '#5e6166' };
+      const axisLine = { lineStyle: { color: '#1c1c1c' } };
+      const splitLine = { lineStyle: { color: '#e4e4e4' } };
 
       const series = [
         { name: 'Perfect equality', type: 'line', data: [[0, 0], [100, 100]], symbol: 'none',
@@ -206,11 +206,11 @@
           trigger: 'axis',
           axisPointer: { type: 'cross', label: { show: false } },
           backgroundColor: '#ffffff',
-          borderColor: '#0a0a0a', borderWidth: 1,
-          textStyle: { color: '#0a0a0a', fontSize: fs(12), fontFamily: 'Space Grotesk, sans-serif' },
+          borderColor: '#1c1c1c', borderWidth: 1,
+          textStyle: { color: '#1c1c1c', fontSize: fs(13.5), fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif' },
           formatter(params) {
             const pop = params[0]?.data[0];
-            let html = `<div style="font-weight:700;margin-bottom:4px;font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em">Bottom ${pop?.toFixed(1)}% of users</div>`;
+            let html = `<div style="font-weight:600;margin-bottom:4px">Bottom ${pop?.toFixed(1)}% of users</div>`;
             params.forEach(p => {
               if (p.seriesName === 'Perfect equality') return;
               const cfg = Object.values(PROVIDER_CFG).find(c => c.label === p.seriesName);
@@ -219,7 +219,7 @@
                 <span>${p.seriesName}: <b>${p.data[1]?.toFixed(1)}%</b></span>
               </div>`;
             });
-            html += `<div style="margin-top:6px;padding-top:5px;border-top:1px solid #d8d3c6;font-size:10.5px;color:#5a564e;font-family:JetBrains Mono,monospace">Gini — ${giniText}</div>`;
+            html += `<div style="margin-top:6px;padding-top:5px;border-top:1px solid #e4e4e4;font-size:12px;color:#5e6166;">Gini: ${giniText}</div>`;
             return html;
           }
         },
@@ -227,7 +227,7 @@
           data: ['Combined', 'Pick-e-Bike', 'PubliBike Velospot', 'Perfect equality'],
           top: 4, right: 0,
           itemWidth: 18, itemHeight: 3,
-          textStyle: { color: '#5a564e', fontSize: fs(10), fontFamily: 'JetBrains Mono, monospace' }
+          textStyle: { color: '#5e6166', fontSize: fs(12), fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif' }
         },
         series
       };
@@ -278,8 +278,8 @@
       await ensureEcharts();
 
       // From Table 3 of the manuscript
-      const PEB = { name: 'Pick-e-Bike (FFEBSS)', n: 1382, pt: 0.763, walk: 0.490, car: 0.364 };
-      const PB  = { name: 'PubliBike (DBEBSS)',   n: 462,  pt: 0.726, walk: 0.571, car: 0.220 };
+      const PEB = { name: 'Pick-e-Bike', n: 1382, pt: 0.763, walk: 0.490, car: 0.364 };
+      const PB  = { name: 'PubliBike Velospot',   n: 462,  pt: 0.726, walk: 0.571, car: 0.220 };
       const v = (p, u) => Math.round(p.n * p[u]);
 
       const chart = echarts.init(el, null, { renderer: 'svg' });
@@ -287,54 +287,54 @@
       const COL = {
         peb:  '#c5402b',
         pb:   '#2864b4',
-        pt:   '#2864b4',
-        walk: '#7a756c',
-        car:  '#c5402b'
+        pt:   '#4a4d52',
+        walk: '#8a8d91',
+        car:  '#b9bcc0'
       };
 
       chart.setOption({
         backgroundColor: 'transparent',
         tooltip: {
           trigger: 'item',
-          backgroundColor: '#0a0a0a',
-          borderColor: '#0a0a0a',
-          textStyle: { color: '#f4f2ec', fontFamily: 'JetBrains Mono, monospace', fontSize: fs(11) },
+          backgroundColor: '#ffffff',
+          borderColor: '#cfcfcf',
+          textStyle: { color: '#1c1c1c', fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif', fontSize: fs(13) },
           formatter: function (p) {
             if (p.dataType === 'edge') {
-              return `${p.data.source} → ${p.data.target}<br/><b>${p.data.value.toLocaleString()} users</b>`;
+              return `${p.data.source} to ${p.data.target}<br/><b>${p.data.value.toLocaleString()} users</b>`;
             }
             return `<b>${p.name}</b>`;
           }
         },
         series: [{
           type: 'sankey',
-          left: 4, right: 140, top: 8, bottom: 8,
+          left: 4, right: Math.round(118 * CHART_SCALE), top: 8, bottom: 8,
           nodeGap: 16,
           nodeWidth: 12,
           layoutIterations: 32,
           emphasis: { focus: 'adjacency' },
-          lineStyle: { color: 'gradient', curveness: 0.5, opacity: 0.6 },
+          lineStyle: { color: 'source', curveness: 0.5, opacity: 0.35 },
           label: {
-            fontFamily: 'Space Grotesk, Inter, sans-serif',
-            fontSize: fs(11),
-            fontWeight: 600,
-            color: '#0a0a0a',
+            fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif',
+            fontSize: fs(13),
+            fontWeight: 400,
+            color: '#1c1c1c',
             overflow: 'none'
           },
           data: [
-            { name: PEB.name,             itemStyle: { color: COL.peb,  borderColor: '#0a0a0a' } },
-            { name: PB.name,              itemStyle: { color: COL.pb,   borderColor: '#0a0a0a' } },
-            { name: 'Substitutes PT',     itemStyle: { color: COL.pt,   borderColor: '#0a0a0a' } },
-            { name: 'Substitutes Walking',itemStyle: { color: COL.walk, borderColor: '#0a0a0a' } },
-            { name: 'Substitutes Car*',   itemStyle: { color: COL.car,  borderColor: '#0a0a0a' } }
+            { name: PEB.name,             itemStyle: { color: COL.peb,  borderColor: 'transparent' } },
+            { name: PB.name,              itemStyle: { color: COL.pb,   borderColor: 'transparent' } },
+            { name: 'Public transport',     itemStyle: { color: COL.pt,   borderColor: 'transparent' } },
+            { name: 'Walking',itemStyle: { color: COL.walk, borderColor: 'transparent' } },
+            { name: 'Car*',   itemStyle: { color: COL.car,  borderColor: 'transparent' } }
           ],
           links: [
-            { source: PEB.name, target: 'Substitutes PT',      value: v(PEB, 'pt')   },
-            { source: PEB.name, target: 'Substitutes Walking', value: v(PEB, 'walk') },
-            { source: PEB.name, target: 'Substitutes Car*',    value: v(PEB, 'car')  },
-            { source: PB.name,  target: 'Substitutes PT',      value: v(PB,  'pt')   },
-            { source: PB.name,  target: 'Substitutes Walking', value: v(PB,  'walk') },
-            { source: PB.name,  target: 'Substitutes Car*',    value: v(PB,  'car')  }
+            { source: PEB.name, target: 'Public transport',      value: v(PEB, 'pt')   },
+            { source: PEB.name, target: 'Walking', value: v(PEB, 'walk') },
+            { source: PEB.name, target: 'Car*',    value: v(PEB, 'car')  },
+            { source: PB.name,  target: 'Public transport',      value: v(PB,  'pt')   },
+            { source: PB.name,  target: 'Walking', value: v(PB,  'walk') },
+            { source: PB.name,  target: 'Car*',    value: v(PB,  'car')  }
           ]
         }]
       });
@@ -353,37 +353,40 @@
       await ensureEcharts();
 
       const COL = {
-        attitudinal: '#e5372b',
-        mobility:    '#2864b4',
-        demographic: '#7a756c',
-        geography:   '#c49418'
+        attitudinal: '#1c1c1c',
+        mobility:    '#3d6a99',
+        demographic: '#8a8d91',
+        geography:   '#9a6b22'
       };
 
       // Proportional-odds ordered logit, N = 1,743, McFadden pseudo-R2 = 0.104.
       // Odds ratios and 95% CIs exactly as published in Table 8 of
       // Stiebe et al. (2026), Transportation Research Part D 161, 105621.
       const rows = [
-        { name: 'Multimodal complementarity (F5)',        group: 'attitudinal', rrr: 1.53, ci_lo: 1.33, ci_hi: 1.78, sig: '***'  },
+        { name: 'Multimodal complementarity (F5)', short: 'Combining modes (F5)',        group: 'attitudinal', rrr: 1.53, ci_lo: 1.33, ci_hi: 1.78, sig: '***'  },
         { name: 'Urban residence',                        group: 'geography',   rrr: 1.49, ci_lo: 1.06, ci_hi: 2.11, sig: '*'    },
         { name: 'Half-fare travelcard',                   group: 'mobility',    rrr: 1.41, ci_lo: 1.15, ci_hi: 1.72, sig: '***'  },
-        { name: 'Hedonic motivation & social support (F3)', group: 'attitudinal', rrr: 1.24, ci_lo: 1.07, ci_hi: 1.43, sig: '**' },
-        { name: 'Public-sector intervention attitudes (F2)', group: 'attitudinal', rrr: 1.21, ci_lo: 1.04, ci_hi: 1.41, sig: '*' },
-        { name: 'Education level (std.)',                 group: 'demographic', rrr: 1.14, ci_lo: 1.03, ci_hi: 1.26, sig: '**'   },
-        { name: 'Income (std.)',                          group: 'demographic', rrr: 1.13, ci_lo: 1.02, ci_hi: 1.26, sig: '*'    },
-        { name: 'Major-center residence',                 group: 'geography',   rrr: 0.93, ci_lo: 0.72, ci_hi: 1.19, sig: 'n.s.' },
-        { name: 'Environmental self-identity (F7)',       group: 'attitudinal', rrr: 0.82, ci_lo: 0.71, ci_hi: 0.95, sig: '**'   },
+        { name: 'Hedonic motivation & social support (F3)', short: 'Enjoyment, support (F3)', group: 'attitudinal', rrr: 1.24, ci_lo: 1.07, ci_hi: 1.43, sig: '**' },
+        { name: 'Public-sector intervention attitudes (F2)', short: 'Policy support (F2)', group: 'attitudinal', rrr: 1.21, ci_lo: 1.04, ci_hi: 1.41, sig: '*' },
+        { name: 'Education level (std.)', short: 'Education',                 group: 'demographic', rrr: 1.14, ci_lo: 1.03, ci_hi: 1.26, sig: '**'   },
+        { name: 'Income (std.)', short: 'Income',                          group: 'demographic', rrr: 1.13, ci_lo: 1.02, ci_hi: 1.26, sig: '*'    },
+        { name: 'Major-center residence', short: 'Major centre',                 group: 'geography',   rrr: 0.93, ci_lo: 0.72, ci_hi: 1.19, sig: 'n.s.' },
+        { name: 'Environmental self-identity (F7)', short: 'Green identity (F7)',       group: 'attitudinal', rrr: 0.82, ci_lo: 0.71, ci_hi: 0.95, sig: '**'   },
         { name: 'Car ownership',                          group: 'mobility',    rrr: 0.79, ci_lo: 0.63, ci_hi: 0.98, sig: '*'    },
-        { name: 'Private e-bike ownership',               group: 'mobility',    rrr: 0.73, ci_lo: 0.59, ci_hi: 0.91, sig: '**'   },
-        { name: 'Distance to Basel SBB (std.)',           group: 'geography',   rrr: 0.72, ci_lo: 0.62, ci_hi: 0.83, sig: '***'  },
-        { name: 'Age (std.)',                             group: 'demographic', rrr: 0.71, ci_lo: 0.63, ci_hi: 0.79, sig: '***'  },
-        { name: 'Lives \u2265 5 km from Basel',            group: 'geography',   rrr: 0.63, ci_lo: 0.48, ci_hi: 0.82, sig: '***' },
-        { name: 'Service reliability & cost concerns (F6)', group: 'attitudinal', rrr: 0.61, ci_lo: 0.52, ci_hi: 0.71, sig: '***' }
+        { name: 'Private e-bike ownership', short: 'Own e-bike',               group: 'mobility',    rrr: 0.73, ci_lo: 0.59, ci_hi: 0.91, sig: '**'   },
+        { name: 'Distance to Basel SBB (std.)', short: 'Distance to SBB',           group: 'geography',   rrr: 0.72, ci_lo: 0.62, ci_hi: 0.83, sig: '***'  },
+        { name: 'Age (std.)', short: 'Age',                             group: 'demographic', rrr: 0.71, ci_lo: 0.63, ci_hi: 0.79, sig: '***'  },
+        { name: 'Lives \u2265 5 km from Basel', short: '\u2265 5 km from Basel',            group: 'geography',   rrr: 0.63, ci_lo: 0.48, ci_hi: 0.82, sig: '***' },
+        { name: 'Service reliability & cost concerns (F6)', short: 'Reliability, cost (F6)', group: 'attitudinal', rrr: 0.61, ci_lo: 0.52, ci_hi: 0.71, sig: '***' }
       ];
 
       // Order: stronger effects (further from 1) first within each group;
       // here we manually sort to put positive-then-negative for visual symmetry
       rows.sort((a, b) => Math.log(b.rrr) - Math.log(a.rrr));
 
+      const narrow = el.clientWidth < 620;
+      const gridLeft = narrow ? 132 : Math.round(300 * CHART_SCALE);
+      const gridRight = narrow ? 60 : Math.round(104 * CHART_SCALE);
       const yLabels = rows.map(r => r.name);
       const xMin = 0.45, xMax = 2.6;
 
@@ -430,15 +433,16 @@
             }
           });
           // OR label to the right of the CI (or dot if no CI)
-          const labelX = (xHi !== null ? xHi : x) + 10;
+          const labelX = api.getWidth() - gridRight + 8;
           children.push({
             type: 'text',
             style: {
               x: labelX,
-              y: y + 4,
-              text: 'OR ' + r.rrr.toFixed(2) + (r.sig !== 'n.s.' ? ' ' + r.sig : ' n.s.'),
-              fill: r.sig === 'n.s.' ? '#7a756c' : '#0a0a0a',
-              font: fs(10) + 'px JetBrains Mono, monospace'
+              y: y,
+              verticalAlign: 'middle',
+              text: r.rrr.toFixed(2) + (r.sig !== 'n.s.' ? ' ' + r.sig : ' n.s.'),
+              fill: r.sig === 'n.s.' ? '#8a8d91' : '#1c1c1c',
+              font: (narrow ? 12 : fs(13)) + 'px "Source Sans 3", "Helvetica Neue", Arial, sans-serif'
             }
           });
           return { type: 'group', children: children };
@@ -451,7 +455,7 @@
       chart.setOption({
         backgroundColor: 'transparent',
         animation: true,
-        grid: { left: Math.round(292 * CHART_SCALE), right: Math.round(104 * CHART_SCALE), top: 20, bottom: Math.round(66 * CHART_SCALE) },
+        grid: { left: gridLeft, right: gridRight, top: 20, bottom: Math.round(66 * CHART_SCALE) },
         xAxis: {
           type: 'log',
           logBase: 2,
@@ -459,38 +463,38 @@
           name: 'Odds ratio (log scale, 95% CI)',
           nameLocation: 'middle',
           nameGap: 38,
-          nameTextStyle: { fontFamily: 'JetBrains Mono, monospace', fontSize: fs(10), color: '#5a564e', fontWeight: 700 },
-          axisLine: { lineStyle: { color: '#0a0a0a' } },
-          axisTick: { lineStyle: { color: '#0a0a0a' } },
+          nameTextStyle: { fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif', fontSize: fs(12.5), color: '#5e6166', fontWeight: 400 },
+          axisLine: { lineStyle: { color: '#1c1c1c' } },
+          axisTick: { lineStyle: { color: '#1c1c1c' } },
           axisLabel: {
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: fs(10),
-            color: '#5a564e',
+            fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif',
+            fontSize: fs(13.5),
+            color: '#5e6166',
             formatter: v => v >= 1 ? v.toFixed(v === 1 ? 0 : 1) : v.toFixed(2)
           },
-          splitLine: { show: true, lineStyle: { color: '#e3ddd0', type: 'dashed' } }
+          splitLine: { show: true, lineStyle: { color: '#e8e8e8', type: 'dashed' } }
         },
         yAxis: {
           type: 'category',
           data: yLabels,
           inverse: true,
-          axisLine: { lineStyle: { color: '#0a0a0a' } },
+          axisLine: { lineStyle: { color: '#1c1c1c' } },
           axisTick: { show: false },
           axisLabel: {
-            fontFamily: 'Space Grotesk, Inter, sans-serif',
-            fontSize: fs(11.5),
+            fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif',
+            fontSize: fs(13),
             formatter: function (val) {
               const r = rows.find(rr => rr.name === val);
               if (!r) return val;
-              const trimmed = val.length > 46 ? val.slice(0, 44) + '…' : val;
+              const trimmed = narrow && r.short ? r.short : val;
               // tag with rich-text key matching the group, so axisLabel.rich applies the color
               return '{' + r.group + '|' + trimmed + '}';
             },
             rich: {
-              attitudinal: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: fs(11.5), color: '#e5372b', fontWeight: 600 },
-              mobility:    { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: fs(11.5), color: '#2864b4', fontWeight: 600 },
-              demographic: { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: fs(11.5), color: '#7a756c', fontWeight: 500 },
-              geography:   { fontFamily: 'Space Grotesk, Inter, sans-serif', fontSize: fs(11.5), color: '#8a6810', fontWeight: 600 }
+              attitudinal: { fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif', fontSize: fs(13), color: '#2b2b2b', fontWeight: 400 },
+              mobility:    { fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif', fontSize: fs(13), color: '#2b2b2b', fontWeight: 400 },
+              demographic: { fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif', fontSize: fs(13), color: '#2b2b2b', fontWeight: 400 },
+              geography:   { fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif', fontSize: fs(13), color: '#2b2b2b', fontWeight: 400 }
             }
           }
         },
@@ -502,12 +506,12 @@
             markLine: {
               symbol: 'none',
               silent: true,
-              lineStyle: { color: '#0a0a0a', width: 1.5, type: 'solid' },
+              lineStyle: { color: '#1c1c1c', width: 1.5, type: 'solid' },
               label: {
                 formatter: 'No effect (OR = 1)',
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: fs(9),
-                color: '#5a564e',
+                fontFamily: '"Source Sans 3", "Helvetica Neue", Arial, sans-serif',
+                fontSize: fs(11.5),
+                color: '#5e6166',
                 position: 'start'
               },
               data: [{ xAxis: 1 }]
@@ -525,7 +529,7 @@
     runWhenVisible(document.getElementById('map'), async function initServiceMap() {
       await ensureMaplibreLeaflet();
 
-      const map = L.map('map', { scrollWheelZoom: false, zoomControl: true, trackResize: false }).setView([47.555, 7.61], 10.9);
+      const map = L.map('map', { scrollWheelZoom: false, zoomControl: true, trackResize: false, zoomSnap: 0.25 }).setView([47.555, 7.61], 10.9);
     window.addEventListener('resize', () => { if (map.getContainer().offsetWidth) map.invalidateSize(); });
     window.__poteMap = map; // exposed for the explore-tab resize hook
 
@@ -554,7 +558,7 @@
       if (p.PubliBike) systems.push('PubliBike Velospot');
       let planned = '';
       if (p.PickeBike_Planned) {
-        planned = `<br><span style="color:#c49418;font-weight:700">⚠ Pick-e-Bike pilot from ${p.PickeBike_Planned_From || '2026-06-01'}</span>`;
+        planned = `<br><span style="color:#8a6810;font-weight:600">Pick-e-Bike pilot, June to November 2026</span>`;
         if (p.PickeBike_Planned_Note) planned += `<br><small>${p.PickeBike_Planned_Note}</small>`;
       }
       const systemsLine = systems.length ? systems.join(' &amp; ') : (p.PickeBike_Planned ? '<em>not yet active</em>' : '—');
@@ -599,21 +603,21 @@
       }
 
       const overlays = {
-        'Pick-e-Bike Service Area': pebLayer,
-        'Pick-e-Bike Planned (06/2026 pilot)': pebPlannedLayer,
-        'PubliBike Velospot Service Area': pbLayer
+        'Pick-e-Bike service area': pebLayer,
+        'Pick-e-Bike pilot, Jun to Nov 2026': pebPlannedLayer,
+        'PubliBike Velospot service area': pbLayer
       };
-      if (pbStationLayer) overlays['PubliBike Velospot Stations'] = pbStationLayer;
+      if (pbStationLayer) overlays['PubliBike Velospot stations'] = pbStationLayer;
       L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
       const legend = L.control({ position: 'bottomright' });
       legend.onAdd = function() {
         const div = L.DomUtil.create('div', 'legend leaflet-control');
         div.innerHTML = `
-          <div style="font-weight:700;margin-bottom:6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase">Service Area</div>
+          <div class="legend-title">Service area</div>
           <div class="legend-row"><span class="legend-swatch" style="background:#c5402b"></span>Pick-e-Bike</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#c49418;border:1px dashed #8a6810"></span>Pick-e-Bike pilot · 06/2026</div>
-          <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike</div>`;
+          <div class="legend-row"><span class="legend-swatch" style="background:#c49418;border:1px dashed #8a6810"></span>Pick-e-Bike pilot 2026</div>
+          <div class="legend-row"><span class="legend-swatch" style="background:#2864b4"></span>PubliBike Velospot</div>`;
         return div;
       };
       legend.addTo(map);
@@ -622,7 +626,7 @@
       if (boundsLayer.getBounds && boundsLayer.getBounds().isValid()) {
         // If the data arrives while another explore tab is open, the map has no
         // size yet and fitBounds would compute NaN. Fit once the tab is shown.
-        const bounds = boundsLayer.getBounds().pad(0.10);
+        const bounds = boundsLayer.getBounds().pad(0.04);
         const fitIfVisible = () => {
           if (!map.getContainer().offsetWidth) return false;
           map.invalidateSize();
@@ -636,7 +640,7 @@
       }
     }).catch(err => {
       console.error(err);
-      document.getElementById('map').innerHTML = '<div style="padding:1rem;color:#5a564e;font-family:JetBrains Mono,monospace;font-size:12px">Map data could not be loaded.</div>';
+      document.getElementById('map').innerHTML = '<div style="padding:1rem;color:#5e6166;font-size:12px">Map data could not be loaded.</div>';
     });
     });
 
@@ -941,7 +945,7 @@
           if (!bib) return;
           copyText(bib).then(() => {
             const original = btn.textContent;
-            btn.textContent = 'Copied ✓';
+            btn.textContent = 'Copied';
             btn.classList.add('copied');
             setTimeout(() => {
               btn.textContent = original;
@@ -949,7 +953,7 @@
             }, 1800);
           }).catch(() => {
             btn.textContent = 'Copy failed';
-            setTimeout(() => { btn.textContent = 'Copy BibTeX'; }, 1800);
+            setTimeout(() => { btn.textContent = original; }, 1800);
           });
         });
       });

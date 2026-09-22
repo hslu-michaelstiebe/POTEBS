@@ -1,20 +1,4 @@
 (function () {
-  const img = document.querySelector('.hero-motion img[data-animated-src]');
-  if (!img) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (window.matchMedia('(max-width: 640px)').matches) return;
-  if (navigator.connection && navigator.connection.saveData) return;
-  const loadAnimatedHero = () => {
-    img.src = img.dataset.animatedSrc;
-  };
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(loadAnimatedHero, { timeout: 1200 });
-  } else {
-    window.setTimeout(loadAnimatedHero, 250);
-  }
-})();
-
-(function () {
   const root = document.getElementById('route-animation');
   if (!root) return;
 

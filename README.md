@@ -4,7 +4,7 @@ Static project website for **POTEBS - Investigating the Potential of E-Bike-Shar
 
 The project is funded by the Swiss Federal Office of Energy (SFOE), grant `SI/502720-01`, and runs from December 2023 to January 2027.
 
-Figures on the site follow the published article: Stiebe, M., Krysiak, F. C., von Arx, W., & Weggelaar, B. (2026). Pragmatism, not ideology: drivers of e-bike sharing usage intensity. *Transportation Research Part D* 161, 105621. <https://doi.org/10.1016/j.trd.2026.105621> (CC BY 4.0). Any change to a reported number belongs in that source first.
+Figures on the site follow the published articles: Stiebe, M., Krysiak, F. C., von Arx, W., & Weggelaar, B. (2026). Pragmatism, not ideology: drivers of e-bike sharing usage intensity. *Transportation Research Part D* 161, 105621. <https://doi.org/10.1016/j.trd.2026.105621> (CC BY 4.0); and Stiebe, M., von Arx, W., & Sager-Müller, S. (2026). *Journal of Urban Mobility* 10, 100288. <https://doi.org/10.1016/j.urbmob.2026.100288>. Any change to a reported number belongs in those sources first.
 
 ## Structure
 
@@ -14,9 +14,9 @@ Figures on the site follow the published article: Stiebe, M., Krysiak, F. C., vo
 - `nav.js` - mobile navigation and navigation helpers
 - `site.js` - lazy-loaded charts, maps, explore tabs, scroll-spy, and citations
 - `route-animation.js` - lazy-loaded route animation logic
-- `ASSETS/` - logos, Open Graph images, and lightweight hero route-loop media
+- `ASSETS/` - logos, team portraits, `photos/` (own photos, EXIF removed), `figures/` (figures reproduced from the two articles) and the Open Graph image `og-image.jpg`
 - `data/` - static GeoJSON/JSON datasets used by the website
-- `vendor/` - self-hosted libraries (Leaflet, leaflet.heat, MapLibre GL, maplibre-gl-leaflet, deck.gl, ECharts) and fonts (Space Grotesk, JetBrains Mono); the only external requests are basemap tiles from OpenFreeMap (no API key)
+- `vendor/` - self-hosted libraries (Leaflet, leaflet.heat, MapLibre GL, maplibre-gl-leaflet, deck.gl, ECharts) and fonts (Source Serif 4, Source Sans 3, SIL OFL); the only external requests are basemap tiles from OpenFreeMap (no API key)
 
 ## Route Animation Data
 
@@ -32,14 +32,7 @@ python tools/build_mobile_route_sample.py --input path\to\full_routes.json --out
 python tools/build_mobile_route_sample.py --input path\to\full_routes.json --output data\trips_animation_w35_mobile.json --per-provider 300 --max-points 35 --precision 6
 ```
 
-The hero animation is pre-rendered:
-
-- `ASSETS/hero-route-loop.webp` - animated WebP loaded after first paint
-- `ASSETS/hero-route-loop-poster.png` - lightweight poster and reduced-motion fallback
-
-For performance, heavyweight map and chart libraries are loaded on demand. The
-hero WebP is skipped on small screens and when the browser reports data-saver
-mode; those users keep the static poster instead.
+For performance, heavyweight map and chart libraries are loaded on demand.
 
 ## Local Preview
 

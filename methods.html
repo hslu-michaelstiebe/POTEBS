@@ -3,277 +3,193 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POTEBS — Methods &amp; Survey Instrument</title>
-  <meta name="description" content="Technical methodology of the POTEBS research project: data integration, exploratory factor analysis, Gaussian mixture model segmentation, ordered logit modeling, and the full survey instrument." />
+  <title>Methods and survey instrument | POTEBS</title>
+  <meta name="description" content="How the POTEBS study was conducted: linked survey and trip data, exploratory factor analysis, Gaussian mixture segmentation and an ordered logit model." />
   <meta name="author" content="Dr. Michael Stiebe, HSLU" />
   <link rel="canonical" href="https://hslu-michaelstiebe.github.io/POTEBS/methods.html" />
-  <meta name="theme-color" content="#0a0a0a" />
-
-  <!-- Open Graph -->
+  <meta name="theme-color" content="#ffffff" />
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="POTEBS — Methods &amp; Survey Instrument" />
-  <meta property="og:description" content="Technical methodology behind POTEBS: linked survey + operational records, EFA, GMM, ordered logit, and the full instrument structure." />
-  <meta property="og:image" content="https://hslu-michaelstiebe.github.io/POTEBS/ASSETS/og-image.png" />
-  <meta property="og:image:alt" content="POTEBS: Pragmatism, not ideology. Published in Transportation Research Part D and Journal of Urban Mobility (2026)." />
+  <meta property="og:site_name" content="POTEBS research project" />
+  <meta property="og:title" content="POTEBS: Methods and survey instrument" />
+  <meta property="og:description" content="Linked survey and trip data, factor analysis, user segmentation and an ordered logit model: how the POTEBS study was conducted." />
   <meta property="og:url" content="https://hslu-michaelstiebe.github.io/POTEBS/methods.html" />
+  <meta property="og:image" content="https://hslu-michaelstiebe.github.io/POTEBS/ASSETS/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:site_name" content="POTEBS Research Project" />
-
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="POTEBS — Methods &amp; Survey Instrument" />
-  <meta name="twitter:description" content="Technical methodology behind POTEBS: linked survey + operational records, EFA, GMM, ordered logit, and the full instrument structure." />
-  <meta name="twitter:image" content="https://hslu-michaelstiebe.github.io/POTEBS/ASSETS/og-image.png" />
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Crect x='10' y='5' width='12' height='22' fill='%23e5372b'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='monospace' font-weight='700' font-size='17' fill='white'%3EE%3C/text%3E%3C/svg%3E" />
-
-  <link rel="preload" href="vendor/fonts/SpaceGrotesk-latin-3.woff2" as="font" type="font/woff2" crossorigin />
+  <meta name="twitter:image" content="https://hslu-michaelstiebe.github.io/POTEBS/ASSETS/og-image.jpg" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231c1c1c'/%3E%3Ctext x='16' y='23.5' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='20' fill='white'%3EP%3C/text%3E%3C/svg%3E" />
+  <link rel="preload" href="vendor/fonts/source-sans-3-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="vendor/fonts/source-serif-4-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
   <script src="nav.js" defer></script>
 </head>
 <body>
-  <nav>
-    <div class="row">
-      <a class="brand" href="index.html#top" aria-label="POTEBS — Potential of Electric Bike Sharing">POT<em title="Electric">E</em><span class="bs">BS</span></a>
-      <button class="nav-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="site-header" aria-label="Main">
+    <div class="wrap">
+      <a class="brand" href="index.html">POTEBS</a>
+      <button class="nav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
       </button>
       <div class="links" id="nav-links">
         <a href="index.html#findings">Findings</a>
-        <a href="index.html#effect-sizes">Evidence</a>
         <a href="index.html#recommendations">Implications</a>
         <a href="index.html#comparison">Comparison</a>
-        <a href="index.html#explore">Explore</a>
-        <a href="index.html#publications">Outputs</a>
+        <a href="index.html#explore">Data</a>
+        <a href="index.html#publications">Publications</a>
         <a href="index.html#project">Project</a>
+        <a href="methods.html" class="active" aria-current="page">Methods</a>
       </div>
     </div>
   </nav>
 
-  <!-- Page header -->
-  <section class="hero" id="top">
-    <div class="hero-grid">
-      <div class="hero-left">
-        <div>
-          <div class="hero-tag"><span class="sq"></span> Methods · Technical deep-dive · ← <a href="index.html" style="color:inherit;border-bottom:1px solid currentColor;padding-bottom:1px;text-decoration:none;margin-left:4px">Back to project overview</a></div>
-          <h1 style="margin-top:32px">How the study<br/>was <span class="red">conducted</span>.</h1>
-          <div class="sub" style="margin-top:28px">A three-stage analytical pipeline — data integration, latent attitudinal measurement, and predictive modeling — applied to a linked dataset of 1,844 survey responses and ~1.4 million operational rentals.</div>
-          <p class="lede" style="margin-top:18px">Below: the design of the survey instrument, the statistical machinery, the seven latent attitudinal factors, and the quality controls.</p>
-        </div>
-        <div class="hero-meta">
-          <div><span>Pipeline</span><strong>EFA → GMM → Ordered logit</strong></div>
-          <div><span>Linked N</span><strong>1,743</strong></div>
-          <div><span>Validation</span><strong>5-fold cross-validation</strong></div>
-          <div><span>Pseudo-R²</span><strong>0.104</strong></div>
-        </div>
+  <main id="main">
+
+  <section class="intro">
+    <div class="wrap">
+      <p class="affil"><a href="index.html">POTEBS</a> / Methods</p>
+      <h1>Methods and survey instrument</h1>
+      <p class="lead">How the linked data set was built and analysed: data sources, survey, factor analysis, user segmentation and the ordered logit model. All details are in the appendix of the <a href="https://doi.org/10.1016/j.trd.2026.105621" target="_blank" rel="noopener">article in Transportation Research Part D</a>.</p>
+      <dl class="facts-row">
+        <div><dt>Survey responses</dt><dd>1,844 <small>of 2,001 received</small></dd></div>
+        <div><dt>Linked to trip histories</dt><dd>1,743 <small>about 150,000 trips</small></dd></div>
+        <div><dt>Operational records</dt><dd>1.4 million <small>rentals, both systems</small></dd></div>
+        <div><dt>Model fit</dt><dd>0.104 <small>McFadden pseudo-R²</small></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="pipeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Analysis in three steps</h2>
       </div>
-      <div class="hero-right">
+      <figure class="figure-block" style="margin-top:0">
+        <img src="ASSETS/figures/trd-fig3-workflow.png" width="1987" height="722" loading="lazy" decoding="async" alt="Workflow diagram: data sources (user surveys, operational records, external data), data integration (linked data set, weather), EFA and GMM segmentation, ordered logit (predictors, specification, validation), results (odds ratios)" />
+        <figcaption><b>Analytical workflow.</b> Figure 3 from Stiebe et al. (2026), <em>Transportation Research Part D</em> 161, 105621, CC BY 4.0.</figcaption>
+      </figure>
+      <ol class="method-steps">
+        <li>
+          <h3>Linking survey and trip data</h3>
+          <p>Two parallel surveys went to about 32,000 registered users (about 25,000 of Pick-e-Bike and 7,000 of PubliBike Velospot). After quality checks, 1,844 responses remained. 1,743 respondents agreed to have their answers linked to their full rental history, about 150,000 trips. Usage intensity is therefore observed, not self-reported.</p>
+        </li>
+        <li>
+          <h3>Factors and segments</h3>
+          <p>An exploratory factor analysis reduced 32 attitude items to seven factors, such as weather tolerance, environmental self-identity and the combination with other modes. A Gaussian mixture model on rentals per month then identified three usage segments (low, medium, high) without fixed thresholds.</p>
+        </li>
+        <li>
+          <h3>Ordered logit model</h3>
+          <p>Because the segments are ordered, membership is modelled with a proportional-odds ordered logit and reported as odds ratios. Fit is assessed with McFadden's pseudo-R² (0.104), AIC and five-fold cross-validated accuracy and macro-F1.</p>
+        </li>
+      </ol>
+      <div class="two-col">
         <div>
-          <div class="label">Methodological note</div>
-          <h2>The linkage matters as much as the model.</h2>
-          <p>Pairing each survey respondent with their actual ride history turns usage intensity from a self-report into an observed quantity — and lets stated attitudes be tested against what people demonstrably did.</p>
+          <h3>A measure that did not hold up</h3>
+          <p>The temperature variance across a user's rides was first read as tolerance of bad weather. A sensitivity analysis that accounts for exposure showed that it mainly reflects long, year-round membership. It is therefore reported descriptively in the appendix and not used as a predictor in the published model.</p>
         </div>
-        <div class="attribution">— POTEBS · methodology page</div>
+        <div>
+          <h3>Robustness</h3>
+          <p>A Brant test rejects proportional odds overall. The deviations come mainly from control variables; among the attitudinal factors only environmental self-identity deviates, with its negative association concentrated at the threshold to high intensity. A multinomial logit and an unconstrained cumulative model give the same ranking of predictors.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- METHODS -->
-  <section id="methods">
-    <div class="sec-head">
-      <div class="sec-num">Methods</div>
-      <h2>How the study was conducted.</h2>
-    </div>
-    <p class="sec-lede">Three stages connect raw data to inference: attitudinal measurement (EFA), data-driven segmentation (GMM), and predictive modeling (a proportional-odds ordered logit, cross-validated).</p>
-    <div class="sec-body">
-      <div class="blocks-3 pipeline">
-        <div class="block">
-          <div class="idx">01</div>
-          <div class="tag">Stage 1 — Data integration</div>
-          <h3>Linking survey and operational records.</h3>
-          <p>Two parallel surveys were distributed to ~32,000 registered users. After quality screening, 1,844 responses were retained; 1,743 were linked at individual level to the full operational trip history — combining stated preferences with revealed behavior.</p>
-        </div>
-        <div class="block">
-          <div class="idx">02</div>
-          <div class="tag">Stage 2 — Measurement &amp; segmentation</div>
-          <h3>EFA factors and GMM intensity clusters.</h3>
-          <p>EFA reduced 32 Likert items to seven attitudinal constructs — including weather tolerance, environmental self-identity, and multimodal complementarity. GMM clustering then identified three data-driven usage segments (low, medium, high intensity) without imposing arbitrary thresholds.</p>
-        </div>
-        <div class="block">
-          <div class="idx">03</div>
-          <div class="tag">Stage 3 — Predictive modeling</div>
-          <h3>Proportional-odds ordered logit.</h3>
-          <p>Because the three intensity segments are ordered (low &lt; medium &lt; high), segment membership is modelled with a proportional-odds ordered logit rather than a multinomial specification, reported as odds ratios. Model performance was assessed via McFadden's pseudo-R² (0.104), AIC, and 5-fold cross-validated accuracy and macro-F1. A Brant test and a multinomial-logit comparison are reported in the published appendix; departures from proportional odds are concentrated in control variables, not in the attitudinal drivers.</p>
-        </div>
-      </div>
-      <div class="highlight" style="margin-top:-1px">
-        <div class="tag">Key methodological advantage</div>
-        <p>Linking survey responses to trip histories enables triangulation between stated and revealed preferences: the dependent variable is observed usage, not recalled usage. One measure did not survive that scrutiny. <strong>Temperature variance across a user's ride history</strong> was initially read as revealed weather resilience, but an exposure-invariant sensitivity analysis showed it mainly reflects sustained, year-round active membership. It is therefore reported descriptively and in the appendix, and is not entered as a predictor in the published intensity model.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SURVEY INSTRUMENT -->
   <section id="survey">
-    <div class="sec-head">
-      <div class="sec-num">Survey instrument</div>
-      <h2>How we asked, what we asked.</h2>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Survey instrument</h2>
+        <p>Two structurally identical surveys, one per system, fielded in April 2025 in German, French and English with Qualtrics. The operators sent the invitations; respondents could choose a CHF&nbsp;10 voucher for the operator or for Galaxus/Digitec. The structure is documented in Appendix A3 of the article.</p>
+      </div>
+      <div class="survey-parts">
+        <div>
+          <h3>1. Mobility context and use</h3>
+          <p>Driving licence, public transport passes (GA, half-fare, U-Abo), vehicle ownership, main mode by trip purpose, frequency of shared mobility use, combination with public transport, replaced modes, weather, price sensitivity.</p>
+          <ul class="items">
+            <li>“I use e-bike sharing for complete trips from A to B / with public transport / with walking / as a fallback.”</li>
+            <li>“How likely would you use e-bike sharing in light rain / heavy rain / wind / darkness?”</li>
+          </ul>
+        </div>
+        <div>
+          <h3>2. Attitudes and policy</h3>
+          <p>Items based on the Theory of Planned Behaviour on environmental responsibility, e-bike sharing as sustainable transport, enjoyment and social support, and policy preferences such as infrastructure, subsidies and integration into public transport apps.</p>
+          <ul class="items">
+            <li>“I have a personal responsibility to reduce my environmental impact.”</li>
+            <li>“The public sector should subsidise e-bike sharing at the same level as public transport.”</li>
+          </ul>
+        </div>
+        <div>
+          <h3>3. Barriers and purchase intentions</h3>
+          <p>Perceived barriers such as varying availability, price and convenience compared with a private (e-)bike, feedback on the service area, and plans to buy a private e-bike.</p>
+          <ul class="items">
+            <li>“E-bike sharing availability varies too much to depend on it.”</li>
+            <li>“Did e-bike sharing inspire you to buy your own e-bike?”</li>
+          </ul>
+        </div>
+        <div>
+          <h3>4. Sociodemographics</h3>
+          <p>Year of birth, gender, postal code, years in Basel, education, employment and home-office share, distance to the nearest public transport stop, household composition and income.</p>
+        </div>
+        <div>
+          <h3>5. Consent and reward</h3>
+          <p>Explicit consent to the anonymous linkage of answers with rental records, choice of voucher, optional consent to a follow-up interview.</p>
+        </div>
+        <div>
+          <h3>6. Quality checks</h3>
+          <p>Three filters before linkage: completion in under five minutes, identical answers across all items of a Likert block, and a low reCAPTCHA score. 1,844 of 2,001 responses were retained (92.2%).</p>
+        </div>
+      </div>
     </div>
-    <p class="sec-lede">Two parallel surveys (FFEBSS / DBEBSS), structurally identical, fielded in April 2025 in German, French, and English via Qualtrics. Six sections, ~80 items, with thirty-two Likert-scaled items reduced to seven latent attitudinal factors via exploratory factor analysis. Full instrument in Appendix&nbsp;A3 of the manuscript.</p>
+  </section>
 
-    <div class="stats-grid" style="margin-top:28px">
-      <div class="stat-cell">
-        <div class="tag">[01] Field period</div>
-        <div class="num red">Apr&nbsp;2025</div>
-        <div class="lbl">Fielded after the operators distributed email invitations</div>
+  <section id="factors">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Seven attitudinal factors</h2>
+        <p>Principal axis factoring with promax rotation (κ = 4) on 32 Likert items. KMO = 0.820, Bartlett's test p &lt; 0.001; factors retained by an eigenvalue criterion above 1.10 and a reliability analysis.</p>
       </div>
-      <div class="stat-cell">
-        <div class="tag">[02] Invitations</div>
-        <div class="num red">~32k</div>
-        <div class="lbl">~25,000 FFEBSS · ~7,000 DBEBSS users contacted</div>
-      </div>
-      <div class="stat-cell">
-        <div class="tag">[03] Responses</div>
-        <div class="num red">2,001</div>
-        <div class="lbl">Total · 1,844 retained after quality screening</div>
-      </div>
-      <div class="stat-cell">
-        <div class="tag">[04] Incentive</div>
-        <div class="num red">CHF&nbsp;10</div>
-        <div class="lbl">Voucher (Pick-e-Bike or Galaxus/Digitec)</div>
-      </div>
-    </div>
-
-    <div class="sec-body">
-      <div class="sec-num" style="padding:32px 28px 12px;color:var(--red)">Six-part structure</div>
-      <div class="blocks-3">
-        <div class="block">
-          <div class="idx">A.</div>
-          <div class="tag">Part 1 · Mobility context &amp; EBSS use</div>
-          <h3>How users move, and where EBSS fits.</h3>
-          <p>Driver's licences, PT subscriptions (GA, Half-fare, U-Abo, …), vehicle ownership, main mode by trip purpose, shared-mobility usage frequency, EBSS-PT integration patterns, mode substitution, weather likelihood, price sensitivity.</p>
-          <ul class="survey-items">
-            <li><span class="ic">Q</span><em>"I use e-bike sharing… for complete trips A→B / with public transport / with car / with walking / as a fallback."</em><span class="scale">5-pt freq</span></li>
-            <li><span class="ic">Q</span><em>"How often do you use e-bike sharing as a substitute for: car / private bicycle / PT / walking…"</em><span class="scale">5-pt freq</span></li>
-            <li><span class="ic">Q</span><em>"How likely would you use EBSS under: high temp / low temp / light rain / heavy rain / wind / darkness?"</em><span class="scale">5-pt likelihood</span></li>
-          </ul>
-        </div>
-        <div class="block">
-          <div class="idx">B.</div>
-          <div class="tag">Part 2 · Environment, policy &amp; TPB</div>
-          <h3>Beliefs, attitudes, policy preferences.</h3>
-          <p>Theory-of-Planned-Behaviour-style items on environmental responsibility, EBSS as sustainable transport, hedonic evaluation, social support; plus policy preferences on infrastructure investment, subsidies, PT-app integration, private financing.</p>
-          <ul class="survey-items">
-            <li><span class="ic">Q</span><em>"I have a personal responsibility to reduce my environmental impact."</em><span class="scale">Likert 1–5</span></li>
-            <li><span class="ic">Q</span><em>"E-bike sharing is a good way to alleviate pollution in the city."</em><span class="scale">Likert 1–5</span></li>
-            <li><span class="ic">Q</span><em>"The public sector should monetarily subsidise EBSS at the same level as public transport."</em><span class="scale">Likert 1–5</span></li>
-          </ul>
-        </div>
-        <div class="block">
-          <div class="idx">C.</div>
-          <div class="tag">Part 3 · Barriers &amp; investment</div>
-          <h3>What gets in the way; what comes next.</h3>
-          <p>Perceived barriers — availability variance, price, convenience compared to private (e-)bike — plus geographic coverage feedback (open text) and intent to purchase a private e-bike within twelve months.</p>
-          <ul class="survey-items">
-            <li><span class="ic">Q</span><em>"E-bike sharing availability varies too much."</em><span class="scale">Likert 1–5</span></li>
-            <li><span class="ic">Q</span><em>"Did/does EBSS use inspire you to buy your own e-bike?"</em><span class="scale">Yes / No</span></li>
-            <li><span class="ic">Q</span><em>"Does the current Pick-e-Bike service area cover your needs? If no, which regions?"</em><span class="scale">Yes/No + open</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="blocks-3" style="border-top:none;margin-top:-1px">
-        <div class="block">
-          <div class="idx">D.</div>
-          <div class="tag">Part 4 · Sociodemographics</div>
-          <h3>Standard background variables.</h3>
-          <p>Year of birth, gender, country → postal code → tenure in Basel, education, employment status (workload + home-office share), nearest PT stop at work/education, household composition, income.</p>
-          <ul class="survey-items">
-            <li><span class="ic">Q</span><em>Age, gender, postal code, education, employment</em><span class="scale">closed/numeric</span></li>
-            <li><span class="ic">Q</span><em>"Distance from your home / workplace to nearest PT stop"</em><span class="scale">categorical</span></li>
-            <li><span class="ic">Q</span><em>Net household income (10 brackets)</em><span class="scale">closed</span></li>
-          </ul>
-        </div>
-        <div class="block">
-          <div class="idx">E.</div>
-          <div class="tag">Part 5 · Consent &amp; reward</div>
-          <h3>Data linkage and follow-up.</h3>
-          <p>Explicit consent for anonymous linkage of survey responses to operational rental records, voucher choice, optional follow-up interview consent, optional comments on the survey itself.</p>
-          <ul class="survey-items">
-            <li><span class="ic">Q</span><em>"Do you consent to anonymous data linking (link your survey responses to rental records)?"</em><span class="scale">Yes / No</span></li>
-            <li><span class="ic">Q</span><em>"Which survey reward would you like via e-mail?"</em><span class="scale">2 vouchers</span></li>
-            <li><span class="ic">Q</span><em>"Do you allow us to contact you for a short follow-up interview/focus group?"</em><span class="scale">Yes / No</span></li>
-          </ul>
-        </div>
-        <div class="block">
-          <div class="idx">F.</div>
-          <div class="tag">Part 6 · Quality controls</div>
-          <h3>Filters before linkage.</h3>
-          <p>Three response-quality filters were applied before retaining cases: a minimum-completion-time threshold (5 minutes), straight-line detection across Likert blocks, and a reCAPTCHA score floor. Net retention: 1,844 of 2,001 (92.2%).</p>
-          <ul class="survey-items">
-            <li><span class="ic">×</span><em>Speeders &lt; 5 min completion time</em><span class="scale">excluded</span></li>
-            <li><span class="ic">×</span><em>Zero-variance Likert response patterns</em><span class="scale">excluded</span></li>
-            <li><span class="ic">×</span><em>Low reCAPTCHA score</em><span class="scale">excluded</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="sec-num" style="padding:36px 28px 12px;color:var(--red)">From 32 Likert items to 7 latent factors</div>
-      <p style="padding:0 28px 16px;font-size:14px;line-height:1.65;color:#222;max-width:880px;margin:0 auto;text-align:center">An exploratory factor analysis (principal axis factoring, promax rotation κ=4) reduced the 32 attitudinal Likert items to seven interpretable latent constructs. Suitability confirmed by KMO=0.820 and a significant Bartlett's test (p&lt;0.001). Eigenvalue cutoff 1.10 + reliability analysis retained the seven factors below.</p>
-
-      <table class="advisory-table efa-table">
-        <thead>
-          <tr><th style="width:60px">Factor</th><th>Construct</th><th style="width:96px;text-align:right">Items</th><th style="width:96px;text-align:right">Cronbach α</th></tr>
-        </thead>
+      <table class="data-table" style="max-width:52rem">
+        <thead><tr><th>Factor</th><th class="n">Items</th><th class="n">Cronbach's α</th></tr></thead>
         <tbody>
-          <tr><td class="td-name">F1</td><td>Weather-Independent Usage Propensity <span class="muted-small">— stated willingness to ride in adverse conditions</span></td><td style="text-align:right">6</td><td style="text-align:right">0.813</td></tr>
-          <tr><td class="td-name">F2</td><td>Public Sector Intervention Attitudes <span class="muted-small">— support for subsidies, infrastructure, policy integration</span></td><td style="text-align:right">5</td><td style="text-align:right">0.532</td></tr>
-          <tr><td class="td-name">F3</td><td>Hedonic Motivation &amp; Social Support <span class="muted-small">— enjoyment, comfort, social endorsement</span></td><td style="text-align:right">4</td><td style="text-align:right">0.665</td></tr>
-          <tr><td class="td-name">F4</td><td>Perceived Functional Superiority over PT <span class="muted-small">— faster, more convenient than transit</span></td><td style="text-align:right">5</td><td style="text-align:right">0.728</td></tr>
-          <tr><td class="td-name">F5</td><td>Multimodal Complementarity Behavior <span class="muted-small">— combining EBSS with PT, walking, fallback use</span></td><td style="text-align:right">4</td><td style="text-align:right">0.598</td></tr>
-          <tr><td class="td-name">F6</td><td>Service Reliability &amp; Affordability Concerns <span class="muted-small">— cost and availability barriers</span> <span class="caveat">⚠ marginal reliability</span></td><td style="text-align:right">4</td><td style="text-align:right">0.401</td></tr>
-          <tr><td class="td-name">F7</td><td>Environmental Self-Identity <span class="muted-small">— environmental responsibility, EBSS sustainability beliefs</span></td><td style="text-align:right">2</td><td style="text-align:right">0.633</td></tr>
+          <tr><td>F1 Weather-independent usage propensity</td><td class="n">6</td><td class="n">0.813</td></tr>
+          <tr><td>F2 Public sector intervention attitudes</td><td class="n">5</td><td class="n">0.532</td></tr>
+          <tr><td>F3 Hedonic motivation and social support</td><td class="n">4</td><td class="n">0.665</td></tr>
+          <tr><td>F4 Perceived functional superiority over public transport</td><td class="n">5</td><td class="n">0.728</td></tr>
+          <tr><td>F5 Multimodal complementarity behaviour</td><td class="n">4</td><td class="n">0.598</td></tr>
+          <tr><td>F6 Service reliability and affordability concerns</td><td class="n">4</td><td class="n">0.401</td></tr>
+          <tr><td>F7 Environmental self-identity and system belief</td><td class="n">2</td><td class="n">0.633</td></tr>
         </tbody>
       </table>
-      <p style="padding:14px 28px 0;font-size:12px;line-height:1.6;color:var(--muted);max-width:880px;margin:0 auto;text-align:center;font-family:'JetBrains Mono',monospace;letter-spacing:.04em">Standardized factor scores (M=0, SD=1) computed via the regression method and merged into the analytical dataset. Factor 6 results interpreted with caution.</p>
+      <p class="note" style="margin-top:1rem">The seven factors explain 58.3% of the variance. An eighth factor was dropped because of unacceptable reliability (α = 0.171). F6 has low reliability, so results involving it should be read with caution. Standardized factor scores (mean 0, SD 1) were computed with the regression method. Items and loadings: Table A5 of the article.</p>
+      <p style="margin-top:2.5rem"><a href="index.html#findings">Back to the findings</a></p>
     </div>
   </section>
 
-  <!-- BACK-LINK CALLOUT -->
-  <section id="back">
-    <div class="sec-body">
-      <div class="highlight" style="margin-top:0">
-        <div class="tag">Continue reading</div>
-        <p>This page covers methodology and instrument design only. For findings, effect sizes, recommendations and the interactive data explorer, head back to the <a href="index.html" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">project overview</a> — or jump straight into the <a href="index.html#findings" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">key findings</a>, the <a href="index.html#effect-sizes" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">forest plot of effect sizes</a>, or the <a href="index.html#explore" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">interactive maps</a>. The full methodology as peer-reviewed is in the open-access article: <a href="https://doi.org/10.1016/j.trd.2026.105621" target="_blank" rel="noopener" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">Stiebe et&nbsp;al. (2026), Transportation Research Part D 161, 105621 ↗</a>.</p>
-      </div>
-    </div>
-  </section>
+  </main>
 
   <footer>
-    <div class="footer-inner">
-      <div>
-        <div class="footer-brand">POT<em title="Electric">E</em><span class="bs">BS</span></div>
-        <p class="footer-desc">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types.</p>
-      </div>
-      <div>
-        <div class="footer-label">Funding &amp; Grant</div>
-        <p class="footer-text">
-          Swiss Federal Office of Energy (SFOE)<br/>
-          Grant No. SI/502720-01<br/>
-          Dec 2023 – Jan 2027<br/>
-          <a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener">ARAMIS Project Entry ↗</a>
-        </p>
-      </div>
-      <div>
-        <div class="footer-label">Lead Contact</div>
-        <p class="footer-text">
-          Dr. Michael Stiebe<br/>
-          HSLU — Institute of Tourism and Mobility<br/>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <strong>POTEBS</strong>
+          Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types
+        </div>
+        <div>
+          <strong>Funding</strong>
+          Swiss Federal Office of Energy (SFOE)<br />
+          Grant SI/502720-01, December 2023 to January 2027<br />
+          <a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener">Project entry in ARAMIS</a>
+        </div>
+        <div>
+          <strong>Contact</strong>
+          Dr. Michael Stiebe, HSLU<br />
           <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a>
-        </p>
+        </div>
       </div>
+      <p class="footer-copy">© 2026 POTEBS project team.</p>
     </div>
-    <p class="footer-copy">© 2026 POTEBS · Funded by SFOE · Grant SI/502720-01</p>
   </footer>
 </body>
 </html>

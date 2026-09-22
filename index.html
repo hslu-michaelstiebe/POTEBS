@@ -3,81 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POTEBS — Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types</title>
-  <meta name="description" content="POTEBS investigates the potential of e-bike-sharing systems for sustainable mobility in different spatial types using linked operational and survey data from the Basel metropolitan area." />
-  <meta name="keywords" content="e-bike sharing, EBSS, usage intensity, user segmentation, sustainable mobility, multimodal mobility, Basel, free-floating, dock-based, ordered logit, Gaussian mixture model, power users" />
+  <title>POTEBS: Potential of E-Bike-Sharing Systems for Sustainable Mobility</title>
+  <meta name="description" content="Research project of HSLU and the University of Basel on e-bike sharing in Basel. About 1.4 million rentals linked to 1,844 survey responses show who uses the free-floating and the dock-based system intensively, and why." />
   <meta name="author" content="Dr. Michael Stiebe, HSLU" />
   <link rel="canonical" href="https://hslu-michaelstiebe.github.io/POTEBS/" />
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#ffffff" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="POTEBS — Potential of E-Bike-Sharing Systems for Sustainable Mobility" />
-  <meta property="og:description" content="SFOE-funded research from Basel, published in Transportation Research Part D and the Journal of Urban Mobility (2026). 1.4M trip records linked to 1,844 survey responses: what separates frequent riders from dormant registrants, and why pragmatism beats ideology." />
-  <meta property="og:image" content="https://hslu-michaelstiebe.github.io/POTEBS/ASSETS/og-image.png" />
-  <meta property="og:image:alt" content="POTEBS: Pragmatism, not ideology. Published in Transportation Research Part D and Journal of Urban Mobility (2026)." />
+  <meta property="og:site_name" content="POTEBS research project" />
+  <meta property="og:title" content="POTEBS: E-bike sharing and sustainable mobility in Basel" />
+  <meta property="og:description" content="Research project of HSLU and the University of Basel, funded by the SFOE. Results published in Transportation Research Part D and the Journal of Urban Mobility (2026)." />
   <meta property="og:url" content="https://hslu-michaelstiebe.github.io/POTEBS/" />
+  <meta property="og:image" content="https://hslu-michaelstiebe.github.io/POTEBS/ASSETS/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:site_name" content="POTEBS Research Project" />
-
-  <!-- Twitter / X -->
+  <meta property="og:image:alt" content="POTEBS research project: Pick-e-Bike and PubliBike Velospot bikes at Basel SBB station, with the project title and the two published articles." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="POTEBS — Potential of E-Bike-Sharing Systems" />
-  <meta name="twitter:description" content="Published 2026 in TR-D and the Journal of Urban Mobility: what actually drives intensive e-bike sharing use in Basel." />
-  <meta name="twitter:image" content="https://hslu-michaelstiebe.github.io/POTEBS/ASSETS/og-image.png" />
+  <meta name="twitter:title" content="POTEBS: E-bike sharing and sustainable mobility in Basel" />
+  <meta name="twitter:description" content="Who uses e-bike sharing intensively, and why. Results from Basel, published 2026 in TR-D and the Journal of Urban Mobility." />
+  <meta name="twitter:image" content="https://hslu-michaelstiebe.github.io/POTEBS/ASSETS/og-image.jpg" />
 
-  <!-- Favicon (inline SVG, no extra request) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Crect x='10' y='5' width='12' height='22' fill='%23e5372b'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='monospace' font-weight='700' font-size='17' fill='white'%3EE%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%231c1c1c'/%3E%3Ctext x='16' y='23.5' text-anchor='middle' font-family='Georgia,serif' font-weight='700' font-size='20' fill='white'%3EP%3C/text%3E%3C/svg%3E" />
 
-  <!-- Structured data — ResearchProject -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ResearchProject",
-    "name": "POTEBS — Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types",
+    "name": "POTEBS: Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types",
     "alternateName": "POTEBS",
-    "description": "Investigating the potential of e-bike-sharing systems for sustainable mobility in different spatial types using linked operational and survey data from the Basel metropolitan area.",
+    "description": "Investigating the potential of e-bike-sharing systems for sustainable mobility using linked operational and survey data from the Basel metropolitan area.",
     "startDate": "2023-12",
     "endDate": "2027-01",
-    "funder": {
-      "@type": "GovernmentOrganization",
-      "name": "Swiss Federal Office of Energy (SFOE)",
-      "url": "https://www.bfe.admin.ch/bfe/en/home.html",
-      "identifier": "SI/502720-01"
-    },
-    "parentOrganization": {
-      "@type": "EducationalOrganization",
-      "name": "Lucerne University of Applied Sciences and Arts (HSLU)",
-      "url": "https://www.hslu.ch/"
-    },
+    "funder": { "@type": "GovernmentOrganization", "name": "Swiss Federal Office of Energy (SFOE)", "url": "https://www.bfe.admin.ch/bfe/en/home.html", "identifier": "SI/502720-01" },
+    "parentOrganization": { "@type": "EducationalOrganization", "name": "Lucerne University of Applied Sciences and Arts (HSLU)", "url": "https://www.hslu.ch/" },
     "contributor": [
       { "@type": "Person", "name": "Michael Stiebe", "honorificPrefix": "Dr.", "email": "michael.stiebe@hslu.ch", "affiliation": "HSLU" },
-      { "@type": "Person", "name": "Widar von Arx", "affiliation": "HSLU" },
-      { "@type": "Person", "name": "Frank Christian Krysiak", "affiliation": "University of Basel" },
+      { "@type": "Person", "name": "Widar von Arx", "honorificPrefix": "Prof. Dr.", "affiliation": "HSLU" },
+      { "@type": "Person", "name": "Frank Christian Krysiak", "honorificPrefix": "Prof. Dr.", "affiliation": "University of Basel" },
       { "@type": "Person", "name": "Benjamin Weggelaar", "affiliation": "University of Basel" }
     ],
-    "sameAs": [
-      "https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193"
-    ],
+    "sameAs": ["https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193"],
     "subjectOf": [
       {
-      "@type": "ScholarlyArticle",
-      "name": "Pragmatism, not ideology: drivers of e-bike sharing usage intensity",
-      "author": [
-        { "@type": "Person", "name": "Michael Stiebe" },
-        { "@type": "Person", "name": "Frank Christian Krysiak" },
-        { "@type": "Person", "name": "Widar von Arx" },
-        { "@type": "Person", "name": "Benjamin Weggelaar" }
-      ],
-      "isPartOf": { "@type": "Periodical", "name": "Transportation Research Part D: Transport and Environment" },
-      "volumeNumber": "161",
-      "pageStart": "105621",
-      "datePublished": "2026-09-10",
-      "identifier": "https://doi.org/10.1016/j.trd.2026.105621",
-      "url": "https://doi.org/10.1016/j.trd.2026.105621",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "isAccessibleForFree": true
+        "@type": "ScholarlyArticle",
+        "name": "Pragmatism, not ideology: drivers of e-bike sharing usage intensity",
+        "author": [
+          { "@type": "Person", "name": "Michael Stiebe" },
+          { "@type": "Person", "name": "Frank Christian Krysiak" },
+          { "@type": "Person", "name": "Widar von Arx" },
+          { "@type": "Person", "name": "Benjamin Weggelaar" }
+        ],
+        "isPartOf": { "@type": "Periodical", "name": "Transportation Research Part D: Transport and Environment" },
+        "volumeNumber": "161",
+        "pageStart": "105621",
+        "datePublished": "2026-09-10",
+        "identifier": "https://doi.org/10.1016/j.trd.2026.105621",
+        "url": "https://doi.org/10.1016/j.trd.2026.105621",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "isAccessibleForFree": true
       },
       {
         "@type": "ScholarlyArticle",
@@ -96,916 +79,637 @@
         "isAccessibleForFree": true
       }
     ],
-    "keywords": "e-bike sharing, EBSS, usage intensity, sustainable mobility, multimodal transport, Basel, free-floating, dock-based"
+    "keywords": "e-bike sharing, usage intensity, sustainable mobility, multimodal transport, Basel, free-floating, dock-based"
   }
   </script>
 
   <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin />
-  <link rel="preload" href="vendor/fonts/SpaceGrotesk-latin-3.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="vendor/fonts/JetBrainsMono-latin-1.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="vendor/fonts/source-sans-3-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="vendor/fonts/source-serif-4-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
   <script src="nav.js" defer></script>
   <script src="route-animation.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#findings">Skip to findings</a>
-  <nav>
-    <div class="row">
-      <a class="brand" href="#top" aria-label="POTEBS — Potential of Electric Bike Sharing">POT<em title="Electric">E</em><span class="bs">BS</span></a>
-      <button class="nav-burger" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="site-header" aria-label="Main">
+    <div class="wrap">
+      <a class="brand" href="#top">POTEBS</a>
+      <button class="nav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
         <span></span><span></span><span></span>
       </button>
       <div class="links" id="nav-links">
         <a href="#findings">Findings</a>
-        <a href="#effect-sizes">Evidence</a>
         <a href="#recommendations">Implications</a>
         <a href="#comparison">Comparison</a>
-        <a href="#explore">Explore</a>
-        <a href="#publications">Outputs</a>
+        <a href="#explore">Data</a>
+        <a href="#publications">Publications</a>
         <a href="#project">Project</a>
-        <a href="methods.html">Methods ↗</a>
+        <a href="methods.html">Methods</a>
       </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="hero-grid">
-      <div class="hero-left">
-        <div>
-          <div class="hero-tag"><span class="sq"></span> SFOE Research · Grant SI/502720-01 · Dec 2023 — Jan 2027</div>
-          <h1 style="margin-top:32px">POT<span class="brand-e" title="Electric">E</span><span class="red">BS</span>.</h1>
-          <div class="sub" style="margin-top:28px">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types.</div>
-          <p class="lede" style="margin-top:18px">Linking <strong>1,844 survey responses</strong> to <strong>1.4 million operational trip records</strong> across two concurrently operating systems in Basel, POTEBS identifies what separates power users from dormant registrants — and challenges common assumptions about what drives intensive EBSS use.</p>
-          <p class="kw" style="margin-top:22px"><strong>Keywords</strong> e-bike sharing · usage intensity · user segmentation · ordered logit · multimodal mobility · Basel</p>
-        </div>
-        <div class="hero-meta">
-          <div><span>Duration</span><strong>Dec 2023 — Jan 2027</strong></div>
-          <div><span>Lead</span><strong>HSLU, Luzern</strong></div>
-          <div><span>Partners</span><strong>UniBas · PubliBike · Pick-e-Bike</strong></div>
-          <div><span>Funding</span><strong>SFOE · SI/502720-01</strong></div>
-        </div>
+  <main id="main">
+
+  <section class="intro" id="top">
+    <div class="wrap intro-grid">
+      <div>
+        <p class="affil">A research project of the Lucerne University of Applied Sciences and Arts (HSLU) and the University of Basel, funded by the Swiss Federal Office of Energy</p>
+        <h1>The potential of e-bike sharing for sustainable mobility</h1>
+        <p class="lead">Two e-bike sharing systems operate side by side in Basel: the free-floating Pick-e-Bike with S-pedelecs and the dock-based PubliBike Velospot with pedelecs. We linked about 1.4&nbsp;million rentals with a survey of 1,844 registered users to find out who uses these services intensively, and why.</p>
+        <dl class="facts">
+          <dt>Duration</dt><dd>December 2023 to January 2027</dd>
+          <dt>Funding</dt><dd>Swiss Federal Office of Energy (SFOE), grant SI/502720-01</dd>
+          <dt>Institutions</dt><dd>HSLU Institute of Tourism and Mobility; University of Basel, Faculty of Business and Economics</dd>
+          <dt>Data partners</dt><dd>Pick-e-Bike and PubliBike Velospot</dd>
+        </dl>
       </div>
-      <div class="hero-right">
-        <div>
-          <div class="hero-motion" aria-hidden="true">
-            <img src="ASSETS/hero-route-loop-poster.png" data-animated-src="ASSETS/hero-route-loop.webp" width="720" height="520" alt="" />
+      <figure class="intro-photo">
+        <img src="ASSETS/photos/basel-sbb-sharing-zone.jpg" width="1600" height="959" alt="White Pick-e-Bike S-pedelecs and red PubliBike Velospot pedelecs parked next to a red Sharing Zone sign in front of the Basel SBB station building" fetchpriority="high" />
+        <figcaption>Both systems side by side: Pick-e-Bike S-pedelecs (white) and PubliBike Velospot pedelecs (red) in the sharing zone at Basel SBB station, September 2024.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="articles" id="paper">
+    <div class="wrap">
+      <h2>Published results</h2>
+      <div class="article-list">
+        <article class="article">
+          <div class="journal">Transportation Research Part D, vol. 161, 2026, open access</div>
+          <h3><a href="https://doi.org/10.1016/j.trd.2026.105621" target="_blank" rel="noopener">Pragmatism, not ideology: drivers of e-bike sharing usage intensity</a></h3>
+          <div class="authors">Michael Stiebe, Frank C. Krysiak, Widar von Arx, Benjamin Weggelaar</div>
+          <div class="actions">
+            <a href="https://doi.org/10.1016/j.trd.2026.105621" target="_blank" rel="noopener">Read the article</a>
+            <a href="#findings">Summary on this page</a>
+            <button class="cite-btn" type="button" data-bib-id="stiebe2026pragmatism">Copy BibTeX</button>
           </div>
-          <div class="label">Core finding · published 2026</div>
-          <h2>Electric bike sharing is useful in a real but bounded way.</h2>
-          <p>Intensive EBSS use is not an expression of environmental ideology. It emerges where shared e-bikes solve concrete mobility problems better than the available alternatives — above all in combination with public transport.</p>
-        </div>
-        <div class="attribution">— POTEBS · HSLU · Basel</div>
+        </article>
+        <article class="article">
+          <div class="journal">Journal of Urban Mobility, vol. 10, 2026, open access</div>
+          <h3><a href="https://doi.org/10.1016/j.urbmob.2026.100288" target="_blank" rel="noopener">Contrasting usage and spatial profiles of free-floating S-pedelec and dock-based pedelec sharing in Basel</a></h3>
+          <div class="authors">Michael Stiebe, Widar von Arx, Sibylle Sager-Müller</div>
+          <div class="actions">
+            <a href="https://doi.org/10.1016/j.urbmob.2026.100288" target="_blank" rel="noopener">Read the article</a>
+            <a href="#comparison">Summary on this page</a>
+            <button class="cite-btn" type="button" data-bib-id="stiebe2026jum">Copy BibTeX</button>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- PUBLISHED PAPER BAND -->
-  <section class="paper-band" id="paper">
-    <div class="paper-band-inner">
-      <div class="paper-band-left">
-        <div class="paper-band-badge">Published · Open Access</div>
-        <h2 class="paper-band-title">Pragmatism, not ideology: drivers of e-bike sharing usage intensity</h2>
-        <div class="paper-band-meta">Stiebe, M., Krysiak, F. C., von Arx, W. &amp; Weggelaar, B. (2026) · <em>Transportation Research Part D: Transport and Environment</em> <strong>161</strong>, 105621 · CC BY 4.0</div>
-      </div>
-      <div class="paper-band-actions">
-        <a class="paper-btn primary" href="https://doi.org/10.1016/j.trd.2026.105621" target="_blank" rel="noopener">Read the paper ↗</a>
-        <a class="paper-btn" href="#findings">Findings in brief</a>
-        <button class="paper-btn cite-btn" type="button" data-bib-id="stiebe2026pragmatism">Copy BibTeX</button>
-      </div>
-    </div>
-    <div class="paper-band-inner paper-band-second">
-      <div class="paper-band-left">
-        <div class="paper-band-badge">Published · Open Access</div>
-        <h2 class="paper-band-title">Contrasting usage and spatial profiles of free-floating S-pedelec and dock-based pedelec sharing in Basel: A longitudinal system-level comparison</h2>
-        <div class="paper-band-meta">Stiebe, M., von Arx, W. &amp; Sager-Müller, S. (2026) · <em>Journal of Urban Mobility</em> <strong>10</strong>, 100288</div>
-      </div>
-      <div class="paper-band-actions">
-        <a class="paper-btn primary" href="https://doi.org/10.1016/j.urbmob.2026.100288" target="_blank" rel="noopener">Read the paper ↗</a>
-        <a class="paper-btn" href="#comparison">Comparison in brief</a>
-        <button class="paper-btn cite-btn" type="button" data-bib-id="stiebe2026jum">Copy BibTeX</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- AT A GLANCE -->
-  <section id="overview" class="overview-strip">
-    <div class="stats-grid">
-      <div class="stat-cell">
-        <div class="tag">[01] Trips</div>
-        <div class="num" id="stat-trips">1.4M</div>
-        <div class="lbl">operational trip records</div>
-      </div>
-      <div class="stat-cell">
-        <div class="tag">[02] Respondents</div>
-        <div class="num">1,844</div>
-        <div class="lbl">survey respondents retained</div>
-      </div>
-      <div class="stat-cell">
-        <div class="tag">[03] Linked</div>
-        <div class="num" id="stat-linked">1,743</div>
-        <div class="lbl">linked user cases (ordered logit N)</div>
-      </div>
-      <div class="stat-cell">
-        <div class="tag">[04] Gini</div>
-        <div class="num red" id="stat-gini">0.77</div>
-        <div class="lbl">Gini coefficient of usage concentration</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FINDINGS -->
   <section id="findings">
-    <div class="sec-head">
-      <div class="sec-num">Findings</div>
-      <h2>What the results show.</h2>
-    </div>
-    <p class="sec-lede">Pragmatic utility, not environmental identity, explains who rides intensively <span class="mono" style="font-size:13px;color:var(--muted)">(combined ordered logit: McFadden pseudo-R&sup2;=0.104, N=1,743)</span>.</p>
-    <div class="sec-body">
-      <div class="blocks-3">
-        <div class="block" id="f-1">
-          <div class="idx">I.</div>
-          <div class="tag">Usage concentration</div>
-          <h3>Extreme concentration and near-50% dormancy.</h3>
-          <div class="vis">
-            <div class="vis-seg">
-              <div class="seg low" style="flex:48">48% Low</div>
-              <div class="seg med" style="flex:39">39% Medium</div>
-              <div class="seg high" style="flex:13">13% Power</div>
-            </div>
-            <div class="vis-leg">
-              <span><i class="low"></i>0.20 rentals / month</span>
-              <span><i class="med"></i>1.60 rentals / month</span>
-              <span><i class="high"></i>12.71 rentals / month</span>
-            </div>
-            <div class="vis-readout"><strong>Gini 0.77</strong> · Top 20% generate <strong>80.3%</strong> of trips</div>
-          </div>
-          <p>Three segments from Gaussian Mixture Modeling on rentals per month. Usage is more concentrated in the dock-based system (Gini&nbsp;0.83 vs 0.75), where power users are 2.4 times as common (23.5% vs 9.6%).</p>
-        </div>
-        <div class="block" id="f-2">
-          <div class="idx">II.</div>
-          <div class="tag">The environmental paradox</div>
-          <h3>Pro-environmental self-identity <em>reduces</em> the odds of intensive use.</h3>
-          <div class="vis">
-            <div class="vis-eff">
-              <span class="eff-pct neg">−18%</span>
-              <span class="eff-rrr">OR 0.82 · p=0.01</span>
-              <span class="eff-label">Environmental self-identity → usage intensity</span>
-            </div>
-          </div>
-          <p>The opposite of what the Theory of Planned Behavior predicts. In Basel, green-minded users may simply walk, cycle or take the tram instead.</p>
-        </div>
-        <div class="block" id="f-3">
-          <div class="idx">III.</div>
-          <div class="tag">What actually drives intensity</div>
-          <h3>Multimodal integration lifts it, reliability doubts suppress it.</h3>
-          <div class="vis">
-            <div class="vis-eff">
-              <span class="eff-pct pos">+53%</span>
-              <span class="eff-rrr">OR 1.53 · p&lt;0.001</span>
-              <span class="eff-label">Multimodal complementarity (F5)</span>
-            </div>
-            <div class="vis-eff">
-              <span class="eff-pct neg">−39%</span>
-              <span class="eff-rrr">OR 0.61 · p&lt;0.001</span>
-              <span class="eff-label">Service reliability &amp; cost concerns (F6)</span>
-            </div>
-          </div>
-          <p>Using EBSS alongside public transport, and as a fallback when the network fails, is the strongest driver. Doubts about availability and cost are the strongest brake.</p>
-        </div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Key findings</h2>
+        <p>Practical benefit explains intensive use better than environmental attitudes. Results of the first article, based on 1,743 survey respondents linked to their rental histories.</p>
       </div>
-      <div class="blocks-2" style="border-top:none;margin-top:-1px">
-        <div class="block" id="f-4">
-          <div class="idx">IV.</div>
-          <div class="tag">Two archetypes</div>
-          <h3>Routine optimizers and flexibility maximizers.</h3>
-          <div class="vis">
-            <div class="vis-eff">
-              <span class="eff-pct pos" style="background:var(--publi);border-color:var(--publi)">+53%</span>
-              <span class="eff-rrr">OR 1.53 · p=0.002</span>
-              <span class="eff-label">Dock-based · perceived superiority over PT (PubliBike)</span>
-            </div>
-            <div class="vis-eff">
-              <span class="eff-pct pos" style="background:var(--pick);border-color:var(--pick)">+74%</span>
-              <span class="eff-rrr">OR 1.74 · p&lt;0.001</span>
-              <span class="eff-label">Free-floating · multimodal complementarity (Pick-e-Bike)</span>
-            </div>
+      <div class="findings-layout">
+        <div>
+          <ol class="findings">
+            <li>
+              <h3>A small group of users generates most trips</h3>
+              <p>A Gaussian mixture model on rentals per month divides users into three segments: low (48%, 0.20 rentals a month), medium (39%, 1.60) and high intensity (13%, 12.71). The top 20% of users account for 80.3% of trips (Gini 0.77). Use is more concentrated in the dock-based system (Gini 0.83 vs 0.75), where high-intensity users are 2.4 times as common (23.5% vs 9.6%).</p>
+            </li>
+            <li>
+              <h3>Environmental identity does not lead to more use</h3>
+              <p>Users with a stronger pro-environmental self-identity are less likely to be in a higher-intensity segment (OR 0.82, p = 0.01). One plausible reason: in Basel, people with strong environmental attitudes already walk, cycle or take the tram, so a shared e-bike adds little for them.</p>
+            </li>
+            <li>
+              <h3>Combining with public transport is the strongest driver</h3>
+              <p>Using e-bike sharing together with public transport or walking, or as a fallback, raises the odds of higher-intensity use the most (OR 1.53, p &lt; 0.001). Doubts about availability and cost are the strongest brake (OR 0.61, p &lt; 0.001).</p>
+            </li>
+            <li>
+              <h3>The two systems have different frequent riders</h3>
+              <p>In the dock-based system, frequent riders are mostly highly educated and live in the urban core. They ride fixed commuting routes on which the bike is faster than the tram (perceived advantage over public transport: OR 1.53). In the free-floating system, frequent riders are younger than occasional users and less often own a car (48% vs 69%). They combine the service with other modes (OR 1.74). In the article we call them <em>routine optimizers</em> and <em>flexibility maximizers</em>.</p>
+            </li>
+            <li>
+              <h3>Shared e-bikes mostly replace public transport and walking</h3>
+              <p>75.5% of users at least sometimes replace a public transport trip, 50.9% a walk. Of users with access to a car, 33.9% sometimes replace a car trip (free-floating 36.4%, dock-based 22.0%). E-bike sharing mainly relieves and extends public transport. It is not primarily a car substitute.</p>
+            </li>
+          </ol>
+          <div class="open-question">
+            <h3>Open question: does sharing lead to buying an e-bike?</h3>
+            <p>Owning a private e-bike goes with less shared use (OR 0.73, p &lt; 0.01). About half of the 629 owners and prospective buyers say that e-bike sharing contributed to their decision, more often among high-intensity users (63% vs 46%). With cross-sectional data we cannot tell whether sharing causes the purchase.</p>
           </div>
-          <p>Dock-based <strong>routine optimizers</strong> are urban, highly educated commuters on fixed corridors where the bike beats the tram. Free-floating <strong>flexibility maximizers</strong> are younger, less often own a car (48% vs 69%), and use EBSS as one tool among several. Neither is driven by environmental ideology.</p>
         </div>
-        <div class="block" id="f-5">
-          <div class="idx">V.</div>
-          <div class="tag">Mode substitution</div>
-          <h3>EBSS primarily substitutes public transport, not cars.</h3>
-          <div class="vis vis-sankey-wrap">
-            <div class="vis-cap">Provider → mode substitution. Flow width = share of users who substitute the mode at least sometimes (published Table 3; FFEBSS n=1,382, DBEBSS n=462).</div>
+        <div class="findings-figs">
+          <figure>
+            <div class="segbar" role="img" aria-label="Usage segments: low intensity 48 percent, medium 39 percent, high 13 percent">
+              <div class="low" style="flex:48">Low 48%</div>
+              <div class="med" style="flex:39">Medium 39%</div>
+              <div class="high" style="flex:13">High 13%</div>
+            </div>
+            <div class="seg-legend">
+              <span>Low: <b>0.20</b> rentals/month</span>
+              <span>Medium: <b>1.60</b></span>
+              <span>High: <b>12.71</b></span>
+            </div>
+            <figcaption><b>Usage segments.</b> Share of the 1,743 linked users per segment and mean rentals per month (Gaussian mixture model).</figcaption>
+          </figure>
+          <figure>
             <div id="sankey-substitution" class="sankey-chart"></div>
-            <div class="vis-readout">Three-quarters of displaced trips come from <strong>already-sustainable modes</strong></div>
-          </div>
-          <p>75.5% of users substitute public transport and 50.9% walking; only 33.9% of those with car access substitute car trips (free-floating 36.4%, dock-based 22.0%). EBSS works as a PT overflow valve and last-mile bridge, not as a car replacement.</p>
+            <figcaption><b>Which modes shared e-bikes replace.</b> Flow width is the number of users who at least sometimes replace public transport, walking or the car (free-floating n = 1,382, dock-based n = 462; Table 3 in the article). *Car: share among users with access to a car.</figcaption>
+          </figure>
         </div>
-      </div>
-      <div class="highlight gold" id="f-6" style="margin-top:-1px">
-        <div class="tag">The incubator question</div>
-        <p><strong>Private e-bike ownership goes with lower shared use (OR=0.73, p&lt;0.01).</strong> About half of the 629 owners and prospective buyers say EBSS contributed to that decision, more so among power users (63% vs 46%). Plausible, but the cross-sectional design cannot show causation.</p>
       </div>
     </div>
   </section>
 
-  <!-- EFFECT SIZES (forest plot) -->
   <section id="effect-sizes">
-    <div class="sec-head">
-      <div class="sec-num">Evidence</div>
-      <h2>Behavior beats ideology, in one chart.</h2>
-    </div>
-    <p class="sec-lede">Odds ratios from the published proportional-odds ordered logit (N=1,743, McFadden pseudo-R&sup2;=0.104). Dots are point estimates, bars are 95% confidence intervals. Every predictor of the model is shown — nothing is left out.</p>
-    <div class="sec-body">
-      <div class="effects-wrap">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>What predicts usage intensity</h2>
+        <p>Odds ratios from the ordered logit model (N = 1,743, McFadden pseudo-R² = 0.104). Values above 1 raise the odds of belonging to a higher-intensity segment, values below 1 lower them.</p>
+      </div>
+      <figure>
         <div id="forest-plot" class="effects-chart"></div>
-        <div class="effects-legend">
-          <span class="lg"><span class="sw attitudinal"></span>Attitudes &amp; perceptions</span>
-          <span class="lg"><span class="sw mobility"></span>Mobility tools</span>
-          <span class="lg"><span class="sw demographic"></span>Demographics</span>
-          <span class="lg"><span class="sw geography"></span>Residential geography</span>
+        <div class="chart-legend">
+          <span><i class="attitudinal"></i>Attitudes and perceptions</span>
+          <span><i class="mobility"></i>Mobility tools</span>
+          <span><i class="demographic"></i>Demographics</span>
+          <span><i class="geography"></i>Place of residence</span>
         </div>
-        <div class="effects-readout">
-          The strongest positive predictor is <strong>multimodal complementarity</strong> (OR&nbsp;1.53): users who combine EBSS with public transport and walking ride far more intensively. The strongest brake is <strong>reliability and cost concerns</strong> (OR&nbsp;0.61). Pro-environmental self-identity is significant <em>and negative</em> (OR&nbsp;0.82): more green-minded users are 18% <strong>less</strong> likely to sit in a higher-intensity segment.
+        <figcaption>Points show odds ratios, bars 95% confidence intervals; hollow points are not significant. All 15 predictors of the model are shown, as published in Table 8 of the article. Continuous predictors are standardized.</figcaption>
+      </figure>
+      <div class="two-col">
+        <div>
+          <h3>Reading the model</h3>
+          <p>Combining e-bike sharing with other modes is the strongest positive predictor, concerns about reliability and cost the strongest negative one. Environmental self-identity is negative: a stronger green identity goes with about 18% lower odds of a higher-intensity segment.</p>
+          <p class="note">A Brant test rejects proportional odds overall, mainly because of control variables (half-fare travelcard, place of residence, income). Among the attitudinal factors only environmental self-identity deviates: its negative association is concentrated at the threshold to high intensity (OR 0.68 vs 0.90 at the medium threshold). A multinomial logit in the appendix of the article gives the same ranking of predictors.</p>
         </div>
-        <div class="effects-sub">
-          <div class="effects-sub-head">By system design</div>
-          <p>Provider-specific models separate the two archetypes. Perceived functional superiority over public transport drives intensity in the dock-based system only; multimodal complementarity drives it in the free-floating system only. Environmental self-identity is positive in neither.</p>
-          <table class="mini-table">
-            <thead><tr><th>Attitudinal factor</th><th>Free-floating</th><th>Dock-based</th></tr></thead>
+        <div>
+          <table class="data-table">
+            <caption>Separate models per system, odds ratios for three attitudinal factors</caption>
+            <thead><tr><th>Factor</th><th class="n">Free-floating</th><th class="n">Dock-based</th></tr></thead>
             <tbody>
-              <tr><td>Multimodal complementarity (F5)</td><td><strong>1.74</strong> <span class="sig">***</span></td><td>1.13 <span class="ns">n.s.</span></td></tr>
-              <tr><td>Perceived superiority over PT (F4)</td><td>1.08 <span class="ns">n.s.</span></td><td><strong>1.53</strong> <span class="sig">**</span></td></tr>
-              <tr><td>Environmental self-identity (F7)</td><td>0.87</td><td>0.77</td></tr>
+              <tr><td>Combination with other modes (F5)</td><td class="n"><strong>1.74</strong> ***</td><td class="n">1.13 <span class="ns">n.s.</span></td></tr>
+              <tr><td>Advantage over public transport (F4)</td><td class="n">1.08 <span class="ns">n.s.</span></td><td class="n"><strong>1.53</strong> **</td></tr>
+              <tr><td>Environmental self-identity (F7)</td><td class="n">0.87</td><td class="n">0.77</td></tr>
             </tbody>
           </table>
+          <p class="note" style="margin-top:.6rem">*** p &lt; 0.001, ** p &lt; 0.01, n.s. not significant. Environmental self-identity is below 1 in both systems.</p>
         </div>
-        <div class="effects-note">OR = exp(β) from the proportional-odds ordered logit; values above 1 raise the odds of belonging to a higher-intensity segment, values below 1 reduce them. Continuous predictors are standardized. Estimates and confidence intervals as published in Table 8 of Stiebe et&nbsp;al. (2026). A Brant test rejects proportional odds overall, with departures concentrated in control variables rather than in the attitudinal drivers; a multinomial-logit robustness check in the paper's appendix reproduces the same hierarchy.</div>
       </div>
     </div>
   </section>
 
-  <!-- RECOMMENDATIONS -->
   <section id="recommendations">
-    <div class="sec-head">
-      <div class="sec-num">Implications</div>
-      <h2>What this means in practice.</h2>
-    </div>
-    <p class="sec-lede">EBSS is a useful but bounded tool. Invest in what keeps frequent riders riding, not in broad environmental appeal.</p>
-    <div class="sec-body">
-      <div class="blocks-2">
-        <div class="block">
-          <div class="tag">Integration</div>
-          <h3>Connect EBSS into the multimodal system.</h3>
-          <p>The strongest driver is use alongside public transport. Three levers: <strong>fares</strong> (combined EBSS and PT subscriptions), <strong>information</strong> (availability in journey planners such as the SBB app), and <strong>siting</strong> (stations at transfer points).</p>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Implications for practice</h2>
+        <p>E-bike sharing is a useful but limited part of the transport system. The results suggest investing in what keeps frequent riders riding.</p>
+      </div>
+      <div class="grid-2">
+        <div>
+          <h3>Integrate with public transport</h3>
+          <p>This is the strongest lever: combined fares or subscriptions, availability shown in journey planners such as the SBB app, and stations or parking zones at transfer points.</p>
         </div>
-        <div class="block">
-          <div class="tag">Service quality</div>
-          <h3>Reliability protects the frequent-rider base.</h3>
-          <p>Doubts about availability and cost are the strongest brake. Fleet sizing, rebalancing, real-time availability and short reservations (for example 15 minutes) target exactly those doubts.</p>
+        <div>
+          <h3>Make availability reliable</h3>
+          <p>Doubts about availability and cost hold frequent riders back more than anything else. Fleet size, rebalancing, real-time information and short reservations (for example 15 minutes) address exactly these doubts.</p>
+        </div>
+        <div>
+          <h3>Promote practical benefits</h3>
+          <p>Frequent riders are not the most environmentally minded users. Time savings and good connections to public transport are the stronger arguments.</p>
+        </div>
+        <div>
+          <h3>Measure the right benefits</h3>
+          <p>Most replaced trips were already made by public transport or on foot, so CO₂ savings are a weak yardstick. Relief for crowded public transport at peak times, last-mile connections and the fallback role during disruptions matter more.</p>
         </div>
       </div>
-      <div class="blocks-2" style="border-top:none;margin-top:-1px">
-        <div class="block">
-          <div class="tag">Messaging</div>
-          <h3>Utility, not sustainability.</h3>
-          <p>Frequent riders are not the most environmentally minded. Time savings and good PT connections are the better message.</p>
-        </div>
-        <div class="block">
-          <div class="tag">Evaluation</div>
-          <h3>Rethink what counts as success.</h3>
-          <p>Most substituted trips were already sustainable, so CO₂ savings are a weak yardstick. Credit peak-hour relief for public transport, last-mile links and the fallback role during disruptions.</p>
-        </div>
+      <div class="photo-row">
+        <figure><img src="ASSETS/photos/singapore-bus-stop.jpg" width="900" height="1125" loading="lazy" decoding="async" alt="Green shared bikes parked next to a bus shelter in Singapore" /><figcaption>Singapore: shared bikes parked directly at a bus stop.</figcaption></figure>
+        <figure><img src="ASSETS/photos/beijing-rebalancing.jpg" width="900" height="1125" loading="lazy" decoding="async" alt="A worker next to a small vehicle stacked high with shared bikes on a street in Beijing" /><figcaption>Beijing: bikes collected for redistribution.</figcaption></figure>
+        <figure><img src="ASSETS/photos/basel-sbb-zone-sign.jpg" width="900" height="1125" loading="lazy" decoding="async" alt="Sharing Zone sign with operator logos at Basel SBB, with Velospot and Pick-e-Bike bikes" /><figcaption>Basel SBB: one marked zone for all providers at the station.</figcaption></figure>
       </div>
-      <div class="highlight" style="margin-top:-1px">
-        <div class="tag">From research to practice · U-Two field test</div>
-        <p>Fare integration is now being tested in the Basel region: the <a href="https://u-two.ch" target="_blank" rel="noopener" style="color:#fff;border-bottom:1px solid var(--red);text-decoration:none">U-Two field test</a> (FHNW with HSLU, BVB, BLT and TNW) integrates shared bikes and e-bikes into the U-Abo and GA. It runs through 2026.</p>
-      </div>
+      <p class="aside-note">Fare integration is now being tested in the Basel region. In the <a href="https://u-two.ch" target="_blank" rel="noopener">U-Two field test</a>, FHNW, HSLU, BVB, BLT and TNW integrate shared bikes and e-bikes into the U-Abo and the GA travelcard. The test runs through 2026.</p>
     </div>
   </section>
 
-  <!-- SECOND PAPER — system-level comparison (JUM) -->
   <section id="comparison">
-    <div class="sec-head">
-      <div class="sec-num">Second paper</div>
-      <h2>Two configurations, one city.</h2>
-    </div>
-    <p class="sec-lede">1.47&nbsp;million trips, no survey data. Each service is read as a <em>bundle</em>: docking logic, vehicle class, speed, service area and tariff differ at once, so no single design dimension explains a contrast.</p>
-    <div class="sec-body">
-      <div class="blocks-2">
-        <div class="block">
-          <div class="tag">Usage</div>
-          <h3>Broad casual layer, dense frequent core.</h3>
-          <p>Free-floating: 26,744 active users, median trip 2.05&nbsp;km, Gini&nbsp;0.72. Dock-based: 6,519 users, 1.44&nbsp;km, Gini&nbsp;0.80, 93% of activity inside Basel-Stadt, and a younger, more gender-balanced base.</p>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Comparing the two systems</h2>
+        <p>The second article compares both systems over their full operating history (May 2018 to March 2025, 1.47&nbsp;million trips, no survey data). Docking, vehicle type, speed, service area and fares all differ at once, so each system is treated as a package and no single design feature explains a difference.</p>
+      </div>
+      <div class="grid-2">
+        <div>
+          <h3>Usage</h3>
+          <p>The free-floating system has a broad, mostly occasional user base: 26,744 active users, median trip 2.05&nbsp;km, Gini 0.72. The dock-based system has fewer but more frequent users: 6,519 users, median trip 1.44&nbsp;km, Gini 0.80. 93% of its activity is in Basel-Stadt, and its users are younger and more gender-balanced.</p>
         </div>
-        <div class="block">
-          <div class="tag">Space</div>
-          <h3>Population-anchored versus job-anchored.</h3>
-          <p>Free-floating follows residential density and fades with distance from the centre; dock-based follows job density. Matching window and perimeter narrows the distance ratio from 1.49 to 1.19, so the gap is part coverage, part real.</p>
+        <div>
+          <h3>Space</h3>
+          <p>Free-floating trips follow where people live and thin out with distance from the centre. Dock-based trips follow where people work. With time window and area matched, the ratio of trip distances falls from 1.49 to 1.19, so the gap is partly a matter of coverage.</p>
+        </div>
+        <div>
+          <h3>Weather</h3>
+          <p>Rain reduces the free-floating morning peak the most (IRR 0.67 per mm), while temperature hardly matters there. Dock-based demand follows temperature throughout the day.</p>
+        </div>
+        <div>
+          <h3>Scale</h3>
+          <p>Together, both systems amount to about 0.24% of BVB boardings. Free-floating trips increasingly start in areas with medium public transport quality (classes B and C, from 34% to 42%). Dock-based trips stay concentrated around the main hubs (class A, about 80%).</p>
         </div>
       </div>
-      <div class="blocks-2" style="border-top:none;margin-top:-1px">
-        <div class="block">
-          <div class="tag">Weather</div>
-          <h3>Rain hits the morning peak hardest.</h3>
-          <p>The free-floating AM peak is the most rain-sensitive estimate in the panel (IRR&nbsp;0.67 per mm) and temperature-blind. Dock-based demand tracks temperature all day. Commuter rain-resistance depends on the bundle.</p>
-        </div>
-        <div class="block">
-          <div class="tag">Scale</div>
-          <h3>Too small to replace transit.</h3>
-          <p>Both systems together are about 0.24% of BVB boardings. Free-floating starts drift toward PT classes B and C (34% to 42%); dock-based concentrates on class A hubs at around 80%.</p>
-        </div>
-      </div>
-      <div class="effects-sub" style="margin-top:22px">
-        <div class="effects-sub-head">System indicators, 2024</div>
-        <table class="mini-table">
-          <thead><tr><th>Indicator</th><th>Free-floating</th><th>Dock-based</th></tr></thead>
+
+      <figure class="figure-block">
+        <img src="ASSETS/figures/jum-hourly-profile.png" width="1600" height="1031" loading="lazy" decoding="async" alt="Four panels: heatmaps of trips by hour and weekday for the free-floating and the dock-based system, and bar charts of the monthly share of annual rentals for both systems" />
+        <figcaption><b>When the systems are used.</b> Share of trips by hour and weekday (A, B) and by month (C, D). FFEBSS: free-floating Pick-e-Bike; DBEBSS: dock-based PubliBike Velospot. Figure from Stiebe, von Arx and Sager-Müller (2026), <em>Journal of Urban Mobility</em>.</figcaption>
+      </figure>
+
+      <div class="two-col">
+        <table class="data-table">
+          <caption>System indicators, 2024</caption>
+          <thead><tr><th>Indicator</th><th class="n">Free-floating</th><th class="n">Dock-based</th></tr></thead>
           <tbody>
-            <tr><td>Annual rentals</td><td>203,738</td><td>107,156</td></tr>
-            <tr><td>Active users</td><td>12,658</td><td>3,778</td></tr>
-            <tr><td>Trips per active user</td><td>16.1</td><td><strong>28.4</strong></td></tr>
-            <tr><td>Mean trip distance (km)</td><td><strong>2.62</strong></td><td>1.57</td></tr>
-            <tr><td>Mean trip duration (min)</td><td><strong>17.3</strong></td><td>11.4</td></tr>
-            <tr><td>Gini, trips per user</td><td>0.72</td><td>0.80</td></tr>
-            <tr><td>Median user age (years)</td><td>39.1</td><td>33.0</td></tr>
-            <tr><td>Trips per active vehicle-day</td><td><strong>2.30</strong></td><td>1.84</td></tr>
-            <tr><td>Median fleet idle time (min)</td><td>384</td><td>613</td></tr>
+            <tr><td>Annual rentals</td><td class="n">203,738</td><td class="n">107,156</td></tr>
+            <tr><td>Active users</td><td class="n">12,658</td><td class="n">3,778</td></tr>
+            <tr><td>Trips per active user</td><td class="n">16.1</td><td class="n">28.4</td></tr>
+            <tr><td>Mean trip distance (km)</td><td class="n">2.62</td><td class="n">1.57</td></tr>
+            <tr><td>Mean trip duration (min)</td><td class="n">17.3</td><td class="n">11.4</td></tr>
+            <tr><td>Gini, trips per user</td><td class="n">0.72</td><td class="n">0.80</td></tr>
+            <tr><td>Median user age (years)</td><td class="n">39.1</td><td class="n">33.0</td></tr>
+            <tr><td>Trips per active vehicle-day</td><td class="n">2.30</td><td class="n">1.84</td></tr>
+            <tr><td>Median fleet idle time (min)</td><td class="n">384</td><td class="n">613</td></tr>
           </tbody>
         </table>
+        <div>
+          <h3>What this means for planning</h3>
+          <p>The two systems serve different purposes and should not be judged by one benchmark. A single benchmark undervalues either the regional reach of the free-floating system or the intensive use of the dock-based one. Their small volume relative to public transport makes large-scale substitution unlikely. Whether they complement public transport cannot be answered from operational data alone, as these contain no trip purposes.</p>
+          <p class="note">Source: Stiebe, von Arx and Sager-Müller (2026), <em>Journal of Urban Mobility</em> 10, 100288, <a href="https://doi.org/10.1016/j.urbmob.2026.100288" target="_blank" rel="noopener">open access</a>. Based on all operational records, so the figures are not directly comparable with the survey sample of the first article.</p>
+        </div>
       </div>
-      <div class="highlight" style="margin-top:22px">
-        <div class="tag">What this means for planning</div>
-        <p><strong>Two systems in one city, one benchmark: that is the mistake.</strong> Treating &laquo;bike sharing&raquo; as one category under-rewards either the regional reach or the per-user intensity. A small PT share means system-wide substitution is unlikely, not that the two are complementary: operational records hold no trip purpose and no mode substitution.</p>
-      </div>
-      <div class="effects-note" style="margin-top:16px">Stiebe, von Arx &amp; Sager-Müller (2026), <em>Journal of Urban Mobility</em> 10, 100288, <a href="https://doi.org/10.1016/j.urbmob.2026.100288" target="_blank" rel="noopener">open access ↗</a>. Full operational population, May 2018 to March 2025; not directly comparable with the linked survey sample of the intensity paper.</div>
     </div>
   </section>
 
-  <!-- EXPLORE — tabbed data explorer -->
   <section id="explore">
-    <div class="sec-head">
-      <div class="sec-num">Explore</div>
-      <h2>The operational record.</h2>
-    </div>
-    <p class="sec-lede">Service areas, routed movement, trip geography, and the concentration of usage — the data behind the findings, in four views.</p>
-    <div class="explore-tabbar" role="tablist" aria-label="Data explorer views">
-      <button class="explore-tab active" type="button" role="tab" aria-selected="true" aria-controls="mapsec" data-panel="mapsec">Service areas</button>
-      <button class="explore-tab" type="button" role="tab" aria-selected="false" aria-controls="routes" data-panel="routes">Routed movement</button>
-      <button class="explore-tab" type="button" role="tab" aria-selected="false" aria-controls="heatmap" data-panel="heatmap">Trip geography</button>
-      <button class="explore-tab" type="button" role="tab" aria-selected="false" aria-controls="lorenz" data-panel="lorenz">Concentration</button>
-    </div>
-    <div class="explore-panels">
-      <div class="explore-panel" id="mapsec" role="tabpanel" aria-label="Service areas">
-    <p class="sec-lede">Basel is an ideal but demanding testbed: Switzerland's highest PT modal share, a strong cycling culture, and the lowest motorization rate among major Swiss cities mean sustainable travel is already the norm — making EBSS adoption harder to explain by necessity alone.</p>
-    <div class="stats-grid" style="margin-top:28px">
-      <div class="stat-cell">
-        <div class="tag">[01] PT share</div>
-        <div class="num red">32.5%</div>
-        <div class="lbl">PT modal share — highest in Switzerland</div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Data explorer</h2>
+        <p>Four views of the operational data: service areas, one week of routed trips, where trips start and end, and how unevenly use is distributed across users.</p>
       </div>
-      <div class="stat-cell">
-        <div class="tag">[02] Cycling</div>
-        <div class="num red">11.7%</div>
-        <div class="lbl">Cycling modal share</div>
+      <div class="tabs explore-tabbar" role="tablist" aria-label="Data explorer views">
+        <button class="explore-tab active" type="button" role="tab" aria-selected="true" aria-controls="mapsec" data-panel="mapsec">Service areas</button>
+        <button class="explore-tab" type="button" role="tab" aria-selected="false" aria-controls="routes" data-panel="routes">Routed trips</button>
+        <button class="explore-tab" type="button" role="tab" aria-selected="false" aria-controls="heatmap" data-panel="heatmap">Origins and destinations</button>
+        <button class="explore-tab" type="button" role="tab" aria-selected="false" aria-controls="lorenz" data-panel="lorenz">Concentration of use</button>
       </div>
-      <div class="stat-cell">
-        <div class="tag">[03] Motorization</div>
-        <div class="num red">319</div>
-        <div class="lbl">Cars per 1,000 inhabitants — lowest among major Swiss cities</div>
-      </div>
-      <div class="stat-cell">
-        <div class="tag">[04] Operators</div>
-        <div class="num red">2</div>
-        <div class="lbl">EBSS operating simultaneously since Sep 2021</div>
-      </div>
-    </div>
-    <div class="sec-body">
-      <p style="font-size:14px;line-height:1.6;color:#222;margin-bottom:16px">The map shows a commune-based representation of the active EBSS service areas. Municipalities can be displayed separately for Pick-e-Bike only, PubliBike Velospot only, and the overlap of both systems. PubliBike Velospot stations can be toggled on as an additional layer. Communes outlined in <strong style="color:#8a6810">dashed gold</strong> are part of the Pick-e-Bike pilot expansion launching <strong>01.06.2026</strong> for six months (Lausen, Itingen, Sissach, Gelterkinden — one station each).</p>
-      <div id="map"></div>
-    </div>
-  
-      </div>
-      <div class="explore-panel" id="routes" role="tabpanel" aria-label="Routed movement" hidden>
-    <p class="sec-lede">OSRM-routed Pick-e-Bike and PubliBike Velospot trips reveal the temporal rhythm behind the aggregate patterns: short inner-city hops, commuter pulses, and longer cross-suburban movements passing through the same street network.</p>
-    <div class="sec-body">
-      <div class="route-controls" aria-label="Route animation controls">
-        <div class="route-row">
-          <div class="route-controls-group">
-            <span class="route-controls-label">Mode</span>
-            <button class="route-mode-btn active" type="button" data-mode="week">Real week</button>
-            <button class="route-mode-btn" type="button" data-mode="day">Typical day</button>
+      <div class="explore-panels">
+
+        <div class="explore-panel" id="mapsec" role="tabpanel" aria-label="Service areas">
+          <p class="panel-intro">Basel is a demanding test case: it has the highest public transport share in Switzerland (32.5% of trips), a cycling share of 11.7% and the lowest car ownership among the large Swiss cities (319 cars per 1,000 inhabitants). Both systems have operated side by side since September 2021. The map shows the municipalities served by each system and their overlap; PubliBike Velospot stations can be added as a layer. Dashed outlines mark the Pick-e-Bike pilot in Lausen, Itingen, Sissach and Gelterkinden (June to November 2026, one station each).</p>
+          <div id="map"></div>
+        </div>
+
+        <div class="explore-panel" id="routes" role="tabpanel" aria-label="Routed trips" hidden>
+          <p class="panel-intro">1,800 rentals from 26 August to 1 September 2024 (900 per system), routed along the street network. The animation shows short trips in the centre, the commuting peaks and longer trips between suburbs.</p>
+          <div class="controls" aria-label="Animation controls">
+            <div class="ctrl-group">
+              <span class="ctrl-label">View</span>
+              <button class="route-mode-btn active" type="button" data-mode="week">Whole week</button>
+              <button class="route-mode-btn" type="button" data-mode="day">Typical day</button>
+            </div>
+            <div class="ctrl-group">
+              <span class="ctrl-label">System</span>
+              <button class="route-provider-btn active" type="button" data-provider="all">Both</button>
+              <button class="route-provider-btn" type="button" data-provider="peb">Pick-e-Bike</button>
+              <button class="route-provider-btn" type="button" data-provider="pb">PubliBike</button>
+            </div>
+            <div class="route-speed">
+              <button class="route-play-btn" id="route-play" type="button" disabled>Play</button>
+              <label class="ctrl-label" for="route-speed">Speed</label>
+              <input id="route-speed" type="range" min="200" max="6000" step="100" value="2000" disabled />
+              <span class="route-speed-readout" id="route-speed-readout">33 min/s</span>
+            </div>
           </div>
-          <div class="route-controls-sep"></div>
-          <div class="route-controls-group">
-            <span class="route-controls-label">Operator</span>
-            <button class="route-provider-btn active" type="button" data-provider="all">Both</button>
-            <button class="route-provider-btn" type="button" data-provider="peb">Pick-e-Bike</button>
-            <button class="route-provider-btn" type="button" data-provider="pb">PubliBike</button>
+          <div class="route-shell" id="route-animation">
+            <div id="route-map" role="img" aria-label="Animated map of routed e-bike trips in Basel"></div>
+            <div class="route-start-overlay" id="route-start-overlay">
+              <button class="route-start-btn" id="route-start" type="button">Start animation</button>
+              <div class="route-status" id="route-status">Loads 1,800 routed trips</div>
+            </div>
+            <div class="route-clock" id="route-clock">Mo 00:00</div>
           </div>
-          <div class="route-controls-sep"></div>
-          <div class="route-controls-group route-speed-group">
-            <button class="route-play-btn" id="route-play" type="button" disabled>Play</button>
-            <label class="route-speed-label" for="route-speed">Speed</label>
-            <input id="route-speed" type="range" min="200" max="6000" step="100" value="2000" disabled />
-            <span class="route-speed-readout" id="route-speed-readout">33 min/s</span>
+          <div class="map-caption">
+            <span class="sw sw-peb">Pick-e-Bike, 900 trips</span>
+            <span class="sw sw-pb">PubliBike Velospot, 900 trips</span>
+            <span>Routing: OSRM, bicycle profile</span>
           </div>
         </div>
-      </div>
-      <div class="route-shell" id="route-animation">
-        <div id="route-map" role="img" aria-label="Animated map of routed e-bike trips in Basel"></div>
-        <div class="route-start-overlay" id="route-start-overlay">
-          <button class="route-start-btn" id="route-start" type="button">Start animation</button>
-          <div class="route-status" id="route-status">Tap once to load and play · 1,800 OSRM-routed trips</div>
-        </div>
-        <div class="route-clock" id="route-clock">Mo 00:00</div>
-      </div>
-      <div class="route-caption">
-        <span class="route-swatch route-swatch-peb">Pick-e-Bike sample: 900 trips</span>
-        <span class="route-swatch route-swatch-pb">PubliBike Velospot sample: 900 trips</span>
-        <span>Path geometry: local OSRM bicycle routing</span>
-        <span>Period: ISO week 35/2024</span>
-      </div>
-    </div>
-      </div>
-      <div class="explore-panel" id="heatmap" role="tabpanel" aria-label="Trip geography" hidden>
-    <p class="sec-lede">Each point represents a 200&thinsp;m grid cell. Colour intensity reflects trip count on a log scale, clamped at the 99th percentile to reveal spatial differentiation across the full distribution. Filter by time of day or provider to compare patterns between systems.</p>
-    <div class="sec-body">
-      <div class="heat-controls">
-        <div class="heat-row">
-          <div class="heat-controls-group">
-            <span class="heat-controls-label">Show</span>
-            <button class="heat-btn active" data-ds="start">Origins</button>
-            <button class="heat-btn" data-ds="end">Destinations</button>
+
+        <div class="explore-panel" id="heatmap" role="tabpanel" aria-label="Origins and destinations" hidden>
+          <p class="panel-intro">Trip starts and ends on a 200&nbsp;m grid. Colour shows the number of trips on a log scale, capped at the 99th percentile so that differences outside the centre remain visible.</p>
+          <div class="controls">
+            <div class="ctrl-group">
+              <span class="ctrl-label">Show</span>
+              <button class="heat-btn active" type="button" data-ds="start">Origins</button>
+              <button class="heat-btn" type="button" data-ds="end">Destinations</button>
+            </div>
+            <div class="ctrl-group">
+              <span class="ctrl-label">System</span>
+              <button class="provider-btn active" type="button" data-provider="combined">Both</button>
+              <button class="provider-btn" type="button" data-provider="peb">Pick-e-Bike</button>
+              <button class="provider-btn" type="button" data-provider="pb">PubliBike</button>
+            </div>
+            <div class="ctrl-group">
+              <span class="ctrl-label">Time</span>
+              <button class="hour-btn active" type="button" data-hours="all">All day</button>
+              <button class="hour-btn" type="button" data-hours="morning">07–09</button>
+              <button class="hour-btn" type="button" data-hours="midday">10–15</button>
+              <button class="hour-btn" type="button" data-hours="evening">16–19</button>
+              <button class="hour-btn" type="button" data-hours="night">20–06</button>
+            </div>
           </div>
-          <div class="heat-controls-sep"></div>
-          <div class="heat-controls-group">
-            <span class="heat-controls-label">Provider</span>
-            <button class="provider-btn active" data-provider="combined">Combined</button>
-            <button class="provider-btn" data-provider="peb">Pick-e-Bike</button>
-            <button class="provider-btn" data-provider="pb">PubliBike</button>
+          <div style="position:relative">
+            <div id="heatmap-map"></div>
+            <div class="heat-loading" id="heatmap-loading">Loading trip data…</div>
           </div>
-        </div>
-        <div class="heat-row">
-          <div class="heat-controls-group">
-            <span class="heat-controls-label">Time of day</span>
-            <button class="hour-btn active" data-hours="all">All day</button>
-            <button class="hour-btn" data-hours="morning">Morning 07–09</button>
-            <button class="hour-btn" data-hours="evening">Evening 16–19</button>
-            <button class="hour-btn" data-hours="midday">Midday 10–15</button>
-            <button class="hour-btn" data-hours="night">Night 20–06</button>
+          <div class="heat-legend">
+            <span>fewer trips</span>
+            <div class="heat-legend-bar"></div>
+            <span>more trips</span>
           </div>
         </div>
-      </div>
-      <div style="position:relative">
-        <div id="heatmap-map"></div>
-        <div class="heat-loading" id="heatmap-loading">Loading trip data…</div>
-      </div>
-      <div class="heat-legend">
-        <span class="heat-legend-label">lower density</span>
-        <div class="heat-legend-bar"></div>
-        <span class="heat-legend-label">higher density</span>
-      </div>
-    </div>
-      </div>
-      <div class="explore-panel" id="lorenz" role="tabpanel" aria-label="Concentration" hidden>
-    <div class="sec-body">
-      <div class="highlight" style="margin-bottom:22px">
-        <div class="tag">Interpretation</div>
-        <p>A Gini coefficient of <strong>0.77</strong> describes extreme inequality — comparable in magnitude to national income distributions in some of the world's most unequal economies, here applied to trip generation. The typical registered user contributes almost nothing to system activity; a tiny minority drives almost everything.</p>
-      </div>
-      <p style="font-size:14px;line-height:1.6;color:#222;margin-bottom:18px">Each panel shows the cumulative share of trips (or cycling minutes) as a function of the cumulative share of users, for Pick-e-Bike, PubliBike Velospot, and the combined sample. The diagonal represents perfect equality. Hover over the curves for exact values.</p>
-      <div class="lorenz-grid" id="lorenzGrid">
-        <div class="lorenz-panel">
-          <h3>Trip count — All users</h3>
-          <div class="panel-sub">Cumulative share of trips by user percentile</div>
-          <div class="lorenz-chart" id="lc-all-trips"></div>
+
+        <div class="explore-panel" id="lorenz" role="tabpanel" aria-label="Concentration of use" hidden>
+          <p class="panel-intro">Each curve shows the cumulative share of trips (or minutes ridden) against the cumulative share of users. The diagonal would mean that all users ride equally often. With a Gini coefficient of 0.77, a small minority of users generates most trips, while the typical registered user rides rarely. Hover over the curves for exact values.</p>
+          <div class="lorenz-grid" id="lorenzGrid">
+            <div class="lorenz-panel">
+              <h3>Trips, all users</h3>
+              <div class="panel-sub">Cumulative share of trips by user percentile</div>
+              <div class="lorenz-chart" id="lc-all-trips"></div>
+            </div>
+            <div class="lorenz-panel">
+              <h3>Minutes ridden, all users</h3>
+              <div class="panel-sub">Cumulative share of minutes by user percentile</div>
+              <div class="lorenz-chart" id="lc-all-duration"></div>
+            </div>
+            <div class="lorenz-panel">
+              <h3>Trips, survey respondents</h3>
+              <div class="panel-sub">Linked subsample (N = 1,743)</div>
+              <div class="lorenz-chart" id="lc-survey-trips"></div>
+            </div>
+            <div class="lorenz-panel">
+              <h3>Minutes ridden, survey respondents</h3>
+              <div class="panel-sub">Linked subsample (N = 1,743)</div>
+              <div class="lorenz-chart" id="lc-survey-duration"></div>
+            </div>
+          </div>
         </div>
-        <div class="lorenz-panel">
-          <h3>Duration (min) — All users</h3>
-          <div class="panel-sub">Cumulative share of minutes ridden by user percentile</div>
-          <div class="lorenz-chart" id="lc-all-duration"></div>
-        </div>
-        <div class="lorenz-panel">
-          <h3>Trip count — Survey respondents</h3>
-          <div class="panel-sub">Linked subset (N=1,743)</div>
-          <div class="lorenz-chart" id="lc-survey-trips"></div>
-        </div>
-        <div class="lorenz-panel">
-          <h3>Duration (min) — Survey respondents</h3>
-          <div class="panel-sub">Linked subset (N=1,743)</div>
-          <div class="lorenz-chart" id="lc-survey-duration"></div>
-        </div>
-      </div>
-    </div>
+
       </div>
     </div>
   </section>
 
-  <!-- PUBLICATIONS -->
   <section id="publications">
-    <div class="sec-head">
-      <div class="sec-num">Outputs</div>
-      <h2>Publications &amp; Presentations.</h2>
-    </div>
-    <p class="sec-lede">Both journal articles from the project are published open access. Everything below is listed with a link or a copyable BibTeX record.</p>
-    <div class="sec-body">
-      <ul class="pub-list">
-        <li class="pub-featured">
-          <span class="pub-badge journal">Journal · Open Access</span>
-          <span class="pub-cite">Stiebe, M., Krysiak, F. C., von Arx, W., &amp; Weggelaar, B. (2026). Pragmatism, not ideology: drivers of e-bike sharing usage intensity. <em>Transportation Research Part D: Transport and Environment</em>, <strong>161</strong>, 105621. <a href="https://doi.org/10.1016/j.trd.2026.105621" target="_blank" rel="noopener">doi.org/10.1016/j.trd.2026.105621 ↗</a> Published 10 September 2026 under CC BY 4.0.
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2026pragmatism">Copy BibTeX</button></span>
-          </span>
-        </li>
-        <li class="pub-featured">
-          <span class="pub-badge journal">Journal · Open Access</span>
-          <span class="pub-cite">Stiebe, M., von Arx, W., &amp; Sager-Müller, S. (2026). Contrasting usage and spatial profiles of free-floating S-pedelec and dock-based pedelec sharing in Basel: A longitudinal system-level comparison. <em>Journal of Urban Mobility</em>, <strong>10</strong>, 100288. <a href="https://doi.org/10.1016/j.urbmob.2026.100288" target="_blank" rel="noopener">doi.org/10.1016/j.urbmob.2026.100288 ↗</a>
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2026jum">Copy BibTeX</button></span>
-          </span>
-        </li>
-        <li>
-          <span class="pub-badge talk">Talk</span>
-          <span class="pub-cite">Stiebe, M., &amp; Weggelaar, B. (2026). Drivers of E-Bike Sharing Usage Intensity: Evidence from Free-Floating and Dock-Based Systems in Basel. Presentation at <em>Sustainable Future Research Lunch</em>, University of Basel, March 20, 2026.
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2026srl">Copy BibTeX</button></span>
-          </span>
-        </li>
-        <li>
-          <span class="pub-badge talk">Talk</span>
-          <span class="pub-cite">Stiebe, M. (2025). Pragmatists, Not Idealists: What Drives E-Bike Sharing Usage Intensity and Why Car Substitution Remains Elusive. Presentation at the <em>Economics Lunch Seminar</em>, Faculty of Business and Economics (WWZ), University of Basel, December 17, 2025.
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2025wwz">Copy BibTeX</button></span>
-          </span>
-        </li>
-        <li>
-          <span class="pub-badge conf">Conference</span>
-          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2025). Understanding User Behavior in Dock-based and Free-floating E-bike Sharing Systems: A Multi-method Study From the Basel Metropolitan Area. <em>mobil.TUM 2025 — 14th International Scientific Conference on Mobility and Transport</em>, Nanyang Technological University, Singapore, November 24–26, 2025.
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2025mobiltum">Copy BibTeX</button></span>
-          </span>
-        </li>
-        <li>
-          <span class="pub-badge conf">Conference</span>
-          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems — Empirical Insights from the Basel Metropolitan Area. <em>European Transport Conference ETC 2024</em>, Antwerp, September 17–20, 2024. <a href="https://aetransport.org/past-etc-papers/conference-papers-2024?abstractId=8446&amp;state=b" target="_blank" rel="noopener">aetransport.org ↗</a>
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2024etc">Copy BibTeX</button></span>
-          </span>
-        </li>
-        <li>
-          <span class="pub-badge conf">Conference</span>
-          <span class="pub-cite">Stiebe, M., &amp; von Arx, W. (2024). Comparative Analysis of User Characteristics and Use Patterns in Free-Floating and Station-Based E-Bike Sharing Systems — Insights from the Basel Metropolitan Area. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15–17, 2024. <a href="https://www.strc.ch/2024/Stiebe_vonArx.pdf" target="_blank" rel="noopener">PDF ↗</a>
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="stiebe2024strc">Copy BibTeX</button></span>
-          </span>
-        </li>
-        <li>
-          <span class="pub-badge talk">Talk</span>
-          <span class="pub-cite">von Arx, W., &amp; Stiebe, M. (2024). Obstacles to Economic Sustainability of Free-Floating E-Bike Sharing Systems: A Basel-Based Case Study. <em>Swiss Transport Research Conference STRC 2024</em>, Ascona, May 15, 2024.
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="vonarx2024strc">Copy BibTeX</button></span>
-          </span>
-        </li>
-        <li>
-          <span class="pub-badge press">Press</span>
-          <span class="pub-cite">"E-Bike-Sharing boomt in der Schweiz!" Newsletter article, Lucerne University of Applied Sciences and Arts, November 13, 2024. <a href="https://www.hslu.ch/de-ch/wirtschaft/ueber-uns/news/2024/11/13/ebike-sharing/" target="_blank" rel="noopener">hslu.ch ↗</a>
-            <span class="cite-actions"><button class="cite-btn" data-bib-id="hslu2024newsletter">Copy BibTeX</button></span>
-          </span>
-        </li>
-      </ul>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Publications and presentations</h2>
+      </div>
 
-      <div style="margin-top:48px">
-        <div class="sec-num" style="margin-bottom:14px;color:var(--red)">Related resources</div>
-        <div class="resources">
-          <a href="https://u-two.ch" target="_blank" rel="noopener"><span class="res-name">U-Two — FHNW Field Test on Tariff Integration of Shared Two-Wheelers <span class="arrow">↗</span></span><span class="res-host">u-two.ch</span></a>
-          <a href="https://bikesharemap.com/#13/47.5579/7.5902" target="_blank" rel="noopener"><span class="res-name">Bike Share Map — Basel <span class="arrow">↗</span></span><span class="res-host">bikesharemap.com</span></a>
-          <a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener"><span class="res-name">POTEBS on ARAMIS — SFOE Project Database <span class="arrow">↗</span></span><span class="res-host">aramis.admin.ch</span></a>
-          <a href="https://www.pickebike.ch/de/" target="_blank" rel="noopener"><span class="res-name">Pick-e-Bike <span class="arrow">↗</span></span><span class="res-host">pickebike.ch</span></a>
-          <a href="https://www.velospot.info" target="_blank" rel="noopener"><span class="res-name">PubliBike Velospot <span class="arrow">↗</span></span><span class="res-host">velospot.info</span></a>
-          <a href="https://www.bfe.admin.ch/bfe/en/home/research-and-cleantech/research-and-cleantech.html" target="_blank" rel="noopener"><span class="res-name">SFOE Energy Research &amp; Cleantech <span class="arrow">↗</span></span><span class="res-host">bfe.admin.ch</span></a>
-        </div>
+      <div class="pub-group">
+        <h3>Journal articles</h3>
+        <ul class="pub-list">
+          <li>Stiebe, M., Krysiak, F. C., von Arx, W., &amp; Weggelaar, B. (2026). Pragmatism, not ideology: drivers of e-bike sharing usage intensity. <em>Transportation Research Part D: Transport and Environment</em>, 161, 105621. <a href="https://doi.org/10.1016/j.trd.2026.105621" target="_blank" rel="noopener">doi.org/10.1016/j.trd.2026.105621</a> (open access, CC BY 4.0) <button class="cite-btn" type="button" data-bib-id="stiebe2026pragmatism">Copy BibTeX</button></li>
+          <li>Stiebe, M., von Arx, W., &amp; Sager-Müller, S. (2026). Contrasting usage and spatial profiles of free-floating S-pedelec and dock-based pedelec sharing in Basel: A longitudinal system-level comparison. <em>Journal of Urban Mobility</em>, 10, 100288. <a href="https://doi.org/10.1016/j.urbmob.2026.100288" target="_blank" rel="noopener">doi.org/10.1016/j.urbmob.2026.100288</a> (open access) <button class="cite-btn" type="button" data-bib-id="stiebe2026jum">Copy BibTeX</button></li>
+        </ul>
+      </div>
+
+      <div class="pub-group">
+        <h3>Conference papers and talks</h3>
+        <ul class="pub-list">
+          <li>Stiebe, M., &amp; Weggelaar, B. (2026). Drivers of e-bike sharing usage intensity: evidence from free-floating and dock-based systems in Basel. Talk, <em>Sustainable Future Research Lunch</em>, University of Basel, 20 March 2026. <button class="cite-btn" type="button" data-bib-id="stiebe2026srl">Copy BibTeX</button></li>
+          <li>Stiebe, M. (2025). Pragmatists, not idealists: what drives e-bike sharing usage intensity and why car substitution remains elusive. Talk, <em>Economics Lunch Seminar</em>, Faculty of Business and Economics (WWZ), University of Basel, 17 December 2025. <button class="cite-btn" type="button" data-bib-id="stiebe2025wwz">Copy BibTeX</button></li>
+          <li>Stiebe, M., &amp; von Arx, W. (2025). Understanding user behavior in dock-based and free-floating e-bike sharing systems: a multi-method study from the Basel metropolitan area. <em>mobil.TUM 2025, 14th International Scientific Conference on Mobility and Transport</em>, Nanyang Technological University, Singapore, 24 to 26 November 2025. <button class="cite-btn" type="button" data-bib-id="stiebe2025mobiltum">Copy BibTeX</button></li>
+          <li>Stiebe, M., &amp; von Arx, W. (2024). Comparative analysis of user characteristics and use patterns in free-floating and station-based e-bike sharing systems: empirical insights from the Basel metropolitan area. <em>European Transport Conference 2024</em>, Antwerp, 17 to 20 September 2024. <a href="https://aetransport.org/past-etc-papers/conference-papers-2024?abstractId=8446&amp;state=b" target="_blank" rel="noopener">aetransport.org</a> <button class="cite-btn" type="button" data-bib-id="stiebe2024etc">Copy BibTeX</button></li>
+          <li>Stiebe, M., &amp; von Arx, W. (2024). Comparative analysis of user characteristics and use patterns in free-floating and station-based e-bike sharing systems: insights from the Basel metropolitan area. <em>Swiss Transport Research Conference 2024</em>, Ascona, 15 to 17 May 2024. <a href="https://www.strc.ch/2024/Stiebe_vonArx.pdf" target="_blank" rel="noopener">PDF</a> <button class="cite-btn" type="button" data-bib-id="stiebe2024strc">Copy BibTeX</button></li>
+          <li>von Arx, W., &amp; Stiebe, M. (2024). Obstacles to economic sustainability of free-floating e-bike sharing systems: a Basel-based case study. Talk, <em>Swiss Transport Research Conference 2024</em>, Ascona, 15 May 2024. <button class="cite-btn" type="button" data-bib-id="vonarx2024strc">Copy BibTeX</button></li>
+        </ul>
+      </div>
+
+      <div class="pub-group">
+        <h3>Media</h3>
+        <ul class="pub-list">
+          <li>«E-Bike-Sharing boomt in der Schweiz!» News article, Lucerne University of Applied Sciences and Arts, 13 November 2024. <a href="https://www.hslu.ch/de-ch/wirtschaft/ueber-uns/news/2024/11/13/ebike-sharing/" target="_blank" rel="noopener">hslu.ch</a> <button class="cite-btn" type="button" data-bib-id="hslu2024newsletter">Copy BibTeX</button></li>
+        </ul>
+      </div>
+
+      <div class="pub-group">
+        <h3>Related links</h3>
+        <ul class="links-list">
+          <li><a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener">POTEBS in the SFOE project database ARAMIS</a></li>
+          <li><a href="https://u-two.ch" target="_blank" rel="noopener">U-Two field test on fare integration</a><span class="host">u-two.ch</span></li>
+          <li><a href="https://www.pickebike.ch/de/" target="_blank" rel="noopener">Pick-e-Bike</a><span class="host">pickebike.ch</span></li>
+          <li><a href="https://www.velospot.info" target="_blank" rel="noopener">PubliBike Velospot</a><span class="host">velospot.info</span></li>
+          <li><a href="https://bikesharemap.com/#13/47.5579/7.5902" target="_blank" rel="noopener">Bike Share Map, Basel</a><span class="host">bikesharemap.com</span></li>
+          <li><a href="https://www.bfe.admin.ch/bfe/en/home/research-and-cleantech/research-and-cleantech.html" target="_blank" rel="noopener">SFOE energy research</a><span class="host">bfe.admin.ch</span></li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- PROJECT GROUP -->
-  <div class="group-band" id="project">
-    <div class="group-band-inner">
-      <span class="group-band-num">The project</span>
-      <span class="group-band-txt">What POTEBS asks, how it is built, who is involved, and where it stands.</span>
-    </div>
-  </div>
-
-  <!-- PROJECT: QUESTIONS, BACKGROUND, METHODS, TIMELINE -->
-  <section id="about">
-    <div class="sec-head">
-      <div class="sec-num">Questions</div>
-      <h2>What this project asks.</h2>
-    </div>
-    <div class="sec-body">
-      <div class="rq-block">
-        <div class="rq-main">How can EBSS support the mobility transition as part of a flexible multimodal mobility system?</div>
-        <div class="rq-row"><div class="k">RQ 01</div><div class="v">Which user groups use EBSS and in what multimodal contexts; what hampers use and what benefits do users report?</div></div>
-        <div class="rq-row"><div class="k">RQ 02</div><div class="v">What business models for EBSS or EBSS–PT combinations could build on user needs?</div></div>
-        <div class="rq-row"><div class="k">RQ 03</div><div class="v">How can EBSS contribute to sustainable mobility in urban and peri-urban regions, and which measures support this?</div></div>
+  <section id="project">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>About the project</h2>
       </div>
-      <div class="blocks-2" style="margin-top:36px">
-        <div class="block">
-          <div class="tag">Background</div>
-          <h3>Viability rests on a small core of riders.</h3>
-          <p>Across the literature, 10 to 22% of registered users generate 50 to 81% of trips, while roughly half never return after signing up. Operating costs frequently exceed revenues, and willingness-to-pay is low. Which users ride intensively is therefore not a marginal question but the one that decides whether a system can carry itself.</p>
-        </div>
-        <div class="block">
-          <div class="tag">The research gap</div>
-          <h3>Adoption is well studied; intensity is not.</h3>
-          <p>Prior work explains who signs up and what drives aggregate demand. It does not explain which personal characteristics make a registered user a frequent rider, nor how that interacts with system design. POTEBS addresses this by linking about 1.4 million operational trip records to individual survey responses across a free-floating and a dock-based system operating side by side.</p>
-        </div>
+      <p class="rq-main">How can e-bike sharing support the mobility transition as part of a flexible, multimodal transport system?</p>
+      <ol class="rq-list">
+        <li>Which user groups use e-bike sharing, and in which multimodal contexts? What hinders use, and which benefits do users report?</li>
+        <li>Which business models for e-bike sharing, alone or combined with public transport, could build on these user needs?</li>
+        <li>How can e-bike sharing contribute to sustainable mobility in urban and peri-urban regions, and which measures support this?</li>
+      </ol>
+      <h3 class="subhead">Background</h3>
+      <div class="prose">
+        <p>Studies of bike sharing consistently find that 10 to 22% of registered users generate 50 to 81% of trips, and about half never return after signing up. Operating costs often exceed revenues. Whether a system can sustain itself therefore depends on a small group of frequent riders.</p>
+        <p>Earlier research explains who signs up and what drives total demand, but not which personal characteristics turn a registered user into a frequent rider, or how this depends on the design of the system. POTEBS addresses this by linking about 1.4&nbsp;million trip records to individual survey responses from two systems operating side by side. Data, survey and models are described on the <a href="methods.html">methods page</a>.</p>
       </div>
-      <div style="margin-top:36px">
-        <a href="methods.html" class="methods-callout">
-        <div class="methods-callout-left">
-          <div class="methods-callout-tag">Methods &amp; Survey Instrument</div>
-          <div class="methods-callout-h">Read the technical deep-dive →</div>
-          <p class="methods-callout-p">The three-stage pipeline (EFA → GMM → ordered logit), the full survey structure across six parts, sample items per section, and the seven latent factors derived from 32 Likert items.</p>
-        </div>
-        <div class="methods-callout-right">
-          <div class="methods-callout-row"><span>EFA</span><span>32 items → 7 factors</span></div>
-          <div class="methods-callout-row"><span>GMM</span><span>k = 3 intensity clusters</span></div>
-          <div class="methods-callout-row"><span>Ordered logit</span><span>proportional odds</span></div>
-          <div class="methods-callout-row"><span>Validation</span><span>5-fold cross-validation</span></div>
-          <div class="methods-callout-row"><span>N</span><span>1,743 linked cases</span></div>
-        </div>
-      </a>
+      <div class="photo-row">
+        <figure><img src="ASSETS/photos/basel-sbb-velospot.jpg" width="900" height="1125" loading="lazy" decoding="async" alt="A row of red PubliBike Velospot pedelecs in front of Basel SBB station" /><figcaption>Basel, 2024: PubliBike Velospot pedelecs at the station.</figcaption></figure>
+        <figure><img src="ASSETS/photos/shanghai-dockless.jpg" width="900" height="1125" loading="lazy" decoding="async" alt="Dense rows of yellow and blue dockless shared bikes on a pavement in Shanghai" /><figcaption>Shanghai, 2025: dockless bikes in large numbers on the pavement.</figcaption></figure>
+        <figure><img src="ASSETS/photos/guangzhou-rider.jpg" width="900" height="1125" loading="lazy" decoding="async" alt="A man riding a yellow shared bike across a street in Guangzhou" /><figcaption>Guangzhou, 2025: a shared bike in everyday traffic.</figcaption></figure>
       </div>
     </div>
   </section>
 
-  <!-- TIMELINE -->
   <section id="timeline">
-    <div class="sec-head">
-      <div class="sec-num">Timeline</div>
-      <h2>Where the project stands.</h2>
-    </div>
-    <div class="sec-body">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Timeline</h2>
+      </div>
       <div class="timeline">
-        <div class="tl-year"><div class="y-label">2023</div><div class="y-line"></div><div class="y-bar">Project kick-off</div></div>
-        <div class="tl-item tl-phase">
-          <div class="tl-date">Dec 2023</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Project launch</div><div class="tl-desc">Funded by the Swiss Federal Office of Energy. Operational trip data from Pick-e-Bike and PubliBike Velospot forms the empirical backbone.</div></div>
-        </div>
-        <div class="tl-year"><div class="y-label">2024</div><div class="y-line"></div><div class="y-bar">First conferences</div></div>
-        <div class="tl-item">
-          <div class="tl-date">May 2024</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">STRC 2024, Ascona</div><div class="tl-desc">Stiebe &amp; von Arx: comparative analysis of user characteristics in free-floating and station-based e-bike sharing.</div></div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-date">Sep 2024</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">ETC 2024, Antwerp</div><div class="tl-desc">Updated comparative findings presented at the European Transport Conference.</div></div>
-        </div>
-        <div class="tl-year"><div class="y-label">2025</div><div class="y-line"></div><div class="y-bar">Surveys fielded · conferences · seminars</div></div>
-        <div class="tl-item">
-          <div class="tl-date">Jan 2025</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Advisory Board Meeting 1</div><div class="tl-desc">First meeting with transport authorities, operators, and policy institutions.</div></div>
-        </div>
-        <div class="tl-item tl-phase">
-          <div class="tl-date">Apr 2025</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">User surveys fielded</div><div class="tl-desc">Parallel surveys to registered users of both systems; 1,844 responses retained, 1,743 linked to trip histories.</div></div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-date">May 2025</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Non-user survey, TNW area</div><div class="tl-desc">Mobility behaviour and adoption barriers among non-users in the regional fare network.</div></div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-date">Nov 2025</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">mobil.TUM 2025, Singapore</div><div class="tl-desc">Stiebe &amp; von Arx: understanding user behaviour in dock-based and free-floating systems.</div></div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-date">Dec 2025</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">WWZ Economics Lunch Seminar</div><div class="tl-desc">Stiebe: pragmatists, not idealists — what drives e-bike sharing usage intensity.</div></div>
-        </div>
-        <div class="tl-year"><div class="y-label">2026</div><div class="y-line"></div><div class="y-bar">Publication · ongoing dissemination</div></div>
-        <div class="tl-item">
-          <div class="tl-date">Mar 2026</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Submitted to Transportation Research Part D</div><div class="tl-desc">Pragmatism, not ideology: drivers of e-bike sharing usage intensity. Submitted 7 March 2026.</div></div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-date">Jun 2026</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Advisory Board Meeting 2</div><div class="tl-desc">Survey findings, modelling results, and policy implications reviewed with the board.</div></div>
-        </div>
-        <div class="tl-item tl-phase">
-          <div class="tl-date">Sep 2026</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Published in Transportation Research Part D</div><div class="tl-desc">Volume 161, 105621, after one major revision. Online 10 September 2026, open access under CC BY.</div></div>
-        </div>
-        <div class="tl-item tl-phase">
-          <div class="tl-date">Sep 2026</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Published in Journal of Urban Mobility</div><div class="tl-desc">Stiebe, von Arx &amp; Sager-Müller: contrasting usage and spatial profiles of the two Basel systems. Volume 10, 100288, open access.</div></div>
-        </div>
-        <div class="tl-item tl-planned">
-          <div class="tl-date">Q4 2026</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Final report to the SFOE</div><div class="tl-desc">Consolidating findings, methodology, and policy implications across the project period.</div></div>
-        </div>
-        <div class="tl-year tl-year-future"><div class="y-label">2027</div><div class="y-line"></div><div class="y-bar">Project closure · final dissemination</div></div>
-        <div class="tl-item tl-planned tl-phase">
-          <div class="tl-date">Jan 2027</div>
-          <div class="tl-marker"></div>
-          <div><div class="tl-title">Project conclusion</div><div class="tl-desc">Final advisory board meeting, archival of anonymised analytical datasets, and handover of operational learnings to consortium and sister-project partners (incl. U-Two).</div></div>
-        </div>
+        <div class="tl-year">2023</div>
+        <div class="tl-item"><div class="tl-date">Dec</div><div><div class="tl-title">Project start</div><div class="tl-desc">Funded by the SFOE. Trip data from Pick-e-Bike and PubliBike Velospot form the empirical basis.</div></div></div>
+
+        <div class="tl-year">2024</div>
+        <div class="tl-item"><div class="tl-date">May</div><div><div class="tl-title">STRC 2024, Ascona</div><div class="tl-desc">First comparison of user characteristics in the free-floating and the station-based system.</div></div></div>
+        <div class="tl-item"><div class="tl-date">Sep</div><div><div class="tl-title">ETC 2024, Antwerp</div><div class="tl-desc">Updated comparison at the European Transport Conference.</div></div></div>
+
+        <div class="tl-year">2025</div>
+        <div class="tl-item"><div class="tl-date">Jan</div><div><div class="tl-title">First advisory board meeting</div><div class="tl-desc">With transport authorities, operators and policy institutions.</div></div></div>
+        <div class="tl-item"><div class="tl-date">Apr</div><div><div class="tl-title">User surveys</div><div class="tl-desc">Parallel surveys of registered users of both systems: 1,844 valid responses, 1,743 linked to trip histories.</div></div></div>
+        <div class="tl-item"><div class="tl-date">May</div><div><div class="tl-title">Non-user survey</div><div class="tl-desc">Travel behaviour and barriers among non-users in the TNW fare network.</div></div></div>
+        <div class="tl-item"><div class="tl-date">Nov</div><div><div class="tl-title">mobil.TUM 2025, Singapore</div><div class="tl-desc">User behaviour in the dock-based and the free-floating system.</div></div></div>
+        <div class="tl-item"><div class="tl-date">Dec</div><div><div class="tl-title">WWZ Economics Lunch Seminar, Basel</div><div class="tl-desc">What drives e-bike sharing usage intensity.</div></div></div>
+
+        <div class="tl-year">2026</div>
+        <div class="tl-item"><div class="tl-date">Mar</div><div><div class="tl-title">Submission to Transportation Research Part D</div><div class="tl-desc">Article on the drivers of usage intensity.</div></div></div>
+        <div class="tl-item"><div class="tl-date">Jun</div><div><div class="tl-title">Second advisory board meeting</div><div class="tl-desc">Survey results, models and policy implications.</div></div></div>
+        <div class="tl-item"><div class="tl-date">Sep</div><div><div class="tl-title">Article in Transportation Research Part D</div><div class="tl-desc">Volume 161, 105621, open access.</div></div></div>
+        <div class="tl-item"><div class="tl-date">Sep</div><div><div class="tl-title">Article in the Journal of Urban Mobility</div><div class="tl-desc">Volume 10, 100288, open access.</div></div></div>
+        <div class="tl-item tl-planned"><div class="tl-date">Q4</div><div><div class="tl-title">Final report to the SFOE</div><div class="tl-desc">Findings, methods and policy implications of the whole project.</div></div></div>
+
+        <div class="tl-year">2027</div>
+        <div class="tl-item tl-planned"><div class="tl-date">Jan</div><div><div class="tl-title">Project end</div><div class="tl-desc">Final advisory board meeting, archiving of the anonymised data sets and handover to partners, including the U-Two project.</div></div></div>
       </div>
     </div>
   </section>
 
-  <!-- PARTNERS -->
   <section id="partners">
-    <div class="sec-head">
-      <div class="sec-num">Partners</div>
-      <h2>Partners &amp; advisory board.</h2>
-    </div>
-    <div class="sec-body">
-      <div class="partner-groups">
-        <div class="partner-row">
-          <div class="partner-label">[01] Funding</div>
-          <div class="partner-logos">
-            <div class="partner-logo-cell">
-              <a href="https://www.bfe.admin.ch/bfe/en/home.html" target="_blank" rel="noopener"><img alt="Swiss Federal Office of Energy (SFOE)" src="ASSETS/BFE.png" style="max-height:60px" /></a>
-              <div class="partner-role">Swiss Federal Office of Energy (SFOE)</div>
-              <div class="partner-role link"><a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener">ARAMIS ↗</a></div>
-            </div>
-            <div class="partner-logo-cell" style="background:var(--bg);color:var(--muted);font-family:JetBrains Mono,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em">Grant SI/502720-01<br/>Dec 2023 — Jan 2027</div>
-            <div class="partner-logo-cell" style="background:var(--bg);color:var(--muted);font-family:JetBrains Mono,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em">Energy Research &amp; Cleantech programme</div>
-          </div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Partners and advisory board</h2>
+      </div>
+      <div class="partners">
+        <div class="partner">
+          <div class="logo"><a href="https://www.bfe.admin.ch/bfe/en/home.html" target="_blank" rel="noopener"><img class="logo-bfe" src="ASSETS/BFE.png" alt="Swiss Federal Office of Energy SFOE" loading="lazy" /></a></div>
+          <div class="role">Funding</div>
+          <p>Swiss Federal Office of Energy, Energy Research and Cleantech programme, grant SI/502720-01 (<a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener">ARAMIS</a>)</p>
         </div>
-        <div class="partner-row">
-          <div class="partner-label">[02] Academic Partners</div>
-          <div class="partner-logos">
-            <div class="partner-logo-cell">
-              <a href="https://www.hslu.ch/de-ch/wirtschaft/institute/itm/mobilitaet/" target="_blank" rel="noopener"><img alt="HSLU — Lucerne University of Applied Sciences and Arts" src="ASSETS/HSLU.png" /></a>
-              <div class="partner-role">Lead institution</div>
-            </div>
-            <div class="partner-logo-cell">
-              <a href="https://wwz.unibas.ch/de/" target="_blank" rel="noopener"><img alt="University of Basel" src="ASSETS/unibasel.png" /></a>
-              <div class="partner-role">Research partner</div>
-            </div>
-            <div class="partner-logo-cell" style="background:var(--bg);color:var(--muted);font-family:JetBrains Mono,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em">HSLU ITM · Mobility CC<br/>Uni Basel WWZ · Env. Economics</div>
-          </div>
+        <div class="partner">
+          <div class="logo"><a href="https://www.hslu.ch/de-ch/wirtschaft/institute/itm/mobilitaet/" target="_blank" rel="noopener"><img src="ASSETS/HSLU.png" alt="Lucerne University of Applied Sciences and Arts HSLU" loading="lazy" /></a></div>
+          <div class="role">Lead institution</div>
+          <p>Institute of Tourism and Mobility, Competence Center Mobility</p>
         </div>
-        <div class="partner-row">
-          <div class="partner-label">[03] Implementation</div>
-          <div class="partner-logos">
-            <div class="partner-logo-cell">
-              <a href="https://www.pickebike.ch/de/" target="_blank" rel="noopener"><img alt="Pick-e-Bike" src="ASSETS/pickebike.png" /></a>
-              <div class="partner-role" style="color:var(--pick)">Pick-e-Bike · free-floating</div>
-            </div>
-            <div class="partner-logo-cell">
-              <a href="https://www.velospot.info" target="_blank" rel="noopener"><img alt="PubliBike Velospot" src="ASSETS/publibike.png" style="max-height:56px;max-width:100px" /></a>
-              <div class="partner-role" style="color:var(--publi)">PubliBike Velospot · station-based</div>
-            </div>
-            <div class="partner-logo-cell" style="background:var(--bg);color:var(--muted);font-family:JetBrains Mono,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em">Operational trip data<br/>Survey distribution</div>
-          </div>
+        <div class="partner">
+          <div class="logo"><a href="https://wwz.unibas.ch/de/" target="_blank" rel="noopener"><img src="ASSETS/unibasel.png" alt="University of Basel" loading="lazy" /></a></div>
+          <div class="role">Research partner</div>
+          <p>Faculty of Business and Economics (WWZ), Environmental Economics</p>
         </div>
-        <div class="partner-row">
-          <div class="partner-label">[04] Sister project</div>
-          <div class="partner-logos">
-            <div class="partner-logo-cell">
-              <a href="https://u-two.ch" target="_blank" rel="noopener"><img alt="U-Two — FHNW field test" src="ASSETS/team/u-two-logo.png" width="900" height="231" loading="lazy" decoding="async" style="max-height:64px;max-width:240px" /></a>
-              <div class="partner-role">FHNW field test · 2026</div>
-            </div>
-            <div class="partner-logo-cell">
-              <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;line-height:1.4">Tariff integration of shared two-wheelers</div>
-              <div class="partner-role">FHNW · HSLU · BVB · BLT · TNW</div>
-              <div class="partner-role">Pick-e-Bike · PubliBike Velospot</div>
-              <div class="partner-role link"><a href="https://u-two.ch" target="_blank" rel="noopener">u-two.ch ↗</a></div>
-            </div>
-            <div class="partner-logo-cell" style="background:var(--bg);color:var(--muted);font-family:JetBrains Mono,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em">Real-world test of POTEBS's<br/>multimodal-integration finding</div>
-          </div>
+        <div class="partner">
+          <div class="logo"><a href="https://www.pickebike.ch/de/" target="_blank" rel="noopener"><img src="ASSETS/pickebike.png" alt="Pick-e-Bike" loading="lazy" /></a></div>
+          <div class="role">Implementation partner</div>
+          <p>Free-floating S-pedelec sharing. Trip data and survey distribution.</p>
         </div>
-        <div class="partner-row">
-          <div class="partner-label">[05] Advisory board</div>
-          <div class="partner-advisory">
-            <span><strong>WWZ, University of Basel</strong>Research &amp; economics</span>
-            <span><strong>Office of Mobility, Canton of Basel-Stadt</strong>Cantonal transport policy</span>
-            <span><strong>Basler Verkehrs-Betriebe (BVB)</strong>Public transport operations</span>
-            <span><strong>TNW Tarifverbund Nordwestschweiz</strong>Regional fare integration</span>
-            <span><strong>SBB Swiss Federal Railways</strong>National rail</span>
-            <span><strong>Federal Roads Office (ASTRA)</strong>Federal infrastructure</span>
-            <span><strong>Pro Velo beider Basel</strong>Active mobility advocacy</span>
-          </div>
+        <div class="partner">
+          <div class="logo"><a href="https://www.velospot.info" target="_blank" rel="noopener"><img src="ASSETS/publibike.png" alt="PubliBike Velospot" loading="lazy" /></a></div>
+          <div class="role">Implementation partner</div>
+          <p>Dock-based pedelec sharing. Trip data and survey distribution.</p>
         </div>
+        <div class="partner">
+          <div class="logo"><a href="https://u-two.ch" target="_blank" rel="noopener"><img src="ASSETS/team/u-two-logo.png" alt="U-Two" width="900" height="231" loading="lazy" /></a></div>
+          <div class="role">Sister project</div>
+          <p>FHNW field test on fare integration of shared bikes with HSLU, BVB, BLT and TNW, 2026</p>
+        </div>
+      </div>
+      <div class="advisory">
+        <h3>Advisory board</h3>
+        <ul>
+          <li>WWZ, University of Basel <span>(research)</span></li>
+          <li>Office of Mobility, Canton of Basel-Stadt</li>
+          <li>Basler Verkehrs-Betriebe (BVB)</li>
+          <li>Tarifverbund Nordwestschweiz (TNW)</li>
+          <li>Swiss Federal Railways (SBB)</li>
+          <li>Federal Roads Office (FEDRO)</li>
+          <li>Pro Velo beider Basel</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- TEAM -->
   <section id="team">
-    <div class="sec-head">
-      <div class="sec-num">Team</div>
-      <h2>Team.</h2>
-    </div>
-    <div class="sec-body">
-      <div class="team-grid">
-        <div class="team-cell">
-          <img class="team-photo" src="ASSETS/team/michael-stiebe.jpg" alt="Portrait of Dr. Michael Stiebe" width="337" height="449" loading="lazy" decoding="async" />
-          <div class="team-title">[01] Project Manager</div>
-          <div class="team-name">Dr. Michael Stiebe</div>
-          <div class="team-inst">HSLU — ITM</div>
-          <div class="team-contact">
-            Lecturer<br/>
-            Institute of Tourism and Mobility (ITM)<br/>
-            CC Mobility (ITM Mob)<br/>
-            Lucerne School of Business<br/>
-            Walter-von-Moos-Promenade 1, 2nd floor<br/>
-            6005 Lucerne<br/>
-            <a href="tel:+41413493624">+41 41 349 36 24</a><br/>
-            <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a><br/>
-            <a href="https://www.hslu.ch/en/lucerne-university-of-applied-sciences-and-arts/about-us/people-finder/profile/?pid=5565" target="_blank" rel="noopener">HSLU Profile ↗</a>
-          </div>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Team</h2>
+      </div>
+      <div class="team">
+        <div class="person">
+          <img src="ASSETS/team/michael-stiebe.jpg" alt="Portrait of Dr. Michael Stiebe" width="337" height="449" loading="lazy" decoding="async" />
+          <h3>Dr. Michael Stiebe</h3>
+          <div class="role">Project manager, HSLU</div>
+          <address>
+            Lecturer<br />
+            Institute of Tourism and Mobility (ITM), Competence Center Mobility<br />
+            Lucerne School of Business<br />
+            Walter-von-Moos-Promenade 1, 2nd floor<br />
+            6005 Lucerne<br />
+            <a href="tel:+41413493624">+41 41 349 36 24</a><br />
+            <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a><br />
+            <a href="https://www.hslu.ch/en/lucerne-university-of-applied-sciences-and-arts/about-us/people-finder/profile/?pid=5565" target="_blank" rel="noopener">HSLU profile</a>
+          </address>
         </div>
-        <div class="team-cell">
-          <img class="team-photo" src="ASSETS/team/widar-von-arx.jpg" alt="Portrait of Prof. Dr. Widar von Arx" width="337" height="449" loading="lazy" decoding="async" />
-          <div class="team-title">[02] Co-Project Manager</div>
-          <div class="team-name">Prof. Dr. Widar von Arx</div>
-          <div class="team-inst">HSLU — ITM</div>
-          <div class="team-contact">
-            Head, Competence Center for Mobility<br/>
-            Professor<br/>
-            Institute of Tourism and Mobility (ITM)<br/>
-            CC Mobility (ITM Mob)<br/>
-            Lucerne School of Business<br/>
-            Walter-von-Moos-Promenade 1, 2nd floor<br/>
-            6005 Lucerne<br/>
-            <a href="tel:+41412284288">+41 41 228 42 88</a><br/>
-            <a href="https://www.hslu.ch/en/lucerne-university-of-applied-sciences-and-arts/about-us/people-finder/profile/?pid=1381" target="_blank" rel="noopener">HSLU Profile ↗</a>
-          </div>
+        <div class="person">
+          <img src="ASSETS/team/widar-von-arx.jpg" alt="Portrait of Prof. Dr. Widar von Arx" width="337" height="449" loading="lazy" decoding="async" />
+          <h3>Prof. Dr. Widar von Arx</h3>
+          <div class="role">Co-project manager, HSLU</div>
+          <address>
+            Professor, Head of the Competence Center Mobility<br />
+            Institute of Tourism and Mobility (ITM)<br />
+            Lucerne School of Business<br />
+            Walter-von-Moos-Promenade 1, 2nd floor<br />
+            6005 Lucerne<br />
+            <a href="tel:+41412284288">+41 41 228 42 88</a><br />
+            <a href="https://www.hslu.ch/en/lucerne-university-of-applied-sciences-and-arts/about-us/people-finder/profile/?pid=1381" target="_blank" rel="noopener">HSLU profile</a>
+          </address>
         </div>
-        <div class="team-cell">
-          <img class="team-photo" src="ASSETS/team/frank-krysiak.jpg" alt="Portrait of Prof. Dr. Frank Christian Krysiak" width="500" height="250" loading="lazy" decoding="async" />
-          <div class="team-title">[03] Co-Project Manager</div>
-          <div class="team-name">Prof. Dr. Frank Christian Krysiak</div>
-          <div class="team-inst">Uni Basel — WWZ</div>
-          <div class="team-contact">
-            Environmental Economics<br/>
-            Room 4.51<br/>
-            Peter Merian-Weg 6 (Postfach)<br/>
-            4002 Basel<br/>
-            Switzerland<br/>
-            <a href="tel:+41612073360">+41 61 207 33 60</a><br/>
-            <a href="mailto:frank.krysiak@unibas.ch">frank.krysiak@unibas.ch</a><br/>
-            <a href="https://wwz.unibas.ch/de/krysiak/" target="_blank" rel="noopener">University profile ↗</a>
-          </div>
+        <div class="person">
+          <img src="ASSETS/team/frank-krysiak.jpg" alt="Portrait of Prof. Dr. Frank Christian Krysiak" width="500" height="250" loading="lazy" decoding="async" />
+          <h3>Prof. Dr. Frank C. Krysiak</h3>
+          <div class="role">Co-project manager, University of Basel</div>
+          <address>
+            Environmental Economics, WWZ<br />
+            Room 4.51<br />
+            Peter Merian-Weg 6, Postfach<br />
+            4002 Basel<br />
+            <a href="tel:+41612073360">+41 61 207 33 60</a><br />
+            <a href="mailto:frank.krysiak@unibas.ch">frank.krysiak@unibas.ch</a><br />
+            <a href="https://wwz.unibas.ch/de/krysiak/" target="_blank" rel="noopener">University profile</a>
+          </address>
         </div>
-        <div class="team-cell">
-          <img class="team-photo" src="ASSETS/team/benjamin-weggelaar.jpg" alt="Portrait of Benjamin Weggelaar" width="600" height="800" loading="lazy" decoding="async" />
-          <div class="team-title">[04] Research Associate · since 10/2024</div>
-          <div class="team-name">Benjamin Weggelaar</div>
-          <div class="team-inst">Uni Basel — WWZ</div>
-          <div class="team-contact">
-            Environmental Economics<br/>
-            Assistant / PhD candidate<br/>
-            Room 4.47<br/>
-            Peter Merian-Weg 6<br/>
-            4052 Basel<br/>
-            Switzerland<br/>
-            <a href="tel:+41612072456">+41 61 207 24 56</a><br/>
-            <a href="mailto:benjamin.weggelaar@unibas.ch">benjamin.weggelaar@unibas.ch</a><br/>
-            <a href="https://wwz.unibas.ch/de/personen/benjamin-weggelaar-1/" target="_blank" rel="noopener">University profile ↗</a>
-          </div>
+        <div class="person">
+          <img src="ASSETS/team/benjamin-weggelaar.jpg" alt="Portrait of Benjamin Weggelaar" width="600" height="800" loading="lazy" decoding="async" />
+          <h3>Benjamin Weggelaar</h3>
+          <div class="role">Research associate, University of Basel, since October 2024</div>
+          <address>
+            PhD candidate, Environmental Economics, WWZ<br />
+            Room 4.47<br />
+            Peter Merian-Weg 6<br />
+            4052 Basel<br />
+            <a href="tel:+41612072456">+41 61 207 24 56</a><br />
+            <a href="mailto:benjamin.weggelaar@unibas.ch">benjamin.weggelaar@unibas.ch</a><br />
+            <a href="https://wwz.unibas.ch/de/personen/benjamin-weggelaar-1/" target="_blank" rel="noopener">University profile</a>
+          </address>
         </div>
       </div>
     </div>
   </section>
 
-<footer>
-    <div class="footer-inner">
-      <div>
-        <div class="footer-brand">POT<em title="Electric">E</em><span class="bs">BS</span></div>
-        <p class="footer-desc">Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types.</p>
-      </div>
-      <div>
-        <div class="footer-label">Funding &amp; Grant</div>
-        <p class="footer-text">
-          Swiss Federal Office of Energy (SFOE)<br/>
-          Grant No. SI/502720-01<br/>
-          Dec 2023 – Jan 2027<br/>
-          <a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener">ARAMIS Project Entry ↗</a>
-        </p>
-      </div>
-      <div>
-        <div class="footer-label">Lead Contact</div>
-        <p class="footer-text">
-          Dr. Michael Stiebe<br/>
-          HSLU — Institute of Tourism and Mobility<br/>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <strong>POTEBS</strong>
+          Investigating the Potential of E-Bike-Sharing Systems for Sustainable Mobility in Different Spatial Types
+        </div>
+        <div>
+          <strong>Funding</strong>
+          Swiss Federal Office of Energy (SFOE)<br />
+          Grant SI/502720-01, December 2023 to January 2027<br />
+          <a href="https://www.aramis.admin.ch/Grunddaten/?ProjectID=54193" target="_blank" rel="noopener">Project entry in ARAMIS</a>
+        </div>
+        <div>
+          <strong>Contact</strong>
+          Dr. Michael Stiebe, HSLU<br />
           <a href="mailto:michael.stiebe@hslu.ch">michael.stiebe@hslu.ch</a>
-        </p>
+        </div>
       </div>
+      <p class="footer-copy">© 2026 POTEBS project team. Photos: Michael Stiebe. Figures from the articles are reproduced with attribution.</p>
     </div>
-    <p class="footer-copy">© 2026 POTEBS · Funded by SFOE · Grant SI/502720-01</p>
   </footer>
 
   <script src="site.js"></script>
