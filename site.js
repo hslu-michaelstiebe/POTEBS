@@ -822,6 +822,19 @@
     })();
 
     // -------------------------------------------------------------------------
+    // PROJECT PROGRESS BAR — fill reflects the share of the funding period that
+    // has passed (December 2023 to January 2027).
+    // -------------------------------------------------------------------------
+    (function () {
+      const fill = document.getElementById('progress-fill');
+      if (!fill) return;
+      const start = Date.parse('2023-12-01');
+      const end = Date.parse('2027-01-31');
+      const pct = Math.max(0, Math.min(100, (Date.now() - start) / (end - start) * 100));
+      fill.style.width = pct.toFixed(1) + '%';
+    })();
+
+    // -------------------------------------------------------------------------
     // BIBTEX COPY BUTTONS — clipboard API, with visual confirmation
     // -------------------------------------------------------------------------
     (function () {
@@ -850,6 +863,15 @@
   doi     = {10.1016/j.urbmob.2026.100288},
   url     = {https://doi.org/10.1016/j.urbmob.2026.100288},
   note    = {Open access}
+}`,
+        'stiebe2026thredbo':
+`@inproceedings{stiebe2026thredbo,
+  author    = {Stiebe, Michael and von Arx, Widar},
+  title     = {Market expansion through performance throttling: an analysis of systemic friction, user rejuvenation and the occupancy trap in shared micro-mobility},
+  booktitle = {Thredbo 19: International Conference Series on Competition and Ownership in Land Passenger Transport},
+  address   = {Valletta, Malta},
+  year      = {2026},
+  month     = {September}
 }`,
         'stiebe2026srl':
 `@misc{stiebe2026srl,

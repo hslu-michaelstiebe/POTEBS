@@ -335,3 +335,38 @@ footer a:hover{color:var(--text)}
 .photo-row figcaption{font-size:.875rem;margin-top:.5rem}
 @media (max-width:640px){.photo-row{grid-template-columns:1fr 1fr;gap:.75rem}.photo-row figure:nth-child(3){display:none}}
 @media (max-width:640px){.tabs{flex-wrap:nowrap;overflow-x:auto;gap:0 1.25rem;-webkit-overflow-scrolling:touch}.explore-tab{white-space:nowrap}}
+
+/* Project progress bar */
+.progress{margin-top:2.75rem;padding-top:1.5rem;border-top:1px solid var(--rule)}
+.progress-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;font-size:.9375rem;color:var(--muted);margin-bottom:3rem}
+.progress-head a{color:var(--muted)}
+.progress-labels{position:relative;height:0}
+.progress-labels .pl{position:absolute;bottom:.55rem;transform:translateX(-50%);text-align:center;font-size:.875rem;color:var(--muted);line-height:1.25;white-space:nowrap}
+.progress-labels .pl b{display:block;font-weight:600;color:var(--text)}
+.progress-labels .pl.start{transform:none;text-align:left}
+.progress-labels .pl.end{transform:translateX(-100%);text-align:right}
+.progress-track{position:relative;height:.5rem;border-radius:.25rem;background:#e7e7e5}
+.progress-fill{height:100%;border-radius:.25rem;background:var(--text);transition:width .6s ease}
+.progress-track .pm{position:absolute;top:50%;width:.5rem;height:.5rem;margin:-.25rem 0 0 -.25rem;border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--text)}
+@media (max-width:1250px){.progress-labels .pl-dense{display:none}}
+@media (max-width:760px){
+  .progress-labels .pl:not(.start):not(.end){display:none}
+  .progress-head{margin-bottom:2.4rem}
+}
+
+/* Footnotes and image credits */
+.fn{font-size:.85em;text-decoration:none;color:var(--muted);white-space:nowrap}
+.fn:hover{color:var(--text)}
+:target{scroll-margin-top:5rem}
+.credits{margin-top:2.25rem;padding-top:1.25rem;border-top:1px solid var(--rule)}
+.credits strong{margin-bottom:.4rem}
+.notes{list-style:none;columns:2;column-gap:3rem;max-width:56rem;font-size:.875rem}
+.notes li{padding:.15rem 0;break-inside:avoid}
+.notes a{color:var(--muted);text-decoration:none}
+.notes a:hover{color:var(--text)}
+@media (max-width:640px){.notes{columns:1}}
+
+.head-media{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:3rem;align-items:center;margin-bottom:2.5rem}
+.head-media .sec-head{margin-bottom:0}
+.head-media img{width:100%;border-radius:2px}
+@media (max-width:1000px){.head-media{grid-template-columns:1fr;gap:1.75rem}}
