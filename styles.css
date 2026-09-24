@@ -184,10 +184,10 @@ figcaption b{color:var(--text);font-weight:600}
 .route-status{font-size:.9375rem;color:rgba(255,255,255,.85)}
 .route-clock{position:absolute;left:.9rem;top:.9rem;z-index:5;background:rgba(11,16,32,.8);color:#fff;border-radius:3px;padding:.35rem .6rem;font-size:.9375rem;font-weight:600;font-variant-numeric:tabular-nums}
 .map-caption{display:flex;flex-wrap:wrap;gap:.3rem 1.5rem;margin-top:.7rem;font-size:.9063rem;color:var(--muted)}
-.map-caption .sw{display:inline-flex;align-items:center;gap:.45rem}
-.map-caption .sw::before{content:"";width:.75rem;height:.75rem;border-radius:2px;display:inline-block}
-.map-caption .sw-peb::before{background:var(--pick)}
-.map-caption .sw-pb::before{background:var(--publi)}
+.sw{display:inline-flex;align-items:center;gap:.45rem}
+.sw::before{content:"";width:.75rem;height:.75rem;border-radius:2px;display:inline-block}
+.sw-peb::before{background:var(--pick)}
+.sw-pb::before{background:var(--publi)}
 .heat-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.9375rem;color:#fff;background:rgba(20,20,20,.75);z-index:500}
 .heat-legend{display:flex;align-items:center;gap:.75rem;margin-top:.7rem;font-size:.9063rem;color:var(--muted)}
 .heat-legend-bar{flex:0 1 18rem;height:.5rem;border-radius:2px;background:linear-gradient(to right,rgba(80,10,90,.85),#7b1c1c,#c5402b,#e8840a,#f5d060,#fffde7)}
@@ -372,3 +372,11 @@ footer a:hover{color:var(--text)}
 @media (max-width:1000px){.head-media{grid-template-columns:1fr;gap:1.75rem}}
 .ss-chart{width:100%;height:30rem}
 @media (max-width:640px){.ss-chart{height:24rem}}
+
+/* Hero loop: one typical day of routed rentals */
+.hero-key{display:flex;flex-wrap:wrap;gap:.3rem 1.5rem;margin-top:.45rem}
+.hero-loop{position:relative;width:100%;aspect-ratio:2/3;background:#16181b;border-radius:2px;overflow:hidden}
+.hero-loop img{display:block;width:100%;height:100%;object-fit:fill}
+.hero-loop canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-clock{position:absolute;left:.75rem;top:.75rem;background:rgba(10,11,13,.6);border:1px solid rgba(255,255,255,.18);border-radius:2px;padding:.2rem .5rem;font-size:.8125rem;font-variant-numeric:tabular-nums;color:#f2f2f0;opacity:0;transition:opacity .4s ease}
+.hero-loop.is-ready .hero-clock{opacity:1}

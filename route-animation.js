@@ -242,10 +242,19 @@
     if (document.hidden) setPlayState(false);
   });
 
+  // Start on its own as soon as the panel is open and in view. Phones, coarse
+  // pointers and reduced-motion settings keep the manual start button.
+  const autoStart = !lightDevice && !prefersReduced;
+
   const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
     const entry = entries[0];
-    if (!entry || !initialized) return;
+    if (!entry) return;
+    if (!initialized) {
+      if (entry.isIntersecting && autoStart) init();
+      return;
+    }
     if (!entry.isIntersecting) setPlayState(false);
+    else if (!playing) setPlayState(true);
     if (map) map.resize();
   }, { threshold: 0.05 }) : null;
   if (observer) observer.observe(root);
