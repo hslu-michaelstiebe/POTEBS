@@ -342,6 +342,126 @@
     });
 
     // -------------------------------------------------------------------------
+    // SPEED-SETTING UTILISATION — monthly rental minutes per active bike per day
+    // and fleet rental-hours per day, from data/speedsetting-utilisation.json.
+    // Same series as the Thredbo 19 conference paper (Stiebe & von Arx 2026).
+    // -------------------------------------------------------------------------
+    runWhenVisible(document.getElementById('ss-utilisation'), async function initSpeedSetting() {
+      const el = document.getElementById('ss-utilisation');
+      if (!el) return;
+      await ensureEcharts();
+      let d;
+      try {
+        d = await fetch('data/speedsetting-utilisation.json').then(r => r.json());
+      } catch (err) {
+        console.error(err);
+        el.innerHTML = '<div style="padding:1rem;color:#5e6166;font-size:12px">Chart data could not be loaded.</div>';
+        return;
+      }
+      const launch = Date.parse(d.launch);
+      const minutes = d.months.map((m, i) => [Date.parse(m), d.min_per_bike_day[i]]);
+      const hours = d.months.map((m, i) => [Date.parse(m), d.fleet_hours_per_day[i]]);
+      const end = Date.parse(d.months[d.months.length - 1]);
+      const FAM = '"Source Sans 3", "Helvetica Neue", Arial, sans-serif';
+      const axisText = { fontFamily: FAM, fontSize: fs(12), color: '#5e6166' };
+      const titleText = { fontFamily: FAM, fontSize: fs(13), color: '#1c1c1c', fontWeight: 600, align: 'left' };
+      const timeLabel = {
+        formatter: function (v) {
+          const dt = new Date(v);
+          return dt.toLocaleDateString('en-GB', { month: 'short' }) + '\n' + dt.getFullYear();
+        }
+      };
+      const band = {
+        silent: true,
+        itemStyle: { color: 'rgba(28,28,28,0.04)' },
+        data: [[{ xAxis: launch }, { xAxis: end }]]
+      };
+      const narrow = el.clientWidth < 620;
+      const launchLine = (withLabel) => ({
+        silent: true, symbol: 'none',
+        lineStyle: { color: '#1c1c1c', width: 1.2, type: 'dashed' },
+        label: withLabel ? {
+          formatter: narrow ? '20 Aug 2024' : 'Speed-setting launch, 20 Aug 2024',
+          position: 'insideEndTop', rotate: 0,
+          distance: narrow ? [-4, -4] : [0, 6], align: narrow ? 'left' : 'right',
+          fontFamily: FAM, fontSize: fs(12), color: '#1c1c1c'
+        } : { show: false },
+        data: [{ xAxis: launch }]
+      });
+      const chart = echarts.init(el, null, { renderer: 'svg' });
+
+      chart.setOption({
+        backgroundColor: 'transparent',
+        animation: true,
+        grid: [
+          { left: 6, right: 6, top: Math.round((narrow ? 40 : 30) * CHART_SCALE), height: '36%', containLabel: true },
+          { left: 6, right: 6, top: '56%', height: '34%', containLabel: true }
+        ],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { link: [{ xAxisIndex: 'all' }], lineStyle: { color: '#b5b5b5' } },
+          backgroundColor: '#ffffff', borderColor: '#cfcfcf',
+          textStyle: { color: '#1c1c1c', fontFamily: FAM, fontSize: fs(12.5) },
+          formatter: function (params) {
+            const dt = new Date(params[0].value[0]);
+            const head = dt.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+            let html = '<div style="font-weight:600;margin-bottom:4px">' + head + '</div>';
+            params.forEach(p => {
+              const unit = p.seriesIndex === 0 ? ' min' : ' h';
+              html += '<div>' + p.seriesName + ': <b>' + p.value[1].toFixed(1) + unit + '</b></div>';
+            });
+            return html;
+          }
+        },
+        xAxis: [
+          {
+            type: 'time', gridIndex: 0, min: minutes[0][0], max: end,
+            axisLine: { lineStyle: { color: '#d0d0d0' } }, axisTick: { show: false },
+            axisLabel: { show: false }, splitLine: { show: false }
+          },
+          {
+            type: 'time', gridIndex: 1, min: minutes[0][0], max: end,
+            axisLine: { lineStyle: { color: '#d0d0d0' } }, axisTick: { lineStyle: { color: '#d0d0d0' } },
+            axisLabel: Object.assign({}, axisText, timeLabel), splitLine: { show: false }
+          }
+        ],
+        yAxis: [
+          {
+            gridIndex: 0, min: 0,
+            name: 'Rental minutes per active bike per day', nameLocation: 'end',
+            nameGap: Math.round(16 * CHART_SCALE), nameTextStyle: Object.assign({}, titleText),
+            axisLine: { show: false }, axisTick: { show: false },
+            axisLabel: axisText, splitLine: { lineStyle: { color: '#ececec' } }
+          },
+          {
+            gridIndex: 1, min: 0,
+            name: 'Fleet rental-hours per day', nameLocation: 'end',
+            nameGap: Math.round(16 * CHART_SCALE), nameTextStyle: Object.assign({}, titleText),
+            axisLine: { show: false }, axisTick: { show: false },
+            axisLabel: axisText, splitLine: { lineStyle: { color: '#ececec' } }
+          }
+        ],
+        series: [
+          {
+            name: 'Minutes per active bike per day', type: 'line',
+            xAxisIndex: 0, yAxisIndex: 0, data: minutes,
+            symbol: 'circle', showSymbol: true, symbolSize: Math.round(5 * CHART_SCALE),
+            lineStyle: { color: '#1c1c1c', width: 2 }, itemStyle: { color: '#1c1c1c', borderWidth: 0 },
+            markArea: band, markLine: launchLine(true)
+          },
+          {
+            name: 'Fleet rental-hours per day', type: 'line',
+            xAxisIndex: 1, yAxisIndex: 1, data: hours,
+            symbol: 'circle', showSymbol: true, symbolSize: Math.round(5 * CHART_SCALE),
+            lineStyle: { color: '#4a4d52', width: 2 }, itemStyle: { color: '#4a4d52', borderWidth: 0 },
+            markArea: band, markLine: launchLine(false)
+          }
+        ]
+      });
+      window.addEventListener('resize', () => chart.resize());
+    });
+
+    // -------------------------------------------------------------------------
     // FOREST PLOT — ordered-logit odds ratios (published Table 8)
     // Point estimates and 95% CIs from the manuscript narrative; CIs computed
     // exp(β ± 1.96·SE) where SEs are reported. Predictors without published SE

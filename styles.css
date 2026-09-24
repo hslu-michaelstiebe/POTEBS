@@ -370,3 +370,5 @@ footer a:hover{color:var(--text)}
 .head-media .sec-head{margin-bottom:0}
 .head-media img{width:100%;border-radius:2px}
 @media (max-width:1000px){.head-media{grid-template-columns:1fr;gap:1.75rem}}
+.ss-chart{width:100%;height:30rem}
+@media (max-width:640px){.ss-chart{height:24rem}}
